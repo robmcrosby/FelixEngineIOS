@@ -26,6 +26,7 @@
 		3741F357176FC4E100DFEDAD /* OpenGLESDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F355176FC4E100DFEDAD /* OpenGLESDisplay.cpp */; };
 		3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */; };
 		3741F35D176FC94B00DFEDAD /* IOSFileSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */; };
+		3741F37B1770DBCD00DFEDAD /* Config in Resources */ = {isa = PBXBuildFile; fileRef = 3741F37A1770DBCD00DFEDAD /* Config */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		3741F35C176FC94B00DFEDAD /* IOSFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSFileSystem.h; sourceTree = "<group>"; };
 		3741F35E176FD27000DFEDAD /* OpenGLESIncludes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLESIncludes.h; sourceTree = "<group>"; };
 		3741F35F176FE83B00DFEDAD /* DisplayPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayPipeline.h; sourceTree = "<group>"; };
+		3741F37A1770DBCD00DFEDAD /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Config; path = AppFiles/Config; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +209,7 @@
 		3741F3791770D7CD00DFEDAD /* Files */ = {
 			isa = PBXGroup;
 			children = (
+				3741F37A1770DBCD00DFEDAD /* Config */,
 			);
 			name = Files;
 			sourceTree = "<group>";
@@ -268,6 +271,7 @@
 				3741F32B176E7FF000DFEDAD /* Default-568h@2x.png in Resources */,
 				3741F335176E7FF000DFEDAD /* ViewController_iPhone.xib in Resources */,
 				3741F338176E7FF000DFEDAD /* ViewController_iPad.xib in Resources */,
+				3741F37B1770DBCD00DFEDAD /* Config in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
