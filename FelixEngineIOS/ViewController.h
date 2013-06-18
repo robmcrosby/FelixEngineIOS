@@ -9,6 +9,18 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
-@interface ViewController : GLKViewController
+#include "IOSHost.h"
+
+@interface ViewController : GLKViewController {
+@private
+   IOSHost *host_;
+   //AppEngine *appEngine_;
+   CGFloat width_;
+   CGFloat height_;
+   CGFloat scale_;
+   //vec2 halfScreen_;
+}
+
+@property (strong, nonatomic) EAGLContext *context;
 
 @end
