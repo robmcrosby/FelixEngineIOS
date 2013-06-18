@@ -14,15 +14,18 @@
 		3741F319176E7FF000DFEDAD /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3741F318176E7FF000DFEDAD /* OpenGLES.framework */; };
 		3741F31F176E7FF000DFEDAD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3741F31D176E7FF000DFEDAD /* InfoPlist.strings */; };
 		3741F321176E7FF000DFEDAD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741F320176E7FF000DFEDAD /* main.m */; };
-		3741F325176E7FF000DFEDAD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741F324176E7FF000DFEDAD /* AppDelegate.m */; };
+		3741F325176E7FF000DFEDAD /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741F324176E7FF000DFEDAD /* AppDelegate.mm */; };
 		3741F327176E7FF000DFEDAD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3741F326176E7FF000DFEDAD /* Default.png */; };
 		3741F329176E7FF000DFEDAD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3741F328176E7FF000DFEDAD /* Default@2x.png */; };
 		3741F32B176E7FF000DFEDAD /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3741F32A176E7FF000DFEDAD /* Default-568h@2x.png */; };
-		3741F32D176E7FF000DFEDAD /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 3741F32C176E7FF000DFEDAD /* Shader.fsh */; };
-		3741F32F176E7FF000DFEDAD /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 3741F32E176E7FF000DFEDAD /* Shader.vsh */; };
-		3741F332176E7FF000DFEDAD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3741F331176E7FF000DFEDAD /* ViewController.m */; };
+		3741F332176E7FF000DFEDAD /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741F331176E7FF000DFEDAD /* ViewController.mm */; };
 		3741F335176E7FF000DFEDAD /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741F333176E7FF000DFEDAD /* ViewController_iPhone.xib */; };
 		3741F338176E7FF000DFEDAD /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741F336176E7FF000DFEDAD /* ViewController_iPad.xib */; };
+		3741F345176E8AB200DFEDAD /* FelixEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F343176E8AB200DFEDAD /* FelixEngine.cpp */; };
+		3741F348176FA72900DFEDAD /* IOSHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F346176FA72900DFEDAD /* IOSHost.cpp */; };
+		3741F357176FC4E100DFEDAD /* OpenGLESDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F355176FC4E100DFEDAD /* OpenGLESDisplay.cpp */; };
+		3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */; };
+		3741F35D176FC94B00DFEDAD /* IOSFileSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,16 +40,30 @@
 		3741F320176E7FF000DFEDAD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3741F322176E7FF000DFEDAD /* FelixEngineIOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FelixEngineIOS-Prefix.pch"; sourceTree = "<group>"; };
 		3741F323176E7FF000DFEDAD /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		3741F324176E7FF000DFEDAD /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		3741F324176E7FF000DFEDAD /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
 		3741F326176E7FF000DFEDAD /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3741F328176E7FF000DFEDAD /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		3741F32A176E7FF000DFEDAD /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		3741F32C176E7FF000DFEDAD /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
-		3741F32E176E7FF000DFEDAD /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
 		3741F330176E7FF000DFEDAD /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		3741F331176E7FF000DFEDAD /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		3741F331176E7FF000DFEDAD /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		3741F334176E7FF000DFEDAD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		3741F337176E7FF000DFEDAD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+		3741F343176E8AB200DFEDAD /* FelixEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FelixEngine.cpp; sourceTree = "<group>"; };
+		3741F344176E8AB200DFEDAD /* FelixEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FelixEngine.h; sourceTree = "<group>"; };
+		3741F346176FA72900DFEDAD /* IOSHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IOSHost.cpp; sourceTree = "<group>"; };
+		3741F347176FA72900DFEDAD /* IOSHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSHost.h; sourceTree = "<group>"; };
+		3741F34C176FADD200DFEDAD /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Matrix.h; sourceTree = "<group>"; };
+		3741F34D176FADD200DFEDAD /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
+		3741F34E176FADD200DFEDAD /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
+		3741F350176FADD200DFEDAD /* XMLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLTag.h; sourceTree = "<group>"; };
+		3741F355176FC4E100DFEDAD /* OpenGLESDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLESDisplay.cpp; sourceTree = "<group>"; };
+		3741F356176FC4E100DFEDAD /* OpenGLESDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESDisplay.h; sourceTree = "<group>"; };
+		3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenALAudio.cpp; sourceTree = "<group>"; };
+		3741F359176FC7B500DFEDAD /* OpenALAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenALAudio.h; sourceTree = "<group>"; };
+		3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IOSFileSystem.mm; sourceTree = "<group>"; };
+		3741F35C176FC94B00DFEDAD /* IOSFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSFileSystem.h; sourceTree = "<group>"; };
+		3741F35E176FD27000DFEDAD /* OpenGLESIncludes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLESIncludes.h; sourceTree = "<group>"; };
+		3741F35F176FE83B00DFEDAD /* DisplayPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayPipeline.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,14 +114,10 @@
 		3741F31A176E7FF000DFEDAD /* FelixEngineIOS */ = {
 			isa = PBXGroup;
 			children = (
-				3741F323176E7FF000DFEDAD /* AppDelegate.h */,
-				3741F324176E7FF000DFEDAD /* AppDelegate.m */,
-				3741F32C176E7FF000DFEDAD /* Shader.fsh */,
-				3741F32E176E7FF000DFEDAD /* Shader.vsh */,
-				3741F330176E7FF000DFEDAD /* ViewController.h */,
-				3741F331176E7FF000DFEDAD /* ViewController.m */,
-				3741F333176E7FF000DFEDAD /* ViewController_iPhone.xib */,
-				3741F336176E7FF000DFEDAD /* ViewController_iPad.xib */,
+				3741F3791770D7CD00DFEDAD /* Files */,
+				3741F349176FAD7700DFEDAD /* Utils */,
+				3741F33F176E848B00DFEDAD /* Engine */,
+				3741F33E176E809100DFEDAD /* ObjectiveC */,
 				3741F31B176E7FF000DFEDAD /* Supporting Files */,
 			);
 			path = FelixEngineIOS;
@@ -113,6 +126,8 @@
 		3741F31B176E7FF000DFEDAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3741F333176E7FF000DFEDAD /* ViewController_iPhone.xib */,
+				3741F336176E7FF000DFEDAD /* ViewController_iPad.xib */,
 				3741F31C176E7FF000DFEDAD /* FelixEngineIOS-Info.plist */,
 				3741F31D176E7FF000DFEDAD /* InfoPlist.strings */,
 				3741F320176E7FF000DFEDAD /* main.m */,
@@ -122,6 +137,78 @@
 				3741F32A176E7FF000DFEDAD /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		3741F33E176E809100DFEDAD /* ObjectiveC */ = {
+			isa = PBXGroup;
+			children = (
+				3741F323176E7FF000DFEDAD /* AppDelegate.h */,
+				3741F324176E7FF000DFEDAD /* AppDelegate.mm */,
+				3741F330176E7FF000DFEDAD /* ViewController.h */,
+				3741F331176E7FF000DFEDAD /* ViewController.mm */,
+			);
+			name = ObjectiveC;
+			sourceTree = "<group>";
+		};
+		3741F33F176E848B00DFEDAD /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				3741F344176E8AB200DFEDAD /* FelixEngine.h */,
+				3741F343176E8AB200DFEDAD /* FelixEngine.cpp */,
+				3741F347176FA72900DFEDAD /* IOSHost.h */,
+				3741F346176FA72900DFEDAD /* IOSHost.cpp */,
+				3741F352176FC48F00DFEDAD /* Display */,
+				3741F353176FC49900DFEDAD /* Audio */,
+				3741F354176FC4A100DFEDAD /* FileSystem */,
+			);
+			name = Engine;
+			sourceTree = "<group>";
+		};
+		3741F349176FAD7700DFEDAD /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				3741F34C176FADD200DFEDAD /* Matrix.h */,
+				3741F34D176FADD200DFEDAD /* Quaternion.h */,
+				3741F34E176FADD200DFEDAD /* Vector.h */,
+				3741F350176FADD200DFEDAD /* XMLTag.h */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		3741F352176FC48F00DFEDAD /* Display */ = {
+			isa = PBXGroup;
+			children = (
+				3741F35F176FE83B00DFEDAD /* DisplayPipeline.h */,
+				3741F35E176FD27000DFEDAD /* OpenGLESIncludes.h */,
+				3741F356176FC4E100DFEDAD /* OpenGLESDisplay.h */,
+				3741F355176FC4E100DFEDAD /* OpenGLESDisplay.cpp */,
+			);
+			name = Display;
+			sourceTree = "<group>";
+		};
+		3741F353176FC49900DFEDAD /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				3741F359176FC7B500DFEDAD /* OpenALAudio.h */,
+				3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */,
+			);
+			name = Audio;
+			sourceTree = "<group>";
+		};
+		3741F354176FC4A100DFEDAD /* FileSystem */ = {
+			isa = PBXGroup;
+			children = (
+				3741F35C176FC94B00DFEDAD /* IOSFileSystem.h */,
+				3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */,
+			);
+			name = FileSystem;
+			sourceTree = "<group>";
+		};
+		3741F3791770D7CD00DFEDAD /* Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Files;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,8 +266,6 @@
 				3741F327176E7FF000DFEDAD /* Default.png in Resources */,
 				3741F329176E7FF000DFEDAD /* Default@2x.png in Resources */,
 				3741F32B176E7FF000DFEDAD /* Default-568h@2x.png in Resources */,
-				3741F32D176E7FF000DFEDAD /* Shader.fsh in Resources */,
-				3741F32F176E7FF000DFEDAD /* Shader.vsh in Resources */,
 				3741F335176E7FF000DFEDAD /* ViewController_iPhone.xib in Resources */,
 				3741F338176E7FF000DFEDAD /* ViewController_iPad.xib in Resources */,
 			);
@@ -194,8 +279,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3741F321176E7FF000DFEDAD /* main.m in Sources */,
-				3741F325176E7FF000DFEDAD /* AppDelegate.m in Sources */,
-				3741F332176E7FF000DFEDAD /* ViewController.m in Sources */,
+				3741F325176E7FF000DFEDAD /* AppDelegate.mm in Sources */,
+				3741F332176E7FF000DFEDAD /* ViewController.mm in Sources */,
+				3741F345176E8AB200DFEDAD /* FelixEngine.cpp in Sources */,
+				3741F348176FA72900DFEDAD /* IOSHost.cpp in Sources */,
+				3741F357176FC4E100DFEDAD /* OpenGLESDisplay.cpp in Sources */,
+				3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */,
+				3741F35D176FC94B00DFEDAD /* IOSFileSystem.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
