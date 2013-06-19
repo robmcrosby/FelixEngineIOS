@@ -27,6 +27,7 @@
 		3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */; };
 		3741F35D176FC94B00DFEDAD /* IOSFileSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */; };
 		3741F37B1770DBCD00DFEDAD /* Config in Resources */ = {isa = PBXBuildFile; fileRef = 3741F37A1770DBCD00DFEDAD /* Config */; };
+		3741F3821770EE7F00DFEDAD /* ObjViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F3801770EE7F00DFEDAD /* ObjViewer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -66,6 +67,8 @@
 		3741F35E176FD27000DFEDAD /* OpenGLESIncludes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLESIncludes.h; sourceTree = "<group>"; };
 		3741F35F176FE83B00DFEDAD /* DisplayPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayPipeline.h; sourceTree = "<group>"; };
 		3741F37A1770DBCD00DFEDAD /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Config; path = AppFiles/Config; sourceTree = SOURCE_ROOT; };
+		3741F3801770EE7F00DFEDAD /* ObjViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjViewer.cpp; path = AppSrc/ObjViewer.cpp; sourceTree = SOURCE_ROOT; };
+		3741F3811770EE7F00DFEDAD /* ObjViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjViewer.h; path = AppSrc/ObjViewer.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,11 +119,9 @@
 		3741F31A176E7FF000DFEDAD /* FelixEngineIOS */ = {
 			isa = PBXGroup;
 			children = (
-				3741F3791770D7CD00DFEDAD /* Files */,
-				3741F349176FAD7700DFEDAD /* Utils */,
-				3741F33F176E848B00DFEDAD /* Engine */,
-				3741F33E176E809100DFEDAD /* ObjectiveC */,
-				3741F31B176E7FF000DFEDAD /* Supporting Files */,
+				3741F37F1770EE4B00DFEDAD /* AppSrc */,
+				3741F3791770D7CD00DFEDAD /* AppFiles */,
+				3741F33F176E848B00DFEDAD /* FelixEngine */,
 			);
 			path = FelixEngineIOS;
 			sourceTree = "<group>";
@@ -128,6 +129,7 @@
 		3741F31B176E7FF000DFEDAD /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				3741F33E176E809100DFEDAD /* ObjectiveC */,
 				3741F333176E7FF000DFEDAD /* ViewController_iPhone.xib */,
 				3741F336176E7FF000DFEDAD /* ViewController_iPad.xib */,
 				3741F31C176E7FF000DFEDAD /* FelixEngineIOS-Info.plist */,
@@ -152,9 +154,10 @@
 			name = ObjectiveC;
 			sourceTree = "<group>";
 		};
-		3741F33F176E848B00DFEDAD /* Engine */ = {
+		3741F33F176E848B00DFEDAD /* FelixEngine */ = {
 			isa = PBXGroup;
 			children = (
+				3741F3831771505A00DFEDAD /* Resources */,
 				3741F344176E8AB200DFEDAD /* FelixEngine.h */,
 				3741F343176E8AB200DFEDAD /* FelixEngine.cpp */,
 				3741F347176FA72900DFEDAD /* IOSHost.h */,
@@ -162,8 +165,10 @@
 				3741F352176FC48F00DFEDAD /* Display */,
 				3741F353176FC49900DFEDAD /* Audio */,
 				3741F354176FC4A100DFEDAD /* FileSystem */,
+				3741F349176FAD7700DFEDAD /* Utils */,
+				3741F31B176E7FF000DFEDAD /* Supporting Files */,
 			);
-			name = Engine;
+			name = FelixEngine;
 			sourceTree = "<group>";
 		};
 		3741F349176FAD7700DFEDAD /* Utils */ = {
@@ -206,12 +211,28 @@
 			name = FileSystem;
 			sourceTree = "<group>";
 		};
-		3741F3791770D7CD00DFEDAD /* Files */ = {
+		3741F3791770D7CD00DFEDAD /* AppFiles */ = {
 			isa = PBXGroup;
 			children = (
 				3741F37A1770DBCD00DFEDAD /* Config */,
 			);
-			name = Files;
+			name = AppFiles;
+			sourceTree = "<group>";
+		};
+		3741F37F1770EE4B00DFEDAD /* AppSrc */ = {
+			isa = PBXGroup;
+			children = (
+				3741F3811770EE7F00DFEDAD /* ObjViewer.h */,
+				3741F3801770EE7F00DFEDAD /* ObjViewer.cpp */,
+			);
+			name = AppSrc;
+			sourceTree = "<group>";
+		};
+		3741F3831771505A00DFEDAD /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +311,7 @@
 				3741F357176FC4E100DFEDAD /* OpenGLESDisplay.cpp in Sources */,
 				3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */,
 				3741F35D176FC94B00DFEDAD /* IOSFileSystem.mm in Sources */,
+				3741F3821770EE7F00DFEDAD /* ObjViewer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

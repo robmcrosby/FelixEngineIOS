@@ -17,6 +17,8 @@ public:
    IOSFileSystem(FelixHost *host);
    virtual ~IOSFileSystem() {}
    
+   virtual std::string loadTxt(const std::string &path) const;
+   virtual XMLTag* loadXML(const std::string &path) const;
 protected:
    FelixHost *_host;
    std::string _basePath;

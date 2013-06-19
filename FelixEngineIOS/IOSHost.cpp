@@ -15,17 +15,13 @@ using namespace std;
 
 
 IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): FelixHost(dev, size, scale) {
+   // create the host components
    _display = new OpenGLESDisplay(this);
    _audio   = new OpenALAudio(this);
    _fileSys = new IOSFileSystem(this);
+   
+   createAppEntity();
 }
-
-IOSHost::~IOSHost() {
-   delete _display;
-   delete _audio;
-   delete _fileSys;
-}
-
 
 void IOSHost::lowMemory() {
    cout << "LOW MEMORY WARNING" << endl;

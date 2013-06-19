@@ -17,6 +17,8 @@
 #include "Vector.h"
 #include "XMLTag.h"
 
+#define APP_CONFIG "Config/main.xml"
+
 enum EVENT_TYPE {
    EVENT_MEM_WARNING,
    EVENT_RESIZE,
@@ -31,6 +33,17 @@ enum EVENT_TYPE {
 enum DEV_TYPE {
    DEV_PHONE,
    DEV_TABLET,
+};
+
+enum VAL_TYPE {
+   VAL_INT,
+   VAL_FLOAT,
+   VAL_VEC2,
+   VAL_VEC3,
+   VAL_VEC4,
+   VAL_MAT2X2,
+   VAL_MAT3X3,
+   VAL_MAT4X4,
 };
 
 enum DRAW_TYPE {
@@ -67,33 +80,99 @@ struct FelixEvent {
  */
 class FelixResource {
 public:
-   FelixResource(const std::string &str): _id(str), _count(1), _loaded(0) {RMap[_id] = this;}
-   virtual ~FelixResource() {RMap.erase(_id);}
+   FelixResource(const std::string &str): _id(str), _count(0), _loaded(0) {}
+   virtual ~FelixResource() {}
    
-   inline size_t retain() {return ++_count;}
-   inline size_t release() {
-      size_t count = --_count;
-      if (!count)
-         delete this;
-      return count;
-   }
+   inline void retain() const {++_count;}
+   inline void release() const {--_count;}
    
    virtual bool load() = 0;
    virtual bool unload() = 0;
    inline bool loaded() const {return _loaded;}
    
-   inline size_t getCount() const {return _count;}
+   inline int getCount() const {return _count;}
    inline std::string getId() const {return _id;}
-   
-   static FelixResource* GetResource(const std::string &str) {
-      return RMap.find(str) != RMap.end() ? RMap[str] : NULL;
-   }
    
 private:
    std::string _id;
-   size_t _count;
+   mutable int _count;
    bool _loaded;
-   static std::map<std::string, FelixResource*> RMap;
+};
+
+/**
+ * Defines a uniform for a shader
+ */
+struct Uniform {
+   Uniform(): count(0) {}
+   Uniform(const std::string &n, VAL_TYPE t, int c, void *v):
+    name(n), type(t),count(c), value(v) {}
+   
+   std::string name;
+   VAL_TYPE type;
+   int count;
+   void *value;
+};
+
+/**
+ * Collection of uniforms
+ */
+typedef std::list<Uniform> Uniforms;
+
+/**
+ * Defines an attribute for a shader
+ */
+struct Attribute {
+   Attribute(): size(0), offset(0) {}
+   Attribute(const std::string &n, int s, int o):
+    name(n), size(s), offset(o) {}
+   
+   std::string name;
+   int size, offset;
+};
+
+/*
+ * Collection of attributes
+ */
+class Attributes {
+public:
+   Attributes(): _stride(0) {}
+   
+   typedef std::list<Attribute>::const_iterator const_iterator;
+   inline const_iterator begin() const {return _atts.begin();}
+   inline const_iterator end() const {return _atts.end();}
+   inline int getStride() const {return _stride;}
+   inline void push_back(const Attribute &att) {
+      _atts.push_back(att);
+      _stride += att.size;
+   }
+   
+private:
+   int _stride;
+   std::list<Attribute> _atts;
+};
+
+/**
+ * Base class for shaders
+ */
+struct Shader: public FelixResource {
+   virtual void use() const;
+   virtual void setUniforms(const Uniforms &u) const;
+   virtual void setAttributes(const Attributes &a) const;
+};
+
+/**
+ * Base class for textures
+ */
+struct Textue: public FelixResource {
+   virtual void use(int idx) const;
+};
+
+/**
+ * Base class for meshes
+ */
+struct Mesh: public FelixResource {
+   virtual void use(const Shader &sh) const = 0;
+   virtual void render() const = 0;
 };
 
 
@@ -158,6 +237,12 @@ class FelixHostDisplay: public FelixEntity {
 public:
    virtual ~FelixHostDisplay() {}
    virtual void drawPasses() = 0;
+   virtual void addPassUniform(const Uniform &uniform, int pass) = 0;
+   virtual void clearPassUniforms(int pass) = 0;
+   
+   virtual const Shader* getShader(const std::string &name) const = 0;
+   virtual const Textue* getTexture(const std::string &name) const = 0;
+   virtual const Mesh*   getMesh(const std::string &name) const = 0;
 };
 
 /**
@@ -174,6 +259,8 @@ public:
 class FelixHostFileSys: public FelixEntity {
 public:
    virtual ~FelixHostFileSys() {}
+   virtual std::string loadTxt(const std::string &path) const = 0;
+   virtual XMLTag* loadXML(const std::string &path) const = 0;
 };
 
 
@@ -182,10 +269,6 @@ public:
  */
 class FelixHost: public FelixEntity {
 public:
-   FelixHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(size), _scale(scale),
-   _display(0), _audio(0), _fileSys(0) {}
-   virtual ~FelixHost() {}
-   
    inline DEV_TYPE getDeviceType()  const {return _device;}
    
    inline ivec2 getScreenSize()  const {return _size;}
@@ -198,6 +281,11 @@ public:
    static FelixHost* GetHost() {return Instance;}
    
 protected:
+   FelixHost(DEV_TYPE dev, ivec2 size, float scale);
+   virtual ~FelixHost();
+   
+   void createAppEntity();
+   
    DEV_TYPE _device;
    ivec2 _size;
    float _scale;
@@ -205,6 +293,7 @@ protected:
    FelixHostDisplay *_display;
    FelixHostAudio *_audio;
    FelixHostFileSys *_fileSys;
+   FelixEntity *_app;
    
    static FelixHost *Instance;
 };
@@ -237,7 +326,7 @@ class T##Id: public EntityId {\
 public:\
 T##Id(): EntityId(#T) {}\
 virtual ~T##Id() {}\
-virtual Item *create(XMLTag *tag, FelixEntity *parrent);\
+virtual FelixEntity *create(XMLTag *tag, FelixEntity *parrent);\
 };\
 static T##Id ID;
 
@@ -247,7 +336,7 @@ static T##Id ID;
  */
 #define DEFINE_ENTITY_ID(T) \
 T::T##Id T::ID;\
-Item *T::T##Id::create(XMLTag *tag, FelixEntity *parrent) {\
+FelixEntity *T::T##Id::create(XMLTag *tag, FelixEntity *parrent) {\
 return new T(tag, parrent);\
 }
 

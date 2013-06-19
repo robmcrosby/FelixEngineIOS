@@ -26,6 +26,26 @@ void OpenGLESDisplay::drawPasses() {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void OpenGLESDisplay::addPassUniform(const Uniform &uniform, int pass) {
+   
+}
+
+void OpenGLESDisplay::clearPassUniforms(int pass) {
+   
+}
+
+const Shader* OpenGLESDisplay::getShader(const std::string &name) const {
+   return NULL;
+}
+
+const Textue* OpenGLESDisplay::getTexture(const std::string &name) const {
+   return NULL;
+}
+
+const Mesh* OpenGLESDisplay::getMesh(const std::string &name) const {
+   return NULL;
+}
+
 void OpenGLESDisplay::setDrawType(DRAW_TYPE type) {
    if (_curDrawType != type) {
       if (type == DRAW_BLEND) {

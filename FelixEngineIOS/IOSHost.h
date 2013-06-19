@@ -16,7 +16,7 @@
 class IOSHost: public FelixHost {
 public:
    IOSHost(DEV_TYPE dev, ivec2 size, float scale);
-   virtual ~IOSHost();
+   virtual ~IOSHost() {}
    
    void lowMemory();
    void resize(int sizeX, int sizeY, float scale);

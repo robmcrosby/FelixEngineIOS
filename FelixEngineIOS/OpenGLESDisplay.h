@@ -26,7 +26,12 @@ public:
    virtual ~OpenGLESDisplay() {}
    
    virtual void drawPasses();
+   virtual void addPassUniform(const Uniform &uniform, int pass);
+   virtual void clearPassUniforms(int pass);
    
+   virtual const Shader* getShader(const std::string &name) const;
+   virtual const Textue* getTexture(const std::string &name) const;
+   virtual const Mesh*   getMesh(const std::string &name) const;
 private:
    inline void setDrawType(DRAW_TYPE type);
    

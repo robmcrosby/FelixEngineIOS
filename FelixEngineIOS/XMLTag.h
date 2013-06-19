@@ -16,38 +16,45 @@
 
 class XMLTag {
 public:
-   XMLTag(): _level(0) {}
-   XMLTag(const std::string &e): _element(e), _level(0) {}
-   XMLTag(const std::string &e, const std::string &c): _element(e), _contents(c), _level(0) {}
+   XMLTag(): _level(0), _parrent(0) {}
+   XMLTag(const std::string &e): _element(e), _level(0), _parrent(0) {}
+   XMLTag(const std::string &e, const std::string &c): _element(e), _contents(c), _level(0), _parrent(0) {}
    XMLTag(const XMLTag &tag) {*this = tag;}
-   ~XMLTag() {clearSubTags();}
+   ~XMLTag() {
+      if (_parrent)
+         _parrent->removeSubTag(this);
+      clearSubTags();
+   }
    
    typedef std::list<XMLTag*>::iterator iterator;
    typedef std::list<XMLTag*>::const_iterator const_iterator;
    
    inline void clearSubTags() {
-      for (iterator itr = begin(); itr != end(); ++itr)
-         delete *itr;
-      _subTags.clear();
+      while (_subTags.size())
+         delete _subTags.front();
    }
    inline void addSubTag(XMLTag *tag) {
       tag->_level = 1 + _level;
+      tag->_parrent = this;
       _subTags.push_back(tag);
    }
    inline void copySubTags(const XMLTag &tag) {
       for (const_iterator itr = tag.begin(); itr != tag.end(); ++itr)
          addSubTag(*itr);
    }
-   inline void removeSubTag(XMLTag *tag) {_subTags.remove(tag);}
-   inline bool removeSubTag(const std::string &e) {
+   inline void removeSubTag(XMLTag *tag) {
+      tag->_level = 0;
+      tag->_parrent = NULL;
+      _subTags.remove(tag);
+   }
+   inline bool deleteSubTag(const std::string &e) {
       iterator itr = find(e, begin());
       if (itr == end())
          return false;
-      _subTags.erase(itr);
       delete *itr;
       return true;
    }
-   inline void removeSubTags(const std::string &e) {while (removeSubTag(e));}
+   inline void deleteSubTags(const std::string &e) {while (deleteSubTag(e));}
    
    inline void setAttribute(const std::string &n, const std::string &v) {_attributes[n] = v;}
    inline void removeAttribute(const std::string &n) {_attributes.erase(n);}
@@ -255,6 +262,7 @@ private:
    }
    
    int _level;
+   XMLTag *_parrent;
    std::string _element;
    std::string _contents;
    
