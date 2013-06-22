@@ -11,9 +11,9 @@
 
 #include "FelixEngine.h"
 
-class ObjViewer: public FelixEntity {
+class ObjViewer: public Entity {
 public:
-   ObjViewer(XMLTag *tag, FelixEntity *parent);
+   ObjViewer(XMLTag *tag, Entity *parent);
    virtual ~ObjViewer();
    
 private:

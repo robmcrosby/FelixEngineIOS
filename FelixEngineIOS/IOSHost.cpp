@@ -7,16 +7,16 @@
 //
 
 #include "IOSHost.h"
-#include "OpenGLESDisplay.h"
+#include "OpenGLDisplay.h"
 #include "OpenALAudio.h"
 #include "IOSFileSystem.h"
 
 using namespace std;
 
 
-IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): FelixHost(dev, size, scale) {
+IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Host(dev, size, scale) {
    // create the host components
-   _display = new OpenGLESDisplay(this);
+   _display = new OpenGLDisplay(this);
    _audio   = new OpenALAudio(this);
    _fileSys = new IOSFileSystem(this);
    
@@ -36,7 +36,7 @@ void IOSHost::resize(int sizeX, int sizeY, float scale) {
 }
 
 void IOSHost::update(float td) {
-   handleEvent(FelixEvent(EVENT_UPDATE, &td));
+   handleEvent(Event(EVENT_UPDATE, &td));
 }
 
 void IOSHost::render() {
@@ -45,15 +45,15 @@ void IOSHost::render() {
 }
 
 void IOSHost::touchDown(Moves moves) {
-   handleEvent(FelixEvent(EVENT_TOUCH_DOWN, &moves));
+   handleEvent(Event(EVENT_TOUCH_DOWN, &moves));
 }
 
 void IOSHost::touchUp(Moves moves) {
-   handleEvent(FelixEvent(EVENT_TOUCH_UP, &moves));
+   handleEvent(Event(EVENT_TOUCH_UP, &moves));
 }
 
 void IOSHost::touchMove(Moves moves) {
-   handleEvent(FelixEvent(EVENT_TOUCH_MOVE, &moves));
+   handleEvent(Event(EVENT_TOUCH_MOVE, &moves));
 }
 
 

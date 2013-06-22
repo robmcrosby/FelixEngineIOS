@@ -42,6 +42,7 @@ public:
       for (const_iterator itr = tag.begin(); itr != tag.end(); ++itr)
          addSubTag(*itr);
    }
+   inline void copyAttributes(const XMLTag &tag) {_attributes = tag._attributes;}
    inline void removeSubTag(XMLTag *tag) {
       tag->_level = 0;
       tag->_parrent = NULL;
@@ -69,7 +70,6 @@ public:
    inline void operator=(const XMLTag &tag) {
       _element = tag._element;
       _contents = tag._contents;
-      _level = tag._level;
       _attributes = tag._attributes;
       clearSubTags();
       copySubTags(tag);

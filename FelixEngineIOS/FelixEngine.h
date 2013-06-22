@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <set>
 #include <list>
 #include <vector>
 #include "Vector.h"
@@ -27,6 +28,8 @@ enum EVENT_TYPE {
    EVENT_TOUCH_DOWN,
    EVENT_TOUCH_UP,
    EVENT_TOUCH_MOVE,
+   EVENT_LOAD,
+   EVENT_UNLOAD,
    EVENT_OTHER,
 };
 
@@ -36,6 +39,7 @@ enum DEV_TYPE {
 };
 
 enum VAL_TYPE {
+   VAL_NONE,
    VAL_INT,
    VAL_FLOAT,
    VAL_VEC2,
@@ -60,15 +64,14 @@ struct Move {
    vec2 cur;
    vec2 pre;
 };
-
 typedef std::vector<Move> Moves;
 
 /**
  * Base struct for all Felix Events
  */
-struct FelixEvent {
-   FelixEvent(EVENT_TYPE e = EVENT_OTHER, void *d = NULL): type(e), data(d) {}
-   bool operator==(const FelixEvent &e) const {return e.type == type;}
+struct Event {
+   Event(EVENT_TYPE e = EVENT_OTHER, void *d = NULL): type(e), data(d) {}
+   bool operator==(const Event &e) const {return e.type == type;}
    
    EVENT_TYPE type;
    void *data;
@@ -76,38 +79,11 @@ struct FelixEvent {
 
 
 /**
- * Base class for all Felix resources
- */
-class FelixResource {
-public:
-   FelixResource(const std::string &str): _id(str), _count(0), _loaded(0) {}
-   virtual ~FelixResource() {}
-   
-   inline void retain() const {++_count;}
-   inline void release() const {--_count;}
-   
-   virtual bool load() = 0;
-   virtual bool unload() = 0;
-   inline bool loaded() const {return _loaded;}
-   
-   inline int getCount() const {return _count;}
-   inline std::string getId() const {return _id;}
-   
-private:
-   std::string _id;
-   mutable int _count;
-   bool _loaded;
-};
-
-/**
- * Defines a uniform for a shader
+ * Defines a uniform value
  */
 struct Uniform {
-   Uniform(): count(0) {}
-   Uniform(const std::string &n, VAL_TYPE t, int c, void *v):
-    name(n), type(t),count(c), value(v) {}
-   
-   std::string name;
+   Uniform(): type(VAL_NONE) {}
+
    VAL_TYPE type;
    int count;
    void *value;
@@ -116,62 +92,92 @@ struct Uniform {
 /**
  * Collection of uniforms
  */
-typedef std::list<Uniform> Uniforms;
+typedef std::map<std::string, Uniform> Uniforms;
 
 /**
  * Defines an attribute for a shader
  */
 struct Attribute {
    Attribute(): size(0), offset(0) {}
-   Attribute(const std::string &n, int s, int o):
-    name(n), size(s), offset(o) {}
-   
-   std::string name;
+   Attribute(int s, int o): size(s), offset(o) {}
+
    int size, offset;
 };
 
-/*
+/**
  * Collection of attributes
  */
 class Attributes {
 public:
    Attributes(): _stride(0) {}
-   
-   typedef std::list<Attribute>::const_iterator const_iterator;
+   typedef std::map<std::string, Attribute>::const_iterator const_iterator;
    inline const_iterator begin() const {return _atts.begin();}
    inline const_iterator end() const {return _atts.end();}
    inline int getStride() const {return _stride;}
-   inline void push_back(const Attribute &att) {
-      _atts.push_back(att);
-      _stride += att.size;
+   inline void push_back(const std::string &name, int s, int o) {
+      _atts[name] = Attribute(s, o);
+      _stride += s;
    }
    
 private:
    int _stride;
-   std::list<Attribute> _atts;
+   std::map<std::string, Attribute> _atts;
 };
 
 /**
- * Base class for shaders
+ * Base class for all Felix resources
  */
-struct Shader: public FelixResource {
-   virtual void use() const;
-   virtual void setUniforms(const Uniforms &u) const;
-   virtual void setAttributes(const Attributes &a) const;
+class Resource {
+public:
+   Resource(const XMLTag &tag): _tag(tag), _count(0) {}
+   virtual ~Resource() {}
+   
+   virtual void load() {++_count;}
+   virtual void unload() {_count -= _count == 0 ? 0 : 1;}
+   inline void setToTag(const XMLTag &tag) {_tag = tag;}
+   
+   inline bool loaded() const {return _count;}
+   inline size_t getCount() const {return _count;}
+   inline std::string getName() const {return _tag.getAttribute("name");}
+   
+protected:
+   XMLTag _tag;
+   size_t _count;
+};
+
+/**
+ * Base class for shader resources
+ */
+class Shader: public Resource {
+public:
+   Shader(const XMLTag &tag): Resource(tag) {}
+   
+   virtual void use() const = 0;
+   virtual void setUniforms(const Uniforms &unis) const = 0;
+   virtual void setAttributes(const Attributes &atts) const = 0;
+   
+   static const Shader* GetActive() {return Active;}
+   
+protected:
+   static const Shader *Active;
 };
 
 /**
  * Base class for textures
  */
-struct Textue: public FelixResource {
-   virtual void use(int idx) const;
+struct Texture: public Resource {
+   Texture(const XMLTag &tag): Resource(tag) {}
+   
+   virtual void use(int idx) const = 0;
 };
 
 /**
  * Base class for meshes
  */
-struct Mesh: public FelixResource {
-   virtual void use(const Shader &sh) const = 0;
+struct Mesh: public Resource {
+   Mesh(const XMLTag &tag): Resource(tag) {}
+   
+   virtual void use() const = 0;
    virtual void render() const = 0;
 };
 
@@ -179,39 +185,44 @@ struct Mesh: public FelixResource {
 /**
  * Base class for all Felix Entities
  */
-class FelixEntity {
+class Entity {
 public:
-   FelixEntity(XMLTag *tag = NULL, FelixEntity *parrent = NULL): _tag(tag), _parrent(parrent) {
-      if (_parrent)
-         _parrent->addListener(this);
-   }
-   virtual ~FelixEntity() {}
+   Entity(XMLTag *tag = NULL, Entity *parrent = NULL);
+   virtual ~Entity();
    
-   virtual void handleEvent(const FelixEvent &event) {notifyList(event);}
+   virtual void handleEvent(const Event &event) {notifyList(event);}
+   virtual void createChildren(XMLTag *tag);
    
-   inline void addListener(FelixEntity *listener) {_list.push_back(listener);}
-   inline void removeListener(FelixEntity *listener) {_list.remove(listener);}
-   inline void notifyList(const FelixEvent &event) {
-      for (std::list<FelixEntity*>::iterator itr = _list.begin(); itr != _list.end(); ++itr)
+   inline void addChild(Entity *child) {_children.insert(child);}
+   inline void removeChild(Entity *child) {_children.erase(child);}
+   
+   inline void addListener(Entity *listener) {_listeners.insert(listener);}
+   inline void removeListener(Entity *listener) {_listeners.erase(listener);}
+   inline void notifyList(const Event &event) {
+      for (std::set<Entity*>::iterator itr = _listeners.begin(); itr != _listeners.end(); ++itr)
          (*itr)->handleEvent(event);
    }
    
 protected:
+   std::set<Entity*> _children;
    XMLTag *_tag;
-   FelixEntity *_parrent;
+   Entity *_parrent;
    
 private:
-   std::list<FelixEntity*> _list;
+   std::set<Entity*> _listeners;
 };
 
+struct ShaderFiles {
+   std::string name, vert, frag;
+};
 
 /**
  * Base class for all Drawable Felix Entities
  */
-class DrawableEntity: FelixEntity {
+class Drawable: Entity {
 public:
-   DrawableEntity(): _pass(0), _layer(0), _drawType(DRAW_BLEND) {}
-   virtual ~DrawableEntity() {}
+   Drawable(): _pass(0), _layer(0), _drawType(DRAW_BLEND) {}
+   virtual ~Drawable() {}
    
    virtual void draw() = 0;
    
@@ -233,32 +244,35 @@ protected:
 /**
  * Base class for working with a host display context
  */
-class FelixHostDisplay: public FelixEntity {
+class HostDisplay: public Entity {
 public:
-   virtual ~FelixHostDisplay() {}
+   virtual ~HostDisplay() {}
    virtual void drawPasses() = 0;
    virtual void addPassUniform(const Uniform &uniform, int pass) = 0;
    virtual void clearPassUniforms(int pass) = 0;
    
-   virtual const Shader* getShader(const std::string &name) const = 0;
-   virtual const Textue* getTexture(const std::string &name) const = 0;
-   virtual const Mesh*   getMesh(const std::string &name) const = 0;
+   virtual Resource* getResource(const XMLTag &tag) = 0;
+   virtual const Shader* getShader(const std::string &name) = 0;
+   virtual const Texture* getTexture(const std::string &name) = 0;
+   virtual const Mesh* getMesh(const std::string &name) = 0;
 };
 
 /**
  * Base class for working with a host audio context
  */
-class FelixHostAudio: public FelixEntity {
+class HostAudio: public Entity {
 public:
-   virtual ~FelixHostAudio() {}
+   virtual ~HostAudio() {}
+   
+   virtual Resource* getResource(const XMLTag &tag) = 0;
 };
 
 /**
  * Base class for working with the host file system
  */
-class FelixHostFileSys: public FelixEntity {
+class HostFileSystem: public Entity {
 public:
-   virtual ~FelixHostFileSys() {}
+   virtual ~HostFileSystem() {}
    virtual std::string loadTxt(const std::string &path) const = 0;
    virtual XMLTag* loadXML(const std::string &path) const = 0;
 };
@@ -267,22 +281,30 @@ public:
 /**
  * Represents the host system
  */
-class FelixHost: public FelixEntity {
+class Host: public Entity {
 public:
    inline DEV_TYPE getDeviceType()  const {return _device;}
    
    inline ivec2 getScreenSize()  const {return _size;}
    inline float getScreenScale() const {return _scale;}
    
-   inline FelixHostDisplay *getDisplay()    const {return _display;}
-   inline FelixHostAudio   *getAudio()      const {return _audio;}
-   inline FelixHostFileSys *getFileSystem() const {return _fileSys;}
+   inline HostDisplay *getDisplay() const {return _display;}
+   inline HostAudio *getAudio() const {return _audio;}
+   inline HostFileSystem *getFileSystem() const {return _fileSys;}
    
-   static FelixHost* GetHost() {return Instance;}
+   inline Resource* getResource(const XMLTag &tag) {
+      if (tag == "Shader" || tag == "Texture" || tag == "Mesh")
+         return _display->getResource(tag);
+      else if (tag == "Sound")
+         return _audio->getResource(tag);
+      return NULL;
+   }
+   
+   static Host* GetHost() {return Instance;}
    
 protected:
-   FelixHost(DEV_TYPE dev, ivec2 size, float scale);
-   virtual ~FelixHost();
+   Host(DEV_TYPE dev, ivec2 size, float scale);
+   virtual ~Host();
    
    void createAppEntity();
    
@@ -290,12 +312,11 @@ protected:
    ivec2 _size;
    float _scale;
    
-   FelixHostDisplay *_display;
-   FelixHostAudio *_audio;
-   FelixHostFileSys *_fileSys;
-   FelixEntity *_app;
+   HostDisplay *_display;
+   HostAudio *_audio;
+   HostFileSystem *_fileSys;
    
-   static FelixHost *Instance;
+   static Host *Instance;
 };
 
 
@@ -304,12 +325,12 @@ protected:
  */
 class EntityId {
 public:
-   static FelixEntity* CreateEntity(XMLTag *tag, FelixEntity *parrent);
+   static Entity* CreateEntity(XMLTag *tag, Entity *parrent);
    
 protected:
    EntityId(const std::string &idStr);
    virtual ~EntityId() {}
-   virtual FelixEntity* create(XMLTag *tag, FelixEntity *parrent) = 0;
+   virtual Entity* create(XMLTag *tag, Entity *parrent) = 0;
    
    std::string _idStr;
    EntityId *_next;
@@ -326,7 +347,7 @@ class T##Id: public EntityId {\
 public:\
 T##Id(): EntityId(#T) {}\
 virtual ~T##Id() {}\
-virtual FelixEntity *create(XMLTag *tag, FelixEntity *parrent);\
+virtual Entity *create(XMLTag *tag, Entity *parrent);\
 };\
 static T##Id ID;
 
@@ -336,7 +357,7 @@ static T##Id ID;
  */
 #define DEFINE_ENTITY_ID(T) \
 T::T##Id T::ID;\
-FelixEntity *T::T##Id::create(XMLTag *tag, FelixEntity *parrent) {\
+Entity *T::T##Id::create(XMLTag *tag, Entity *parrent) {\
 return new T(tag, parrent);\
 }
 

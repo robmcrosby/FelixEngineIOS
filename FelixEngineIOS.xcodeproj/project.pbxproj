@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37376B0017751BF8008CFD8A /* OpenGLTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */; };
 		3741F311176E7FF000DFEDAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3741F310176E7FF000DFEDAD /* UIKit.framework */; };
 		3741F313176E7FF000DFEDAD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3741F312176E7FF000DFEDAD /* Foundation.framework */; };
 		3741F315176E7FF000DFEDAD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3741F314176E7FF000DFEDAD /* CoreGraphics.framework */; };
@@ -23,14 +24,22 @@
 		3741F338176E7FF000DFEDAD /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741F336176E7FF000DFEDAD /* ViewController_iPad.xib */; };
 		3741F345176E8AB200DFEDAD /* FelixEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F343176E8AB200DFEDAD /* FelixEngine.cpp */; };
 		3741F348176FA72900DFEDAD /* IOSHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F346176FA72900DFEDAD /* IOSHost.cpp */; };
-		3741F357176FC4E100DFEDAD /* OpenGLESDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F355176FC4E100DFEDAD /* OpenGLESDisplay.cpp */; };
+		3741F357176FC4E100DFEDAD /* OpenGLDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F355176FC4E100DFEDAD /* OpenGLDisplay.cpp */; };
 		3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */; };
 		3741F35D176FC94B00DFEDAD /* IOSFileSystem.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */; };
 		3741F37B1770DBCD00DFEDAD /* Config in Resources */ = {isa = PBXBuildFile; fileRef = 3741F37A1770DBCD00DFEDAD /* Config */; };
 		3741F3821770EE7F00DFEDAD /* ObjViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F3801770EE7F00DFEDAD /* ObjViewer.cpp */; };
+		3741F389177171B400DFEDAD /* OpenGLShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F387177171B300DFEDAD /* OpenGLShader.cpp */; };
+		3741F38F1771721600DFEDAD /* OpenGLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F38D1771721500DFEDAD /* OpenGLMesh.cpp */; };
+		3792DF681773D63900E1A410 /* Resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3792DF661773D63900E1A410 /* Resources.cpp */; };
+		3792DF6E1774EEF300E1A410 /* Meshes in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF6B1774EEF300E1A410 /* Meshes */; };
+		3792DF6F1774EEF300E1A410 /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF6C1774EEF300E1A410 /* Shaders */; };
+		3792DF711774F25700E1A410 /* Textures in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF701774F25700E1A410 /* Textures */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLTexture.cpp; sourceTree = "<group>"; };
+		37376AFF17751BF8008CFD8A /* OpenGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTexture.h; sourceTree = "<group>"; };
 		3741F30D176E7FF000DFEDAD /* FelixEngineIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FelixEngineIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3741F310176E7FF000DFEDAD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3741F312176E7FF000DFEDAD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -58,17 +67,25 @@
 		3741F34D176FADD200DFEDAD /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quaternion.h; sourceTree = "<group>"; };
 		3741F34E176FADD200DFEDAD /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vector.h; sourceTree = "<group>"; };
 		3741F350176FADD200DFEDAD /* XMLTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLTag.h; sourceTree = "<group>"; };
-		3741F355176FC4E100DFEDAD /* OpenGLESDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLESDisplay.cpp; sourceTree = "<group>"; };
-		3741F356176FC4E100DFEDAD /* OpenGLESDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESDisplay.h; sourceTree = "<group>"; };
+		3741F355176FC4E100DFEDAD /* OpenGLDisplay.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLDisplay.cpp; sourceTree = "<group>"; };
+		3741F356176FC4E100DFEDAD /* OpenGLDisplay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLDisplay.h; sourceTree = "<group>"; };
 		3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenALAudio.cpp; sourceTree = "<group>"; };
 		3741F359176FC7B500DFEDAD /* OpenALAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenALAudio.h; sourceTree = "<group>"; };
 		3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = IOSFileSystem.mm; sourceTree = "<group>"; };
 		3741F35C176FC94B00DFEDAD /* IOSFileSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSFileSystem.h; sourceTree = "<group>"; };
-		3741F35E176FD27000DFEDAD /* OpenGLESIncludes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLESIncludes.h; sourceTree = "<group>"; };
-		3741F35F176FE83B00DFEDAD /* DisplayPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DisplayPipeline.h; sourceTree = "<group>"; };
+		3741F35E176FD27000DFEDAD /* OpenGLIncludes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLIncludes.h; sourceTree = "<group>"; };
 		3741F37A1770DBCD00DFEDAD /* Config */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Config; path = AppFiles/Config; sourceTree = SOURCE_ROOT; };
 		3741F3801770EE7F00DFEDAD /* ObjViewer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ObjViewer.cpp; path = AppSrc/ObjViewer.cpp; sourceTree = SOURCE_ROOT; };
 		3741F3811770EE7F00DFEDAD /* ObjViewer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjViewer.h; path = AppSrc/ObjViewer.h; sourceTree = SOURCE_ROOT; };
+		3741F387177171B300DFEDAD /* OpenGLShader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLShader.cpp; sourceTree = "<group>"; };
+		3741F388177171B400DFEDAD /* OpenGLShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLShader.h; sourceTree = "<group>"; };
+		3741F38D1771721500DFEDAD /* OpenGLMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLMesh.cpp; sourceTree = "<group>"; };
+		3741F38E1771721600DFEDAD /* OpenGLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLMesh.h; sourceTree = "<group>"; };
+		3792DF661773D63900E1A410 /* Resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resources.cpp; sourceTree = "<group>"; };
+		3792DF671773D63900E1A410 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
+		3792DF6B1774EEF300E1A410 /* Meshes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Meshes; path = AppFiles/Meshes; sourceTree = SOURCE_ROOT; };
+		3792DF6C1774EEF300E1A410 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shaders; path = AppFiles/Shaders; sourceTree = SOURCE_ROOT; };
+		3792DF701774F25700E1A410 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Textures; path = AppFiles/Textures; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,11 +174,11 @@
 		3741F33F176E848B00DFEDAD /* FelixEngine */ = {
 			isa = PBXGroup;
 			children = (
-				3741F3831771505A00DFEDAD /* Resources */,
 				3741F344176E8AB200DFEDAD /* FelixEngine.h */,
 				3741F343176E8AB200DFEDAD /* FelixEngine.cpp */,
 				3741F347176FA72900DFEDAD /* IOSHost.h */,
 				3741F346176FA72900DFEDAD /* IOSHost.cpp */,
+				3792DF691773DA7100E1A410 /* EngineEntities */,
 				3741F352176FC48F00DFEDAD /* Display */,
 				3741F353176FC49900DFEDAD /* Audio */,
 				3741F354176FC4A100DFEDAD /* FileSystem */,
@@ -185,10 +202,10 @@
 		3741F352176FC48F00DFEDAD /* Display */ = {
 			isa = PBXGroup;
 			children = (
-				3741F35F176FE83B00DFEDAD /* DisplayPipeline.h */,
-				3741F35E176FD27000DFEDAD /* OpenGLESIncludes.h */,
-				3741F356176FC4E100DFEDAD /* OpenGLESDisplay.h */,
-				3741F355176FC4E100DFEDAD /* OpenGLESDisplay.cpp */,
+				3741F35E176FD27000DFEDAD /* OpenGLIncludes.h */,
+				3741F356176FC4E100DFEDAD /* OpenGLDisplay.h */,
+				3741F355176FC4E100DFEDAD /* OpenGLDisplay.cpp */,
+				3741F3901771722000DFEDAD /* DisplayResources */,
 			);
 			name = Display;
 			sourceTree = "<group>";
@@ -215,6 +232,9 @@
 			isa = PBXGroup;
 			children = (
 				3741F37A1770DBCD00DFEDAD /* Config */,
+				3792DF701774F25700E1A410 /* Textures */,
+				3792DF6B1774EEF300E1A410 /* Meshes */,
+				3792DF6C1774EEF300E1A410 /* Shaders */,
 			);
 			name = AppFiles;
 			sourceTree = "<group>";
@@ -228,11 +248,26 @@
 			name = AppSrc;
 			sourceTree = "<group>";
 		};
-		3741F3831771505A00DFEDAD /* Resources */ = {
+		3741F3901771722000DFEDAD /* DisplayResources */ = {
 			isa = PBXGroup;
 			children = (
+				3741F388177171B400DFEDAD /* OpenGLShader.h */,
+				3741F387177171B300DFEDAD /* OpenGLShader.cpp */,
+				37376AFF17751BF8008CFD8A /* OpenGLTexture.h */,
+				37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */,
+				3741F38E1771721600DFEDAD /* OpenGLMesh.h */,
+				3741F38D1771721500DFEDAD /* OpenGLMesh.cpp */,
 			);
-			name = Resources;
+			name = DisplayResources;
+			sourceTree = "<group>";
+		};
+		3792DF691773DA7100E1A410 /* EngineEntities */ = {
+			isa = PBXGroup;
+			children = (
+				3792DF671773D63900E1A410 /* Resources.h */,
+				3792DF661773D63900E1A410 /* Resources.cpp */,
+			);
+			name = EngineEntities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,6 +328,9 @@
 				3741F335176E7FF000DFEDAD /* ViewController_iPhone.xib in Resources */,
 				3741F338176E7FF000DFEDAD /* ViewController_iPad.xib in Resources */,
 				3741F37B1770DBCD00DFEDAD /* Config in Resources */,
+				3792DF6E1774EEF300E1A410 /* Meshes in Resources */,
+				3792DF6F1774EEF300E1A410 /* Shaders in Resources */,
+				3792DF711774F25700E1A410 /* Textures in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,10 +346,14 @@
 				3741F332176E7FF000DFEDAD /* ViewController.mm in Sources */,
 				3741F345176E8AB200DFEDAD /* FelixEngine.cpp in Sources */,
 				3741F348176FA72900DFEDAD /* IOSHost.cpp in Sources */,
-				3741F357176FC4E100DFEDAD /* OpenGLESDisplay.cpp in Sources */,
+				3741F357176FC4E100DFEDAD /* OpenGLDisplay.cpp in Sources */,
 				3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */,
 				3741F35D176FC94B00DFEDAD /* IOSFileSystem.mm in Sources */,
 				3741F3821770EE7F00DFEDAD /* ObjViewer.cpp in Sources */,
+				3741F389177171B400DFEDAD /* OpenGLShader.cpp in Sources */,
+				3741F38F1771721600DFEDAD /* OpenGLMesh.cpp in Sources */,
+				3792DF681773D63900E1A410 /* Resources.cpp in Sources */,
+				37376B0017751BF8008CFD8A /* OpenGLTexture.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,6 +484,7 @@
 				3741F33D176E7FF000DFEDAD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

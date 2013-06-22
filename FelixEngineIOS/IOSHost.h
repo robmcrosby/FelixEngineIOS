@@ -13,7 +13,7 @@
 #include <vector>
 
 
-class IOSHost: public FelixHost {
+class IOSHost: public Host {
 public:
    IOSHost(DEV_TYPE dev, ivec2 size, float scale);
    virtual ~IOSHost() {}

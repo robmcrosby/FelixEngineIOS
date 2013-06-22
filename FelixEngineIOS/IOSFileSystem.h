@@ -12,15 +12,15 @@
 #include "FelixEngine.h"
 
 
-class IOSFileSystem: public FelixHostFileSys {
+class IOSFileSystem: public HostFileSystem {
 public:
-   IOSFileSystem(FelixHost *host);
+   IOSFileSystem(Host *host);
    virtual ~IOSFileSystem() {}
    
    virtual std::string loadTxt(const std::string &path) const;
    virtual XMLTag* loadXML(const std::string &path) const;
 protected:
-   FelixHost *_host;
+   Host *_host;
    std::string _basePath;
 };
 

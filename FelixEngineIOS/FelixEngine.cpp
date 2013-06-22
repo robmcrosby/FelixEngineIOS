@@ -10,39 +10,59 @@
 
 using namespace std;
 
-FelixHost* FelixHost::Instance = NULL;
+const Shader* Shader::Active = NULL;
+Host* Host::Instance = NULL;
 EntityId* EntityId::IDs;
 
 
-FelixHost::FelixHost(DEV_TYPE dev, ivec2 size, float scale):
-_device(dev), _size(size), _scale(scale), _display(0), _audio(0), _fileSys(0), _app(0) {
+Entity::Entity(XMLTag *tag, Entity *parrent): _tag(tag), _parrent(parrent) {
+   if (_parrent)
+      _parrent->addChild(this);
+}
+
+Entity::~Entity() {
+   for (set<Entity*>::iterator itr = _children.begin(); itr != _children.end(); ++itr)
+      delete *itr;
+}
+
+void Entity::createChildren(XMLTag *tag) {
+   for (XMLTag::iterator itr = tag->begin(); itr != tag->end(); ++itr) {
+      Entity *child = EntityId::CreateEntity(*itr, this);
+      if (child)
+         addChild(child);
+   }
+}
+
+
+Host::Host(DEV_TYPE dev, ivec2 size, float scale):
+_device(dev), _size(size), _scale(scale), _display(0), _audio(0), _fileSys(0) {
    Instance = this;
 }
 
-FelixHost::~FelixHost() {
+Host::~Host() {
    delete _display;
    delete _audio;
    delete _fileSys;
-   delete _app;
 }
 
-void FelixHost::createAppEntity() {
+void Host::createAppEntity() {
    XMLTag *tag = _fileSys->loadXML(APP_CONFIG);
    if (!tag) {
       cerr << "Unable to create main app object" << endl;
       exit(1);
    }
    
-   _app = EntityId::CreateEntity(tag, this);
-   if (!_app) {
+   Entity *app = EntityId::CreateEntity(tag, this);
+   if (!app) {
       cerr << "Unable to create main app object" << endl;
       delete tag;
       exit(1);
    }
+   addChild(app);
 }
 
 
-FelixEntity* EntityId::CreateEntity(XMLTag *tag, FelixEntity *parrent) {
+Entity* EntityId::CreateEntity(XMLTag *tag, Entity *parrent) {
    EntityId *curId = IDs;
    
    while (curId) {

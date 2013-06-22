@@ -11,6 +11,11 @@
 using namespace std;
 
 
-OpenALAudio::OpenALAudio(FelixHost *host): _host(host) {
+OpenALAudio::OpenALAudio(Host *host): _host(host) {
    host->addListener(this);
+}
+
+
+Resource* OpenALAudio::getResource(const XMLTag &tag) {
+   return NULL;
 }

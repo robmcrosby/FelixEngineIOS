@@ -11,7 +11,7 @@
 
 using namespace std;
 
-IOSFileSystem::IOSFileSystem(FelixHost *host): _host(host) {
+IOSFileSystem::IOSFileSystem(Host *host): _host(host) {
    _host->addListener(this);
    _basePath = [[[NSBundle mainBundle]bundlePath] UTF8String];
    _basePath += "/";

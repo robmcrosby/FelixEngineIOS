@@ -11,13 +11,15 @@
 
 #include "FelixEngine.h"
 
-class OpenALAudio: public FelixHostAudio {
+class OpenALAudio: public HostAudio {
 public:
-   OpenALAudio(FelixHost *host);
+   OpenALAudio(Host *host);
    virtual ~OpenALAudio() {}
    
+   virtual Resource* getResource(const XMLTag &tag);
+   
 protected:
-   FelixHost *_host;
+   Host *_host;
 };
 
 #endif /* defined(__FelixEngineIOS__OpenALAudio__) */

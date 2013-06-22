@@ -1,4 +1,8 @@
 
 <ObjViewer>
-   
+   <Resources>
+      <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
+      <Texture name="grid" src="grid.png"/>
+      <Mesh name="bunny" src="bunny.obj"/>
+   </Resources>
 </ObjViewer>
