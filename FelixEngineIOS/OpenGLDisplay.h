@@ -25,7 +25,9 @@ public:
    OpenGLDisplay(Host *host);
    virtual ~OpenGLDisplay();
    
-   virtual void drawPasses();
+   virtual void drawPass(int pass);
+   virtual void addToPass(const Drawable *drawable, int pass);
+   virtual void clearPasses();
    
    virtual Resource* getResource(const XMLTag &tag);
    virtual const Shader* getShader(const std::string &name);

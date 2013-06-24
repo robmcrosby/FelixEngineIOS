@@ -29,11 +29,32 @@ _host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPass(0) {
 OpenGLDisplay::~OpenGLDisplay() {
    OpenGLShader::ClearShaders();
    OpenGLTexture::ClearTextures();
+   OpenGLMesh::ClearMeshes();
 }
 
-void OpenGLDisplay::drawPasses() {
+void OpenGLDisplay::drawPass(int pass) {
    glClearColor(0, 0, 1, 1);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   
+   if (pass < _passes.size()) {
+      std::set<const Drawable*, DrawCmp>::iterator itr;
+      std::set<const Drawable*, DrawCmp> &passSet = _passes.at(pass);
+      
+      for (itr = passSet.begin(); itr != passSet.end(); ++itr)
+         (*itr)->draw();
+   }
+}
+
+void OpenGLDisplay::addToPass(const Drawable *drawable, int pass) {
+   if (_passes.size() <= pass)
+      _passes.resize(pass+1);
+   _passes.at(pass).insert(drawable);
+}
+
+void OpenGLDisplay::clearPasses() {
+   std::vector<std::set<const Drawable*, DrawCmp> >::iterator itr;
+   for (itr = _passes.begin(); itr != _passes.end(); ++itr)
+      itr->clear();
 }
 
 Resource* OpenGLDisplay::getResource(const XMLTag &tag) {

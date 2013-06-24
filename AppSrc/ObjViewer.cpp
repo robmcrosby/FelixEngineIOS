@@ -15,6 +15,7 @@ DEFINE_ENTITY_ID(ObjViewer)
 ObjViewer::ObjViewer(XMLTag *tag, Entity *parent): Entity(tag, parent) {
    createChildren(_tag);
    
+   parent->addListener(this);
    handleEvent(EVENT_LOAD);
 }
 

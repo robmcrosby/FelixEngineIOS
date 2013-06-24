@@ -15,6 +15,7 @@
 
 class TextureData;
 class MeshData;
+class Drawable;
 
 enum DEV_TYPE {
    DEV_PHONE,
@@ -27,7 +28,10 @@ enum DEV_TYPE {
 class HostDisplay: public Entity {
 public:
    virtual ~HostDisplay() {}
-   virtual void drawPasses() = 0;
+   
+   virtual void drawPass(int pass) = 0;
+   virtual void addToPass(const Drawable *drawable, int pass) = 0;
+   virtual void clearPasses() = 0;
    
    virtual Resource* getResource(const XMLTag &tag) = 0;
    virtual const Shader* getShader(const std::string &name) = 0;

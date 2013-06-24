@@ -42,7 +42,7 @@ void IOSHost::update(float td) {
 
 void IOSHost::render() {
    handleEvent(EVENT_RENDER);
-   _display->drawPasses();
+   _display->drawPass(0);
 }
 
 void IOSHost::touchDown(Moves moves) {
