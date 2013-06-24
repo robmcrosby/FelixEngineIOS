@@ -5,4 +5,15 @@
       <Texture name="grid" src="grid.png"/>
       <Mesh name="bunny" src="bunny.obj"/>
    </Resources>
+   <Camera>
+      <loc>0, 0, -10</loc>
+      <target>0, 0, 0</target>
+      <up>0, 1, 0</up>
+   <Camera>
+   <Object3d>
+      <loc>0, 0, 0</loc>
+      <Shader name="texture"/>
+      <Texture name="grid"/>
+      <Mesh name="bunny"/>
+   </Object3d>
 </ObjViewer>

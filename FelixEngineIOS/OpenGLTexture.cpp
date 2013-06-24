@@ -7,15 +7,16 @@
 //
 
 #include "OpenGLTexture.h"
+#include "ResourceData.h"
 
 using namespace::std;
 
 map<string, OpenGLTexture*> OpenGLTexture::Textures;
 
-OpenGLTexture::OpenGLTexture(const string &name): Texture(XMLTag("Texture")) {
+OpenGLTexture::OpenGLTexture(const string &name): Texture(XMLTag("Texture")), _texture(0) {
    _tag.setAttribute("name", name);
    Textures[name] = this;
-   cout << "create texture" << endl;
+   _filesys = Host::GetHost()->getFileSystem();
 }
 
 OpenGLTexture::~OpenGLTexture() {
@@ -36,13 +37,44 @@ void OpenGLTexture::ClearTextures() {
 }
 
 void OpenGLTexture::load() {
-   cout << "load texture" << endl;
+   if (!loaded()) {
+      string texPath = "Textures/" + _tag.getAttribute("src");
+      TextureData *data = _filesys->loadTexture(texPath);
+      
+      if (data->data) {
+         glGenTextures(1, &_texture);
+         glBindTexture(GL_TEXTURE_2D, _texture);
+         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+         
+         GLint format = data->type == TEX_RGBA ? GL_RGBA : GL_RGB; //update for other types
+         glTexImage2D(GL_TEXTURE_2D, 0, format, data->size.x, data->size.y, 0, format, GL_UNSIGNED_BYTE, data->data);
+         glGenerateMipmap(GL_TEXTURE_2D);
+         
+         Texture::load();
+         cout << "loaded texture: " << _tag.getAttribute("name") << endl;
+      }
+      
+      delete data;
+   }
+   else
+      Texture::load();
 }
 
 void OpenGLTexture::unload() {
-   cout << "unload texture" << endl;
+   if (loaded()) {
+      Texture::unload();
+      if (!loaded()) {
+         glDeleteBuffers(1, &_texture);
+         _texture = 0;
+         cout << "unloaded texture: " << _tag.getAttribute("name") << endl;
+      }
+   }
 }
 
 void OpenGLTexture::use(int idx) const {
-   
+   if (_texture) {
+      glActiveTexture(GL_TEXTURE0 + idx);
+      glBindTexture(GL_TEXTURE_2D, _texture);
+   }
 }

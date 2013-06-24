@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		37376B0017751BF8008CFD8A /* OpenGLTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */; };
+		37376B0617767AB6008CFD8A /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376B0417767AB6008CFD8A /* ObjLoader.cpp */; };
+		37376B0B17779677008CFD8A /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376B0A17779677008CFD8A /* Entity.cpp */; };
 		3741F311176E7FF000DFEDAD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3741F310176E7FF000DFEDAD /* UIKit.framework */; };
 		3741F313176E7FF000DFEDAD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3741F312176E7FF000DFEDAD /* Foundation.framework */; };
 		3741F315176E7FF000DFEDAD /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3741F314176E7FF000DFEDAD /* CoreGraphics.framework */; };
@@ -22,7 +24,6 @@
 		3741F332176E7FF000DFEDAD /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3741F331176E7FF000DFEDAD /* ViewController.mm */; };
 		3741F335176E7FF000DFEDAD /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741F333176E7FF000DFEDAD /* ViewController_iPhone.xib */; };
 		3741F338176E7FF000DFEDAD /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3741F336176E7FF000DFEDAD /* ViewController_iPad.xib */; };
-		3741F345176E8AB200DFEDAD /* FelixEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F343176E8AB200DFEDAD /* FelixEngine.cpp */; };
 		3741F348176FA72900DFEDAD /* IOSHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F346176FA72900DFEDAD /* IOSHost.cpp */; };
 		3741F357176FC4E100DFEDAD /* OpenGLDisplay.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F355176FC4E100DFEDAD /* OpenGLDisplay.cpp */; };
 		3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F358176FC7B500DFEDAD /* OpenALAudio.cpp */; };
@@ -40,6 +41,14 @@
 /* Begin PBXFileReference section */
 		37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLTexture.cpp; sourceTree = "<group>"; };
 		37376AFF17751BF8008CFD8A /* OpenGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTexture.h; sourceTree = "<group>"; };
+		37376B0117765B2C008CFD8A /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
+		37376B0417767AB6008CFD8A /* ObjLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjLoader.cpp; sourceTree = "<group>"; };
+		37376B0517767AB6008CFD8A /* ObjLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjLoader.h; sourceTree = "<group>"; };
+		37376B0717779436008CFD8A /* Entity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
+		37376B081777952D008CFD8A /* Drawable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
+		37376B09177795C4008CFD8A /* ResourceData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResourceData.h; sourceTree = "<group>"; };
+		37376B0A17779677008CFD8A /* Entity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entity.cpp; sourceTree = "<group>"; };
+		37376B131777A029008CFD8A /* ShaderVaribles.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderVaribles.h; sourceTree = "<group>"; };
 		3741F30D176E7FF000DFEDAD /* FelixEngineIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FelixEngineIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3741F310176E7FF000DFEDAD /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		3741F312176E7FF000DFEDAD /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -59,7 +68,6 @@
 		3741F331176E7FF000DFEDAD /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		3741F334176E7FF000DFEDAD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		3741F337176E7FF000DFEDAD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
-		3741F343176E8AB200DFEDAD /* FelixEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FelixEngine.cpp; sourceTree = "<group>"; };
 		3741F344176E8AB200DFEDAD /* FelixEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FelixEngine.h; sourceTree = "<group>"; };
 		3741F346176FA72900DFEDAD /* IOSHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IOSHost.cpp; sourceTree = "<group>"; };
 		3741F347176FA72900DFEDAD /* IOSHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IOSHost.h; sourceTree = "<group>"; };
@@ -104,6 +112,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		37376B0317767AA4008CFD8A /* Loaders */ = {
+			isa = PBXGroup;
+			children = (
+				37376B0517767AB6008CFD8A /* ObjLoader.h */,
+				37376B0417767AB6008CFD8A /* ObjLoader.cpp */,
+			);
+			name = Loaders;
+			sourceTree = "<group>";
+		};
+		37376B121777978B008CFD8A /* FelixHost */ = {
+			isa = PBXGroup;
+			children = (
+				3741F347176FA72900DFEDAD /* IOSHost.h */,
+				3741F346176FA72900DFEDAD /* IOSHost.cpp */,
+				3741F352176FC48F00DFEDAD /* Display */,
+				3741F353176FC49900DFEDAD /* Audio */,
+				3741F354176FC4A100DFEDAD /* FileSystem */,
+			);
+			name = FelixHost;
+			sourceTree = "<group>";
+		};
 		3741F304176E7FF000DFEDAD = {
 			isa = PBXGroup;
 			children = (
@@ -175,13 +204,8 @@
 			isa = PBXGroup;
 			children = (
 				3741F344176E8AB200DFEDAD /* FelixEngine.h */,
-				3741F343176E8AB200DFEDAD /* FelixEngine.cpp */,
-				3741F347176FA72900DFEDAD /* IOSHost.h */,
-				3741F346176FA72900DFEDAD /* IOSHost.cpp */,
+				37376B131777A029008CFD8A /* ShaderVaribles.h */,
 				3792DF691773DA7100E1A410 /* EngineEntities */,
-				3741F352176FC48F00DFEDAD /* Display */,
-				3741F353176FC49900DFEDAD /* Audio */,
-				3741F354176FC4A100DFEDAD /* FileSystem */,
 				3741F349176FAD7700DFEDAD /* Utils */,
 				3741F31B176E7FF000DFEDAD /* Supporting Files */,
 			);
@@ -195,6 +219,7 @@
 				3741F34D176FADD200DFEDAD /* Quaternion.h */,
 				3741F34E176FADD200DFEDAD /* Vector.h */,
 				3741F350176FADD200DFEDAD /* XMLTag.h */,
+				37376B0117765B2C008CFD8A /* Color.h */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -222,8 +247,10 @@
 		3741F354176FC4A100DFEDAD /* FileSystem */ = {
 			isa = PBXGroup;
 			children = (
+				37376B09177795C4008CFD8A /* ResourceData.h */,
 				3741F35C176FC94B00DFEDAD /* IOSFileSystem.h */,
 				3741F35B176FC94B00DFEDAD /* IOSFileSystem.mm */,
+				37376B0317767AA4008CFD8A /* Loaders */,
 			);
 			name = FileSystem;
 			sourceTree = "<group>";
@@ -264,8 +291,12 @@
 		3792DF691773DA7100E1A410 /* EngineEntities */ = {
 			isa = PBXGroup;
 			children = (
+				37376B0717779436008CFD8A /* Entity.h */,
+				37376B0A17779677008CFD8A /* Entity.cpp */,
+				37376B081777952D008CFD8A /* Drawable.h */,
 				3792DF671773D63900E1A410 /* Resources.h */,
 				3792DF661773D63900E1A410 /* Resources.cpp */,
+				37376B121777978B008CFD8A /* FelixHost */,
 			);
 			name = EngineEntities;
 			sourceTree = "<group>";
@@ -344,7 +375,6 @@
 				3741F321176E7FF000DFEDAD /* main.m in Sources */,
 				3741F325176E7FF000DFEDAD /* AppDelegate.mm in Sources */,
 				3741F332176E7FF000DFEDAD /* ViewController.mm in Sources */,
-				3741F345176E8AB200DFEDAD /* FelixEngine.cpp in Sources */,
 				3741F348176FA72900DFEDAD /* IOSHost.cpp in Sources */,
 				3741F357176FC4E100DFEDAD /* OpenGLDisplay.cpp in Sources */,
 				3741F35A176FC7B500DFEDAD /* OpenALAudio.cpp in Sources */,
@@ -354,6 +384,8 @@
 				3741F38F1771721600DFEDAD /* OpenGLMesh.cpp in Sources */,
 				3792DF681773D63900E1A410 /* Resources.cpp in Sources */,
 				37376B0017751BF8008CFD8A /* OpenGLTexture.cpp in Sources */,
+				37376B0617767AB6008CFD8A /* ObjLoader.cpp in Sources */,
+				37376B0B17779677008CFD8A /* Entity.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

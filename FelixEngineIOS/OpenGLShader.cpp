@@ -16,7 +16,8 @@ map<string, OpenGLShader*> OpenGLShader::Shaders;
 OpenGLShader::OpenGLShader(const string &name): Shader(XMLTag("Shader")), _program(0) {
    _tag.setAttribute("name", name);
    Shaders[name] = this;
-   cout << "create shader" << endl;
+   _display = Host::GetHost()->getDisplay();
+   _filesys = Host::GetHost()->getFileSystem();
 }
 
 OpenGLShader::~OpenGLShader() {
@@ -37,12 +38,10 @@ void OpenGLShader::ClearShaders() {
 }
 
 void OpenGLShader::load() {
-   HostFileSystem *fs = Host::GetHost()->getFileSystem();
-   
    if (!loaded()) {
       ShaderPart vertPart(GL_VERTEX_SHADER), fragPart(GL_FRAGMENT_SHADER);
-      string vertSrc(fs->loadTxt("Shaders/" + _tag.getAttribute("vert")));
-      string fragSrc(fs->loadTxt("Shaders/" + _tag.getAttribute("frag")));
+      string vertSrc(_filesys->loadTxt("Shaders/" + _tag.getAttribute("vert")));
+      string fragSrc(_filesys->loadTxt("Shaders/" + _tag.getAttribute("frag")));
       
       if (vertPart.compile(vertSrc) && fragPart.compile(fragSrc)) {
          GLint linkSuccess;
@@ -69,24 +68,28 @@ void OpenGLShader::load() {
          }
          else {
             setTextures();
-            cout << "loaded shader" << endl;
             
             vertPart.detatch(_program);
             fragPart.detatch(_program);
+            
             Shader::load();
+            cout << "loaded shader: " << _tag.getAttribute("name") << endl;
          }
       }
    }
-   
-   
+   else
+      Shader::load();
 }
 
 void OpenGLShader::unload() {
-   if (_program) {
-      glDeleteProgram(_program);
-      _program = 0;
+   if (loaded()) {
+      Shader::unload();
+      if (!loaded()) {
+         glDeleteProgram(_program);
+         _program = 0;
+         cout << "unloaded shader: " << _tag.getAttribute("name") << endl;
+      }
    }
-   Shader::unload();
 }
 
 void OpenGLShader::use() const {
@@ -94,7 +97,7 @@ void OpenGLShader::use() const {
    
    if (loaded() && _program) {
       glUseProgram(_program);
-      Active = this;
+      _display->setCurShader(this);
    }
 }
 

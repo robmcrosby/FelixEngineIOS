@@ -35,6 +35,8 @@ private:
    inline void setUniform(const std::string &name, const Uniform &uni) const;
    inline void setTextures();
    
+   HostDisplay *_display;
+   HostFileSystem *_filesys;
    GLuint _program;
    
    class ShaderPart {

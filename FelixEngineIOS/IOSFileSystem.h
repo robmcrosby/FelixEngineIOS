@@ -11,7 +11,6 @@
 
 #include "FelixEngine.h"
 
-
 class IOSFileSystem: public HostFileSystem {
 public:
    IOSFileSystem(Host *host);
@@ -19,6 +18,8 @@ public:
    
    virtual std::string loadTxt(const std::string &path) const;
    virtual XMLTag* loadXML(const std::string &path) const;
+   virtual TextureData* loadTexture(const std::string &path) const;
+   virtual bool loadMeshes(const std::string &path, std::map<std::string, MeshData*> *data) const;
 protected:
    Host *_host;
    std::string _basePath;

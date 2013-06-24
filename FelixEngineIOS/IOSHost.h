@@ -10,8 +10,6 @@
 #define __FelixEngineIOS__IOSHost__
 
 #include "FelixEngine.h"
-#include <vector>
-
 
 class IOSHost: public Host {
 public:
@@ -27,6 +25,9 @@ public:
    void touchMove(Moves moves);
    
    static IOSHost* CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale);
+   
+private:
+   inline void createAppEntity();
 };
 
 #endif /* defined(__FelixEngineIOS__IOSHost__) */

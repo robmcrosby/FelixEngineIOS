@@ -7,6 +7,7 @@
 //
 
 #include "OpenGLDisplay.h"
+
 #include "OpenGLIncludes.h"
 #include "OpenGLShader.h"
 #include "OpenGLTexture.h"
@@ -14,7 +15,8 @@
 
 using namespace std;
 
-OpenGLDisplay::OpenGLDisplay(Host *host): _host(host), _curDrawType(DRAW_DEPTH) {
+OpenGLDisplay::OpenGLDisplay(Host *host):
+_host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPass(0) {
    host->addListener(this);
    
    glEnable(GL_CULL_FACE);
@@ -32,14 +34,6 @@ OpenGLDisplay::~OpenGLDisplay() {
 void OpenGLDisplay::drawPasses() {
    glClearColor(0, 0, 1, 1);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void OpenGLDisplay::addPassUniform(const Uniform &uniform, int pass) {
-   
-}
-
-void OpenGLDisplay::clearPassUniforms(int pass) {
-   
 }
 
 Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
@@ -70,6 +64,45 @@ const Texture* OpenGLDisplay::getTexture(const std::string &name) {
 const Mesh* OpenGLDisplay::getMesh(const std::string &name) {
    return OpenGLMesh::GetMesh(name);
 }
+
+
+
+void OpenGLDisplay::setCurShader(const Shader *sh) {
+   if (sh != _curShader) {
+      _curShader = sh;
+      if (_curShader)
+         _curShader->setUniforms(*getPassUniforms(_curPass));
+   }
+}
+
+void OpenGLDisplay::setCurUniforms(const Uniforms &uniforms) {
+   if (_curShader)
+      _curShader->setUniforms(uniforms);
+}
+
+void OpenGLDisplay::setCurAttributes(const Attributes &attributes) {
+   if (_curShader)
+      _curShader->setAttributes(attributes);
+}
+
+
+
+void OpenGLDisplay::addPassUniform(const string &name, const Uniform &uniform, int pass) {
+   Uniforms *passUnifs = getPassUniforms(pass);
+   passUnifs->addUniform(name, uniform);
+}
+
+void OpenGLDisplay::clearPassUniforms(int pass) {
+   Uniforms *passUnifs = getPassUniforms(pass);
+   passUnifs->clear();
+}
+
+Uniforms* OpenGLDisplay::getPassUniforms(int pass) {
+   if (pass >= _passUniforms.size())
+      _passUniforms.resize(pass+1);
+   return &_passUniforms.at(pass);
+}
+
 
 void OpenGLDisplay::setDrawType(DRAW_TYPE type) {
    if (_curDrawType != type) {

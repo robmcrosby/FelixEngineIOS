@@ -13,6 +13,7 @@
 
 using namespace std;
 
+Host* Host::Instance = NULL;
 
 IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Host(dev, size, scale) {
    // create the host components
@@ -56,6 +57,21 @@ void IOSHost::touchMove(Moves moves) {
    handleEvent(Event(EVENT_TOUCH_MOVE, &moves));
 }
 
+void IOSHost::createAppEntity() {
+   XMLTag *tag = _fileSys->loadXML(APP_CONFIG);
+   if (!tag) {
+      cerr << "Unable to create main app object" << endl;
+      exit(1);
+   }
+   
+   Entity *app = EntityId::CreateEntity(tag, this);
+   if (!app) {
+      cerr << "Unable to create main app object" << endl;
+      delete tag;
+      exit(1);
+   }
+   addChild(app);
+}
 
 
 

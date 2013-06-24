@@ -10,6 +10,7 @@
 #define __FelixEngineIOS__OpenGLTexture__
 
 #include "FelixEngine.h"
+#include "OpenGLIncludes.h"
 
 class OpenGLTexture: public Texture {
 private:
@@ -26,7 +27,8 @@ public:
    virtual void use(int idx) const;
    
 private:
-   
+   HostFileSystem *_filesys;
+   GLuint _texture;
    
    static std::map<std::string, OpenGLTexture*> Textures;
 };

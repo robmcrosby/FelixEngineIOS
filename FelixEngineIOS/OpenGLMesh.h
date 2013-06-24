@@ -25,9 +25,19 @@ public:
    virtual void unload();
    
    virtual void use() const;
-   virtual void render() const;
+   virtual void draw() const;
    
 private:
+   inline void loadData(const MeshData &data, const std::string &src);
+   
+   HostDisplay *_display;
+   HostFileSystem *_filesys;
+   GLenum _primType;
+   GLenum _indexType;
+   Attributes _attributes;
+   GLuint _vertex;
+   GLuint _index;
+   unsigned int _drawCount;
    
    static std::map<std::string, OpenGLMesh*> Meshes;
 };
