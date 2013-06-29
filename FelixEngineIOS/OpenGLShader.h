@@ -28,8 +28,8 @@ public:
    virtual void unload();
    
    virtual void use() const;
-   virtual void setUniforms(const Uniforms &unis) const;
-   virtual void setAttributes(const Attributes &atts) const;
+   virtual void setUniforms(const Uniforms *unis) const;
+   virtual void setAttributes(const Attributes *atts) const;
    
 private:
    inline void setUniform(const std::string &name, const Uniform &uni) const;

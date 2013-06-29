@@ -41,8 +41,12 @@ void IOSHost::update(float td) {
 }
 
 void IOSHost::render() {
+   _display->emptyPasses();
    handleEvent(EVENT_RENDER);
-   _display->drawPass(0);
+   
+   _display->clearContext();
+   _display->drawPass(MAIN_PASS);
+   _display->drawPass(SCREEN_PASS);
 }
 
 void IOSHost::touchDown(Moves moves) {
@@ -64,13 +68,14 @@ void IOSHost::createAppEntity() {
       exit(1);
    }
    
-   Entity *app = EntityId::CreateEntity(tag, this);
+   Entity *app = EntityId::CreateEntity(tag);
    if (!app) {
       cerr << "Unable to create main app object" << endl;
       delete tag;
       exit(1);
    }
    addChild(app);
+   addListener(app);
 }
 
 

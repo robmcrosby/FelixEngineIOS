@@ -81,8 +81,8 @@ void OpenGLMesh::unload() {
 
 void OpenGLMesh::use() const {
    if (loaded()) {
-      _display->setCurAttributes(_attributes);
       glBindBuffer(GL_ARRAY_BUFFER, _vertex);
+      _display->setCurAttributes(&_attributes);
    }
 }
 

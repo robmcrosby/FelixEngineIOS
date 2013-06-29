@@ -9,24 +9,21 @@
 #ifndef __FelixEngineIOS__OpenGLDisplay__
 #define __FelixEngineIOS__OpenGLDisplay__
 
+#include <map>
 #include "FelixEngine.h"
 #include "Drawable.h"
 
-struct DrawCmp {
-   inline bool operator() (const Drawable *lhs, const Drawable *rhs) const {
-      if(lhs->getLayer() != rhs->getLayer())
-         return lhs->getLayer() < rhs->getLayer();
-      return lhs < rhs;
-   }
-};
 
 class OpenGLDisplay: public HostDisplay {
 public:
    OpenGLDisplay(Host *host);
    virtual ~OpenGLDisplay();
    
-   virtual void drawPass(int pass);
-   virtual void addToPass(const Drawable *drawable, int pass);
+   virtual void clearContext(Color color);
+   
+   virtual void drawPass(const std::string &pass);
+   virtual void addToPass(const Drawable *drawable, const std::string &pass);
+   virtual void emptyPasses();
    virtual void clearPasses();
    
    virtual Resource* getResource(const XMLTag &tag);
@@ -35,23 +32,53 @@ public:
    virtual const Mesh* getMesh(const std::string &name);
    
    virtual void setCurShader(const Shader *sh);
-   virtual void setCurUniforms(const Uniforms &uniforms);
-   virtual void setCurAttributes(const Attributes &attributes);
+   virtual void setCurUniforms(const Uniforms *uniforms);
+   virtual void setCurAttributes(const Attributes *attributes);
    
-   virtual void addPassUniform(const std::string &name, const Uniform &uniform, int pass);
-   virtual void clearPassUniforms(int pass);
+   virtual void addPassUniform(const std::string &name, const Uniform &uniform, const std::string &pass);
+   virtual void removePassUniform(const std::string &name, const std::string &pass);
+   virtual void clearPassUniforms(const std::string &pass);
    
 private:
-   inline Uniforms* getPassUniforms(int pass);
+   
+   /**
+    Comparator for Drawables
+    */
+   struct DrawCmp {
+      inline bool operator() (const Drawable *lhs, const Drawable *rhs) const {
+         int l = lhs->getLayer(), r = rhs->getLayer();
+         return l != r ? l < r : lhs < rhs;
+      }
+   };
+   /**
+    Collection of Drawables
+   */
+   typedef std::set<const Drawable*, DrawCmp> Draws;
+   
+   /**
+    Holds the Drawables and Uniforms for a pass.
+    */
+   struct Pass {
+      Draws draws;
+      Uniforms uniforms;
+   };
+   
+   /**
+    Collection of passes
+    */
+   typedef std::map<std::string, Pass> Passes;
+   
+   inline Pass* getPass(const std::string &pass);
+   inline Draws* getPassDraws(const std::string &pass);
+   inline Uniforms* getPassUniforms(const std::string &pass);
    inline void setDrawType(DRAW_TYPE type);
    
    Host *_host;
    DRAW_TYPE _curDrawType;
    const Shader *_curShader;
-   int _curPass;
+   std::string _curPass;
    
-   std::vector<std::set<const Drawable*, DrawCmp> > _passes;
-   std::vector<Uniforms> _passUniforms;
+   Passes _passes;
 };
 
 

@@ -21,7 +21,8 @@ struct Quaternion {
       w = 1.0 - (x*x) - (y*y) - (z*z);
       w = w < 0 ? 0 : -std::sqrt(w);
    }
-   Quaternion(const Vector3<T> &axis, T r) {
+   Quaternion(Vector3<T> axis, T r) {
+      axis.normalize();
       w = std::cos(r / 2);
       x = y = z = std::sin(r / 2);
       x *= axis.x;
@@ -55,12 +56,12 @@ struct Quaternion {
       ret.x = w * q.x + x * q.w + y * q.z - z * q.y;
       ret.y = w * q.y + y * q.w + z * q.x - x * q.z;
       ret.z = w * q.z + z * q.w + x * q.y - y * q.x;
-      ret.Normalize();
+      ret.normalize();
       return ret;
    }
    Quaternion operator*(T s) const {return Quaternion(x*s, y*s, z*s, w*s);}
    Vector3<T> operator*(const Vector3<T> &v) const {
-      Quaternion<T> ret = *this * Quaternion<T>(v.x, v.y, v.z, 1) * Conjugate();
+      Quaternion<T> ret = *this * Quaternion<T>(v.x, v.y, v.z, 1) * conjugate();
       return vec3(ret.x, ret.y, ret.z);
    }
    
@@ -78,16 +79,16 @@ struct Quaternion {
          *this *= Quaternion(vec3(0, 0, 1), v.z);
    }
    
-   T LengthSquared()    const {return x * x + y * y + z * z + w * w;}
-   T Length()           const {return sqrt(LengthSquared());}
+   T lengthSquared() const {return x * x + y * y + z * z + w * w;}
+   T length()        const {return sqrt(lengthSquared());}
    
-   Quaternion Normalized() const {return *this * (1.0/Length());}
-   Quaternion Conjugate() const {
+   Quaternion normalized() const {return *this * (1.0/length());}
+   Quaternion conjugate()  const {
       Quaternion q(-x, -y, -z, w);
       return q.Normalized();
    }
    
-   void Normalize() {*this = Normalized();}
+   void normalize() {*this = normalized();}
    
    bool operator==(const Quaternion &q) const {
       return x == q.x && y == q.y && z == q.z && w == q.w;
@@ -95,11 +96,11 @@ struct Quaternion {
    bool operator<(const Quaternion &q) const {
       return x == q.x ? y == q.y ? z == q.z ? w < q.w : z < q.z : y < q.y : x < q.x;
    }
-   Quaternion Lerp(T t, const Quaternion &q) const {
+   Quaternion lerp(T t, const Quaternion &q) const {
       Quaternion result = q + (*this - q) * t;
       return result.Normalized();
    }
-   Quaternion Slerp(T t, const Quaternion &q) const {
+   Quaternion slerp(T t, const Quaternion &q) const {
       const T epsilon = 0.0005f;
       Quaternion result, q2;
       T theta, dot = Dot(q);
@@ -120,7 +121,7 @@ struct Quaternion {
       result = *this * std::cos(theta) + q2 * std::sin(theta);
       return result.Normalized();
    }
-   Matrix3<T> ToMat3() const {
+   Matrix3<T> toMat3() const {
       const T s = 2;
       Matrix3<T> m;
       
@@ -138,7 +139,7 @@ struct Quaternion {
       m.z = Vector3<T>(xz + wy, yz - wx, 1 - (xx + yy));
       return m;
    }
-   Matrix4<T> ToMat4() const {return Matrix4<T>(ToMat3());}
+   Matrix4<T> toMat4() const {return Matrix4<T>(toMat3());}
    
    friend std::ostream &operator<<(std::ostream &os, const Quaternion &q) {
       return os << "(" << q.x << ", " << q.y << ", " << q.z << ", " << q.w << ")";

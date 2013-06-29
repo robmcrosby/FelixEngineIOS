@@ -12,6 +12,13 @@
 #include <string>
 #include <map>
 
+#define VAR_PROJ_MTX "ProjMtx"
+#define VAR_VIEW_MTX "ViewMtx"
+#define VAR_LOCAL_MTX "LocalMtx"
+#define VAR_MODEL_MTX "ModelMtx"
+#define VAR_NORM_MTX "NormalMtx"
+#define VAR_TEX_MTX "TexMtx"
+
 enum VAL_TYPE {
    VAL_NONE,
    VAL_INT,

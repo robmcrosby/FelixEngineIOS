@@ -12,6 +12,8 @@
 #include "Resources.h"
 
 #define APP_CONFIG "Config/main.xml"
+#define MAIN_PASS "main"
+#define SCREEN_PASS "screen"
 
 class TextureData;
 class MeshData;
@@ -29,8 +31,11 @@ class HostDisplay: public Entity {
 public:
    virtual ~HostDisplay() {}
    
-   virtual void drawPass(int pass) = 0;
-   virtual void addToPass(const Drawable *drawable, int pass) = 0;
+   virtual void clearContext(Color color = Color()) = 0;
+   
+   virtual void drawPass(const std::string &pass) = 0;
+   virtual void addToPass(const Drawable *drawable, const std::string &pass) = 0;
+   virtual void emptyPasses() = 0;
    virtual void clearPasses() = 0;
    
    virtual Resource* getResource(const XMLTag &tag) = 0;
@@ -39,11 +44,12 @@ public:
    virtual const Mesh* getMesh(const std::string &name) = 0;
    
    virtual void setCurShader(const Shader *sh) = 0;
-   virtual void setCurUniforms(const Uniforms &uniforms) = 0;
-   virtual void setCurAttributes(const Attributes &attributes) = 0;
+   virtual void setCurUniforms(const Uniforms *uniforms) = 0;
+   virtual void setCurAttributes(const Attributes *attributes) = 0;
    
-   virtual void addPassUniform(const std::string &name, const Uniform &uniform, int pass) = 0;
-   virtual void clearPassUniforms(int pass) = 0;
+   virtual void addPassUniform(const std::string &name, const Uniform &uniform, const std::string &pass) = 0;
+   virtual void removePassUniform(const std::string &name, const std::string &pass) = 0;
+   virtual void clearPassUniforms(const std::string &pass) = 0;
 };
 
 /**

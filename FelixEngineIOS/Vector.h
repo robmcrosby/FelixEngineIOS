@@ -287,13 +287,13 @@ struct Vector4 {
    }
    bool operator<(const Vector4& v) const {
       return x == v.x ? y == v.y ? z == v.z ? w < v.w : z < v.z : y < v.y : x < v.x;}
-   Vector4 Lerp(T t, const Vector4& v) const {return *this * (1 - t) + v * t;}
+   Vector4 lerp(T t, const Vector4& v) const {return *this * (1 - t) + v * t;}
    
    friend std::ostream &operator<<(std::ostream &os, const Vector4 &v) {
       return os << "<" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ">";
    }
    
-   static Vector4 parse(const std::string &str) {
+   static Vector4 Parse(const std::string &str) {
       Vector4 v;
       sscanf(str.c_str(), " %f , %f , %f , %f", &v.x, &v.y, &v.z, &v.w);
       return v;

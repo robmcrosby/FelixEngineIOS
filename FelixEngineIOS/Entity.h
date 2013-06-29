@@ -14,6 +14,8 @@
 #include <vector>
 #include "XMLTag.h"
 #include "Vector.h"
+#include "Color.h"
+#include "Transform.h"
 
 /**
  * Defines the type of event
@@ -60,29 +62,79 @@ typedef std::vector<Move> Moves;
  */
 class Entity {
 public:
-   Entity(XMLTag *tag = NULL, Entity *parrent = NULL);
+   Entity(XMLTag *tag = NULL);
    virtual ~Entity();
    
-   virtual void handleEvent(const Event &event) {notifyList(event);}
+   virtual void handleEvent(const Event &event) {notifyListeners(event);}
    virtual void createChildren(XMLTag *tag);
    
-   inline void addChild(Entity *child) {_children.insert(child);}
-   inline void removeChild(Entity *child) {_children.erase(child);}
-   
-   inline void addListener(Entity *listener) {_listeners.insert(listener);}
-   inline void removeListener(Entity *listener) {_listeners.erase(listener);}
-   inline void notifyList(const Event &event) {
-      for (std::set<Entity*>::iterator itr = _listeners.begin(); itr != _listeners.end(); ++itr)
-         (*itr)->handleEvent(event);
+   virtual void addChild(Entity *child) {
+      if (child->_parrent)
+         child->_parrent->removeChild(child);
+      child->_parrent = this;
+      _children.insert(child);
+   }
+   virtual void removeChild(Entity *child) {
+      if (child->_parrent == this)
+         child->_parrent = NULL;
+      _children.erase(child);
+   }
+   inline void clearChildren() {
+      std::set<Entity*>::iterator itr;
+      for (itr = _children.begin(); itr != _children.end(); ++itr)
+         delete *itr;
    }
    
+   inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
+   
+   inline void addListener(Entity *listener) {
+      if (listener->_subject)
+         listener->_subject->removeListener(listener);
+      
+      _listeners.insert(listener);
+      _subject = this;
+   }
+   inline void removeListener(Entity *listener) {
+      _listeners.erase(listener);
+      listener->_subject = NULL;
+   }
+   inline void notifyListeners(const Event &event) {
+      if (_listeners.size()) {
+         std::set<Entity*>::iterator itr;
+         std::set<Entity*> listeners = _listeners;
+         for (itr = _listeners.begin(); itr != _listeners.end(); ++itr)
+            (*itr)->handleEvent(event);
+      }
+   }
+   inline void clearListeners() {
+      std::set<Entity*>::iterator itr;
+      std::set<Entity*> listeners = _listeners;
+      for (itr = listeners.begin(); itr != listeners.end(); ++itr)
+         removeListener(*itr);
+   }
+   inline std::string getName() const {
+      if (_tag && _tag->hasAttribute("name"))
+         return _tag->getAttribute("name");
+      return "";
+   }
+   
+   inline Transform* getTransform() {return &_transform;}
+   inline const Transform* getTransform() const {return &_transform;}
+   
+   static Entity* GetEntity(const std::string &name);
+   
 protected:
-   std::set<Entity*> _children;
+   Transform _transform;
    XMLTag *_tag;
-   Entity *_parrent;
    
 private:
+   std::set<Entity*> _children;
+   Entity *_parrent;
+   
    std::set<Entity*> _listeners;
+   Entity *_subject;
+   
+   static std::map<std::string, Entity*> EntityMap;
 };
 
 
@@ -91,12 +143,12 @@ private:
  */
 class EntityId {
 public:
-   static Entity* CreateEntity(XMLTag *tag, Entity *parrent);
+   static Entity* CreateEntity(XMLTag *tag);
    
 protected:
    EntityId(const std::string &idStr);
    virtual ~EntityId() {}
-   virtual Entity* create(XMLTag *tag, Entity *parrent) = 0;
+   virtual Entity* create(XMLTag *tag) = 0;
    
    std::string _idStr;
    EntityId *_next;
@@ -114,7 +166,7 @@ class T##Id: public EntityId {\
 public:\
 T##Id(): EntityId(#T) {}\
 virtual ~T##Id() {}\
-virtual Entity *create(XMLTag *tag, Entity *parrent);\
+virtual Entity *create(XMLTag *tag);\
 };\
 static T##Id ID;
 
@@ -125,8 +177,8 @@ static T##Id ID;
  */
 #define DEFINE_ENTITY_ID(T) \
 T::T##Id T::ID;\
-Entity *T::T##Id::create(XMLTag *tag, Entity *parrent) {\
-return new T(tag, parrent);\
+Entity *T::T##Id::create(XMLTag *tag) {\
+return new T(tag);\
 }
 
 #endif

@@ -427,22 +427,10 @@ struct Matrix4 {
       r0[6] = s * (r0[6] - r1[6] * m0);
       r0[7] = s * (r0[7] - r1[7] * m0);
       //Assign values to the return matrix
-      m.x.x = r0[4];
-      m.x.y = r0[5];
-      m.x.z = r0[6];
-      m.x.w = r0[7];
-      m.y.x = r1[4];
-      m.y.y = r1[5];
-      m.y.z = r1[6];
-      m.y.w = r1[7];
-      m.z.x = r2[4];
-      m.z.y = r2[5];
-      m.z.z = r2[6];
-      m.z.w = r2[7];
-      m.w.x = r3[4];
-      m.w.y = r3[5];
-      m.w.z = r3[6];
-      m.w.w = r3[7];
+      m.x.x = r0[4]; m.x.y = r0[5]; m.x.z = r0[6]; m.x.w = r0[7];
+      m.y.x = r1[4]; m.y.y = r1[5]; m.y.z = r1[6]; m.y.w = r1[7];
+      m.z.x = r2[4]; m.z.y = r2[5]; m.z.z = r2[6]; m.z.w = r2[7];
+      m.w.x = r3[4]; m.w.y = r3[5]; m.w.z = r3[6]; m.w.w = r3[7];
       return m;
    }
    Matrix4 scaled(T s) const {
@@ -613,6 +601,18 @@ struct Matrix4 {
       m.x.z = s.z; m.y.z = u.z; m.z.z = f.z;
       
       return Trans3d(pos) * m;
+   }
+   static Matrix4<T> LookAt(const Vector3<T> &eye, const Vector3<T> &center, const Vector3<T> &up) {
+      vec3 f = (center - eye).normalized();
+      vec3 s = f.cross(up).normalized();
+      vec3 u = s.cross(f);
+      
+      Matrix4 m;
+      m.x.x = s.x; m.y.x = s.y; m.z.x = s.z;
+      m.x.y = u.x; m.y.y = u.y; m.z.y = u.z;
+      m.x.z = -f.x; m.y.z = -f.y; m.z.z = -f.z;
+      
+      return m * Trans3d(-eye);
    }
    
    friend std::ostream &operator<<(std::ostream &os, const Matrix4 &m) {

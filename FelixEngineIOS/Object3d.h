@@ -15,7 +15,7 @@
 
 class Object3d: public Drawable {
 public:
-   Object3d(XMLTag *tag, Entity *parrent);
+   Object3d(XMLTag *tag);
    virtual ~Object3d();
 
 private:

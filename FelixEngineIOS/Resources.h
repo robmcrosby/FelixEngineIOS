@@ -46,8 +46,8 @@ public:
    Shader(const XMLTag &tag): Resource(tag) {}
    
    virtual void use() const = 0;
-   virtual void setUniforms(const Uniforms &unis) const = 0;
-   virtual void setAttributes(const Attributes &atts) const = 0;
+   virtual void setUniforms(const Uniforms *unis) const = 0;
+   virtual void setAttributes(const Attributes *atts) const = 0;
 };
 
 /**
@@ -75,7 +75,7 @@ struct Mesh: public Resource {
  */
 class Resources: Entity {
 public:
-   Resources(XMLTag *tag, Entity *parrent);
+   Resources(XMLTag *tag);
    virtual ~Resources();
    
    virtual void handleEvent(const Event &event);

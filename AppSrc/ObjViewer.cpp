@@ -12,13 +12,31 @@ using namespace std;
 
 DEFINE_ENTITY_ID(ObjViewer)
 
-ObjViewer::ObjViewer(XMLTag *tag, Entity *parent): Entity(tag, parent) {
+ObjViewer::ObjViewer(XMLTag *tag): Entity(tag) {
    createChildren(_tag);
    
-   parent->addListener(this);
    handleEvent(EVENT_LOAD);
+   
+   bunny = Entity::GetEntity("bunny");
 }
 
 ObjViewer::~ObjViewer() {
    
 }
+
+
+void ObjViewer::handleEvent(const Event &event) {
+   if (event == EVENT_UPDATE) {
+      float td = *(float*)event.data;
+      
+      if (bunny)
+         bunny->getTransform()->rotate(quat(vec3(0, 1, 0), td));
+      
+      //ModelMtx *= mat4::RotY(td);
+   }
+   
+   Entity::handleEvent(event);
+}
+
+
+

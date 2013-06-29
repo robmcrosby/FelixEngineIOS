@@ -13,8 +13,9 @@ using namespace std;
 DEFINE_ENTITY_ID(Object3d)
 
 
-Object3d::Object3d(XMLTag *tag, Entity *parrent): Drawable(tag, parrent) {
+Object3d::Object3d(XMLTag *tag): Drawable(tag) {
    cout << "Created Object3d" << endl;
+   Host::GetHost()->addListener(this);
 }
 
 Object3d::~Object3d() {

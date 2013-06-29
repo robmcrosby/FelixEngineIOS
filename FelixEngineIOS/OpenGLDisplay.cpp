@@ -16,7 +16,7 @@
 using namespace std;
 
 OpenGLDisplay::OpenGLDisplay(Host *host):
-_host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPass(0) {
+_host(host), _curDrawType(DRAW_DEPTH), _curShader(0) {
    host->addListener(this);
    
    glEnable(GL_CULL_FACE);
@@ -24,6 +24,8 @@ _host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPass(0) {
    glEnable(GL_TEXTURE_2D);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    glEnable(GL_DEPTH_TEST);
+   
+   clearPasses();
 }
 
 OpenGLDisplay::~OpenGLDisplay() {
@@ -32,29 +34,36 @@ OpenGLDisplay::~OpenGLDisplay() {
    OpenGLMesh::ClearMeshes();
 }
 
-void OpenGLDisplay::drawPass(int pass) {
-   glClearColor(0, 0, 1, 1);
+void OpenGLDisplay::clearContext(Color color) {
+   glClearColor(color.r, color.g, color.b, color.a);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   
-   if (pass < _passes.size()) {
-      std::set<const Drawable*, DrawCmp>::iterator itr;
-      std::set<const Drawable*, DrawCmp> &passSet = _passes.at(pass);
-      
-      for (itr = passSet.begin(); itr != passSet.end(); ++itr)
-         (*itr)->draw();
-   }
 }
 
-void OpenGLDisplay::addToPass(const Drawable *drawable, int pass) {
-   if (_passes.size() <= pass)
-      _passes.resize(pass+1);
-   _passes.at(pass).insert(drawable);
+void OpenGLDisplay::drawPass(const std::string &pass) {
+   Draws::iterator drawable;
+   Draws *draws = getPassDraws(pass);
+   
+   _curShader = NULL;
+   _curPass = pass;
+   
+   for (drawable = draws->begin(); drawable != draws->end(); ++drawable)
+      (*drawable)->draw();
+}
+
+void OpenGLDisplay::addToPass(const Drawable *drawable, const std::string &pass) {
+   getPassDraws(pass)->insert(drawable);
+}
+
+void OpenGLDisplay::emptyPasses() {
+   for (Passes::iterator itr = _passes.begin(); itr != _passes.end(); ++itr)
+      itr->second.draws.clear();
 }
 
 void OpenGLDisplay::clearPasses() {
-   std::vector<std::set<const Drawable*, DrawCmp> >::iterator itr;
-   for (itr = _passes.begin(); itr != _passes.end(); ++itr)
-      itr->clear();
+   _passes.clear();
+   _passes[SCREEN_PASS] = Pass();
+   _passes[MAIN_PASS] = Pass();
+   _curPass = MAIN_PASS;
 }
 
 Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
@@ -92,36 +101,46 @@ void OpenGLDisplay::setCurShader(const Shader *sh) {
    if (sh != _curShader) {
       _curShader = sh;
       if (_curShader)
-         _curShader->setUniforms(*getPassUniforms(_curPass));
+         _curShader->setUniforms(getPassUniforms(_curPass));
    }
 }
 
-void OpenGLDisplay::setCurUniforms(const Uniforms &uniforms) {
+void OpenGLDisplay::setCurUniforms(const Uniforms *uniforms) {
    if (_curShader)
       _curShader->setUniforms(uniforms);
 }
 
-void OpenGLDisplay::setCurAttributes(const Attributes &attributes) {
+void OpenGLDisplay::setCurAttributes(const Attributes *attributes) {
    if (_curShader)
       _curShader->setAttributes(attributes);
 }
 
 
 
-void OpenGLDisplay::addPassUniform(const string &name, const Uniform &uniform, int pass) {
-   Uniforms *passUnifs = getPassUniforms(pass);
-   passUnifs->addUniform(name, uniform);
+void OpenGLDisplay::addPassUniform(const string &name, const Uniform &uniform, const std::string &pass) {
+   getPassUniforms(pass)->addUniform(name, uniform);
 }
 
-void OpenGLDisplay::clearPassUniforms(int pass) {
-   Uniforms *passUnifs = getPassUniforms(pass);
-   passUnifs->clear();
+void OpenGLDisplay::removePassUniform(const string &name, const std::string &pass) {
+   getPassUniforms(pass)->remove(name);
 }
 
-Uniforms* OpenGLDisplay::getPassUniforms(int pass) {
-   if (pass >= _passUniforms.size())
-      _passUniforms.resize(pass+1);
-   return &_passUniforms.at(pass);
+void OpenGLDisplay::clearPassUniforms(const std::string &pass) {
+   getPassUniforms(pass)->clear();
+}
+
+OpenGLDisplay::Pass* OpenGLDisplay::getPass(const std::string &pass) {
+   if (_passes.find(pass) == _passes.end())
+      _passes[pass] = Pass();
+   return &_passes[pass];
+}
+
+OpenGLDisplay::Draws* OpenGLDisplay::getPassDraws(const std::string &pass) {
+   return &getPass(pass)->draws;
+}
+
+Uniforms* OpenGLDisplay::getPassUniforms(const std::string &pass) {
+   return &getPass(pass)->uniforms;
 }
 
 

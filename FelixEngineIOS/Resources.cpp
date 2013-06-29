@@ -14,9 +14,7 @@ DEFINE_ENTITY_ID(Resources)
 using namespace std;
 
 
-Resources::Resources(XMLTag *tag, Entity *parrent): Entity(tag, parrent), _loaded(0) {
-   if (parrent)
-      parrent->addListener(this);
+Resources::Resources(XMLTag *tag): Entity(tag), _loaded(0) {
    
    for (XMLTag::iterator itr = tag->begin(); itr != tag->end(); ++itr) {
       Resource *resource = Host::GetHost()->getResource(**itr);

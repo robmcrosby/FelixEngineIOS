@@ -2,18 +2,19 @@
 <ObjViewer>
    <Resources>
       <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
-      <Mesh name="bunny" src="bunny.obj"/>
+      <Mesh name="plane" src="bunny.obj"/>
       <Texture name="grid" src="grid.png"/>
    </Resources>
    <Camera>
       <loc>0, 0, -10</loc>
       <target>0, 0, 0</target>
       <up>0, 1, 0</up>
+      <pass>0</pass>
    </Camera>
-   <Object3d>
+   <Object3d name="bunny">
       <loc>0, 0, 0</loc>
       <Shader name="texture"/>
-      <Mesh name="bunny"/>
+      <Mesh name="plane"/>
       <Texture name="grid"/>
    </Object3d>
 </ObjViewer>

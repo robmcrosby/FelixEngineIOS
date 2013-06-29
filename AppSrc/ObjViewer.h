@@ -10,13 +10,18 @@
 #define __FelixEngineIOS__ObjViewer__
 
 #include "FelixEngine.h"
+#include "Matrix.h"
 
 class ObjViewer: public Entity {
 public:
-   ObjViewer(XMLTag *tag, Entity *parent);
+   ObjViewer(XMLTag *tag);
    virtual ~ObjViewer();
    
+   virtual void handleEvent(const Event &event);
+   
 private:
+   Entity *bunny;
+   
    DECLARE_ENTITY_ID(ObjViewer)
 };
 

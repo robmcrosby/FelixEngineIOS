@@ -16,9 +16,12 @@
  */
 class Drawable: public Entity {
 public:
-   Drawable(XMLTag *tag, Entity *parrent): Entity(tag, parrent), _visible(true) {
-      parrent->addListener(this);
+   Drawable(XMLTag *tag): Entity(tag), _visible(true) {
       setResources();
+      
+      _pass = MAIN_PASS;
+      _layer = 0;
+      _uniforms.addUniform(VAR_TEX_MTX, VAL_MAT3X3, &_textureMtx);
    }
    virtual ~Drawable() {}
    
@@ -28,10 +31,21 @@ public:
       Entity::handleEvent(event);
    }
    
+   virtual void addChild(Entity *child) {
+      Entity::addChild(child);
+      child->setTransformParrent(&_transform);
+   }
+   
+   virtual void removeChild(Entity *child) {
+      Entity::removeChild(child);
+      child->setTransformParrent(NULL);
+   }
+   
    inline void draw() const {
       if (_visible) {
          _shader->use();
-         _shader->setUniforms(_uniforms);
+         _display->setCurUniforms(&_uniforms);
+         _display->setCurUniforms(_transform.getUniforms());
          for (int i = 0; i < _textures.size(); ++i)
             _textures.at(i)->use(i);
          _mesh->use();
@@ -43,7 +57,7 @@ public:
    inline void setLayer(int layer) {_layer = layer;}
    inline void setVisiblity(bool v) {_visible = v;}
    
-   inline int getPass()  const {return _pass;}
+   inline std::string getPass() const {return _pass;}
    inline int getLayer() const {return _layer;}
    inline bool isVisible() const {return _visible && _shader && _mesh;}
    
@@ -80,10 +94,11 @@ protected:
    }
    
    /* fields */
-   int _pass;
+   std::string _pass;
    int _layer;
    bool _visible;
    DRAW_TYPE _drawType;
+   mat3 _textureMtx;
    Uniforms _uniforms;
    
    const Shader *_shader;

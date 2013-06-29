@@ -41,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		370159EA177DEA0700665C58 /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLTexture.cpp; sourceTree = "<group>"; };
 		37376AFF17751BF8008CFD8A /* OpenGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTexture.h; sourceTree = "<group>"; };
 		37376B0117765B2C008CFD8A /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
@@ -297,6 +298,7 @@
 		3792DF691773DA7100E1A410 /* EngineEntities */ = {
 			isa = PBXGroup;
 			children = (
+				370159EA177DEA0700665C58 /* Transform.h */,
 				37376B0717779436008CFD8A /* Entity.h */,
 				37376B0A17779677008CFD8A /* Entity.cpp */,
 				3792DF671773D63900E1A410 /* Resources.h */,

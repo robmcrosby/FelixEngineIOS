@@ -93,33 +93,31 @@ void OpenGLShader::unload() {
 }
 
 void OpenGLShader::use() const {
-   cout << "use shader: " << _tag.getAttribute("name") << endl;
-   
    if (loaded() && _program) {
       glUseProgram(_program);
       _display->setCurShader(this);
    }
 }
 
-void OpenGLShader::setUniforms(const Uniforms &unis) const {
+void OpenGLShader::setUniforms(const Uniforms *unis) const {
    if (_program) {
       Uniforms::const_iterator itr;
       
-      for (itr = unis.begin(); itr != unis.end(); ++itr)
+      for (itr = unis->begin(); itr != unis->end(); ++itr)
          setUniform(itr->first, itr->second);
    }
 }
 
-void OpenGLShader::setAttributes(const Attributes &atts) const {
+void OpenGLShader::setAttributes(const Attributes *atts) const {
    if (_program) {
-      GLsizei stride = (GLsizei)atts.getStride();
+      GLsizei stride = (GLsizei)(atts->getStride()*sizeof(GLfloat));
       Attributes::const_iterator itr;
       
-      for (itr = atts.begin(); itr != atts.end(); ++itr) {
+      for (itr = atts->begin(); itr != atts->end(); ++itr) {
          GLint loc = glGetAttribLocation(_program, itr->first.c_str());
-         const Attribute &att = itr->second;
          
          if (loc != -1) {
+            const Attribute &att = itr->second;
             GLint size = (GLint)att.size;
             const GLvoid *offset = (const GLvoid*)(att.offset*sizeof(GLfloat));
             
