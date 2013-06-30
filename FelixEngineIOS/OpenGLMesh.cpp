@@ -51,8 +51,6 @@ void OpenGLMesh::ClearMeshes() {
 }
 
 void OpenGLMesh::load() {
-   Mesh::load();
-   
    if (!loaded() && _tag.hasAttribute("src")) {
       string src = _tag.getAttribute("src");
       string path = "Meshes/" + src;
@@ -80,8 +78,6 @@ void OpenGLMesh::load() {
 }
 
 void OpenGLMesh::unload() {
-   Mesh::unload();
-   
    if (!getCount())
       deleteMesh();
 }

@@ -48,8 +48,6 @@ void OpenGLTexture::ClearTextures() {
 }
 
 void OpenGLTexture::load() {
-   Texture::load();
-   
    if (!loaded() && _tag.hasAttribute("src")) {
       string texPath = "Textures/" + _tag.getAttribute("src");
       TextureData *data = _filesys->loadTexture(texPath);
@@ -62,8 +60,6 @@ void OpenGLTexture::load() {
 }
 
 void OpenGLTexture::unload() {
-   Texture::unload();
-   
    if (!getCount())
       deleteTexture();
 }

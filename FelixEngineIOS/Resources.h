@@ -28,9 +28,12 @@ public:
    Resource(const XMLTag &tag): _tag(tag), _count(0), _loaded(0) {}
    virtual ~Resource() {}
    
-   virtual void load() {++_count;}
-   virtual void unload() {_count -= _count == 0 ? 0 : 1;}
+   inline void retain() {++_count;}
+   inline void release() {_count -= _count == 0 ? 0 : 1;}
    inline void setToTag(const XMLTag &tag) {_tag = tag;}
+   
+   virtual void load() = 0;
+   virtual void unload() = 0;
    
    inline bool loaded() const {return _loaded;}
    inline size_t getCount() const {return _count;}
@@ -91,8 +94,9 @@ public:
    virtual void handleEvent(const Event &event);
    
 private:
-   inline void load();
-   inline void unload();
+   inline void loadResources();
+   inline void unloadResources();
+   inline void releaseResources();
    
    bool _loaded;
    std::set<Resource*> _resources;

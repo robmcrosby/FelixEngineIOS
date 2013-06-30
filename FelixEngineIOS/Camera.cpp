@@ -58,7 +58,7 @@ void Camera::updateProjMtx() {
 }
 
 void Camera::updateViewMtx() {
-   _viewMtx = mat4::LookAt(vec3(0, 5, 20), vec3(0, 5, 0), vec3(0, 1, 0));
+   _viewMtx = mat4::LookAt(vec3(0, 0, 20), vec3(0, 0, 0), vec3(0, 1, 0));
 }
 
 void Camera::setToPass(const string &pass) {

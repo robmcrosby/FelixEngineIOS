@@ -2,7 +2,8 @@
 <ObjViewer>
    <Resources>
       <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
-      <Mesh name="plane" src="bunny.obj"/>
+      <Mesh name="bunny" src="bunny.obj"/>
+      <Mesh name="plane" src="plane.obj"/>
       <Texture name="grid" src="grid.png"/>
    </Resources>
    <Camera>
@@ -12,6 +13,12 @@
       <pass>0</pass>
    </Camera>
    <Object3d name="bunny">
+      <loc>0, 0, 0</loc>
+      <Shader name="texture"/>
+      <Mesh name="bunny"/>
+      <Texture name="grid"/>
+   </Object3d>
+   <Object3d name="plane">
       <loc>0, 0, 0</loc>
       <Shader name="texture"/>
       <Mesh name="plane"/>

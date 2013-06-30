@@ -49,8 +49,6 @@ void OpenGLShader::ClearShaders() {
 }
 
 void OpenGLShader::load() {
-   Shader::load();
-   
    if (!loaded() && _tag.hasAttribute("vert") && _tag.hasAttribute("frag")) {
       ShaderData data;
       data.vSrc = _filesys->loadTxt("Shaders/" + _tag.getAttribute("vert"));
@@ -60,8 +58,6 @@ void OpenGLShader::load() {
 }
 
 void OpenGLShader::unload() {
-   Shader::unload();
-   
    if (!getCount())
       deleteShader();
 }

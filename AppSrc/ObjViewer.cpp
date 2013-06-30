@@ -18,6 +18,12 @@ ObjViewer::ObjViewer(XMLTag *tag): Entity(tag) {
    handleEvent(EVENT_LOAD);
    
    bunny = Entity::GetEntity("bunny");
+   plane = Entity::GetEntity("plane");
+   
+   if (plane) {
+      plane->getTransform()->setPos(vec3(0, 0, -5));
+      plane->getTransform()->scale(5);
+   }
 }
 
 ObjViewer::~ObjViewer() {
@@ -31,8 +37,6 @@ void ObjViewer::handleEvent(const Event &event) {
       
       if (bunny)
          bunny->getTransform()->rotate(quat(vec3(0, 1, 0), td));
-      
-      //ModelMtx *= mat4::RotY(td);
    }
    
    Entity::handleEvent(event);

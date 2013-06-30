@@ -21,6 +21,7 @@ public:
    
 private:
    Entity *bunny;
+   Entity *plane;
    
    DECLARE_ENTITY_ID(ObjViewer)
 };
