@@ -94,10 +94,10 @@ struct Vector2 {
       return os << "<" << v.x << ", " << v.y << ">";
    }
    
-   static Vector2 parsefloat(const std::string &str) {
-      Vector2 v;
-      sscanf(str.c_str(), " %lf , %lf", &v.x, &v.y);
-      return v;
+   static Vector2<float> ParseFloat(const std::string &str) {
+      Vector2<float> v;
+      int res = sscanf(str.c_str(), " %lf , %lf", &v.x, &v.y);
+      return res == 2 ? v : v.x;
    }
    
    union {T x; T r;};
@@ -184,15 +184,15 @@ struct Vector3 {
       return os << "<" << v.x << ", " << v.y << ", " << v.z << ">";
    }
    
-   static Vector3 parsefloat(const std::string &str) {
-      Vector3 v;
-      sscanf(str.c_str(), " %lf , %lf , %lf", &v.x, &v.y, &v.z);
-      return v;
+   static Vector3<float> ParseFloat(const std::string &str) {
+      Vector3<float> v;
+      int res = sscanf(str.c_str(), " %f , %f , %f", &v.x, &v.y, &v.z);
+      return res == 3 ? v : v.x;
    }
-   static Vector3 parseInt(const std::string &str) {
-      Vector3 v;
-      sscanf(str.c_str(), " %i , %i , %i", &v.x, &v.y, &v.z);
-      return v;
+   static Vector3<int> ParseInt(const std::string &str) {
+      Vector3<int> v;
+      int res = sscanf(str.c_str(), " %i , %i , %i", &v.x, &v.y, &v.z);
+      return res == 3 ? v : v.x;
    }
    
    union {T x; T r;};
@@ -293,10 +293,10 @@ struct Vector4 {
       return os << "<" << v.x << ", " << v.y << ", " << v.z << ", " << v.w << ">";
    }
    
-   static Vector4 Parse(const std::string &str) {
-      Vector4 v;
-      sscanf(str.c_str(), " %f , %f , %f , %f", &v.x, &v.y, &v.z, &v.w);
-      return v;
+   static Vector4<float> ParseFloat(const std::string &str) {
+      Vector4<float> v;
+      int res = sscanf(str.c_str(), " %f , %f , %f , %f", &v.x, &v.y, &v.z, &v.w);
+      return res == 4 ? v : v.x;
    }
    
    union {T x; T r;};

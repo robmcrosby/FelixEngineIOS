@@ -25,10 +25,10 @@ public:
    }
    virtual ~Drawable() {}
    
-   virtual void handleEvent(const Event &event) {
+   virtual void notify(const Event &event) {
       if (event == EVENT_RENDER && isVisible())
          _display->addToPass(this, _pass);
-      Entity::handleEvent(event);
+      Entity::notify(event);
    }
    
    virtual void addChild(Entity *child) {

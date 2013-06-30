@@ -28,6 +28,8 @@ public:
    
 private:
    inline void createAppEntity();
+   
+   Pipeline _defPipe;
 };
 
 #endif /* defined(__FelixEngineIOS__IOSHost__) */

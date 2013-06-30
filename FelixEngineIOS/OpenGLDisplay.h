@@ -19,7 +19,7 @@ public:
    OpenGLDisplay(Host *host);
    virtual ~OpenGLDisplay();
    
-   virtual void handleEvent(const Event &event);
+   virtual void notify(const Event &event);
    virtual void clearContext(Color color);
    
    virtual void drawPass(const std::string &pass);

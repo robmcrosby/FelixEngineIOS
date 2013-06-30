@@ -10,6 +10,7 @@
 #define __FelixEngineIOS__FelixEngine__
 
 #include "Resources.h"
+#include "Pipeline.h"
 
 #define APP_CONFIG "Config/main.xml"
 #define MAIN_PASS "main"
@@ -104,6 +105,7 @@ public:
       _display->cleanUpResources();
       _audio->cleanUpResources();
    }
+   inline void setActivePipeline(const Pipeline *pipe) {_activePipeline = pipe;}
    
    static Host* GetHost() {return Instance;}
    
@@ -125,6 +127,8 @@ protected:
    HostDisplay *_display;
    HostAudio *_audio;
    HostFileSystem *_fileSys;
+   
+   const Pipeline *_activePipeline;
    
    static Host *Instance;
 };

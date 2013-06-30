@@ -93,7 +93,7 @@ public:
    Resources(XMLTag *tag);
    virtual ~Resources();
    
-   virtual void handleEvent(const Event &event);
+   virtual void notify(const Event &event);
    
 private:
    inline void loadResources();

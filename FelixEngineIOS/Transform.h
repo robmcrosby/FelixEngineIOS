@@ -27,6 +27,15 @@ public:
    inline void setRot(quat r) {_rot = r; _updated = false;}
    inline void setScale(vec3 s) {_scale = s; _updated = false;}
    
+   inline void setToTag(const XMLTag &tag) {
+      if (tag.hasTag("pos"))
+         setPos(vec3::ParseFloat(tag.getSubContents("pos")));
+      if (tag.hasTag("rot"))
+         setRot(quat::ParseFloat(tag.getSubContents("rot")));
+      if (tag.hasTag("scale"))
+         setScale(vec3::ParseFloat(tag.getSubContents("scale")));
+   }
+   
    inline void move(vec3 v) {_pos += v; _updated = false;}
    inline void rotate(quat r) {_rot *= r; _updated = false;}
    inline void scale(vec3 s) {_scale *= s; _updated = false;}

@@ -27,7 +27,7 @@ Camera::~Camera() {
    
 }
 
-void Camera::handleEvent(const Event &event) {
+void Camera::notify(const Event &event) {
    if (event == EVENT_RESIZE)
       updateProjMtx();
    else if (event == EVENT_UPDATE)
@@ -41,7 +41,7 @@ void Camera::handleEvent(const Event &event) {
          removeFromPass(*pass);
    }
    
-   Entity::handleEvent(event);
+   Entity::notify(event);
 }
 
 void Camera::updateProjMtx() {

@@ -34,7 +34,7 @@ OpenGLDisplay::~OpenGLDisplay() {
    OpenGLMesh::ClearMeshes();
 }
 
-void OpenGLDisplay::handleEvent(const Event &event) {
+void OpenGLDisplay::notify(const Event &event) {
    if (event == EVENT_LOAD) {
       OpenGLMesh *plane = OpenGLMesh::GetMesh("plane");
       if (!plane->loaded()) {
@@ -44,6 +44,7 @@ void OpenGLDisplay::handleEvent(const Event &event) {
          delete planeData;
       }
    }
+   HostDisplay::notify(event);
 }
 
 void OpenGLDisplay::clearContext(Color color) {

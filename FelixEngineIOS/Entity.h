@@ -58,16 +58,59 @@ typedef std::vector<Move> Moves;
 
 
 /**
+ * Listener class
+ */
+class EventHandler {
+public:
+   EventHandler(): _subject(0) {}
+   ~EventHandler() {
+      if (_subject)
+         _subject->removeListener(this);
+   }
+   
+   virtual void notify(const Event &event) {notifyListeners(event);}
+   
+   inline EventHandler* getSubject() {return _subject;}
+   inline const EventHandler* getSubject() const {return _subject;}
+   inline void addListener(EventHandler *listener) {
+      if (listener->_subject)
+         listener->_subject->removeListener(listener);
+      _listeners.insert(listener);
+      listener->_subject = this;
+   }
+   inline void removeListener(EventHandler *listener) {
+      _listeners.erase(listener);
+      listener->_subject = NULL;
+   }
+   inline void notifyListeners(const Event &event) {
+      if (_listeners.size()) {
+         std::set<EventHandler*>::iterator itr;
+         std::set<EventHandler*> listeners = _listeners;
+         for (itr = _listeners.begin(); itr != _listeners.end(); ++itr)
+            (*itr)->notify(event);
+      }
+   }
+   inline void clearListeners() {
+      std::set<EventHandler*>::iterator itr;
+      std::set<EventHandler*> listeners = _listeners;
+      for (itr = listeners.begin(); itr != listeners.end(); ++itr)
+         removeListener(*itr);
+   }
+   
+private:
+   std::set<EventHandler*> _listeners;
+   EventHandler *_subject;
+};
+
+/**
  * Base class for all Felix Entities
  */
-class Entity {
+class Entity: public EventHandler {
 public:
    Entity(XMLTag *tag = NULL);
    virtual ~Entity();
    
-   virtual void handleEvent(const Event &event) {notifyListeners(event);}
    virtual void createChildren(XMLTag *tag);
-   
    virtual void addChild(Entity *child) {
       if (child->_parrent)
          child->_parrent->removeChild(child);
@@ -87,31 +130,6 @@ public:
    
    inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
    
-   inline void addListener(Entity *listener) {
-      if (listener->_subject)
-         listener->_subject->removeListener(listener);
-      
-      _listeners.insert(listener);
-      _subject = this;
-   }
-   inline void removeListener(Entity *listener) {
-      _listeners.erase(listener);
-      listener->_subject = NULL;
-   }
-   inline void notifyListeners(const Event &event) {
-      if (_listeners.size()) {
-         std::set<Entity*>::iterator itr;
-         std::set<Entity*> listeners = _listeners;
-         for (itr = _listeners.begin(); itr != _listeners.end(); ++itr)
-            (*itr)->handleEvent(event);
-      }
-   }
-   inline void clearListeners() {
-      std::set<Entity*>::iterator itr;
-      std::set<Entity*> listeners = _listeners;
-      for (itr = listeners.begin(); itr != listeners.end(); ++itr)
-         removeListener(*itr);
-   }
    inline std::string getName() const {
       if (_tag && _tag->hasAttribute("name"))
          return _tag->getAttribute("name");
@@ -130,9 +148,6 @@ protected:
 private:
    std::set<Entity*> _children;
    Entity *_parrent;
-   
-   std::set<Entity*> _listeners;
-   Entity *_subject;
    
    static std::map<std::string, Entity*> EntityMap;
 };

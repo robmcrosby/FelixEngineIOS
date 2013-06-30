@@ -34,11 +34,12 @@ Resources::~Resources() {
    releaseResources();
 }
 
-void Resources::handleEvent(const Event &event) {
+void Resources::notify(const Event &event) {
    if (event == EVENT_LOAD && !_loaded)
       loadResources();
    else if (event == EVENT_UNLOAD && _loaded)
       unloadResources();
+   Entity::notify(event);
 }
 
 void Resources::loadResources() {

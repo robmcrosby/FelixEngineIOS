@@ -23,7 +23,7 @@ public:
    Camera(XMLTag *tag);
    virtual ~Camera();
    
-   virtual void handleEvent(const Event &event);
+   virtual void notify(const Event &event);
    
 protected:
    inline void updateProjMtx();

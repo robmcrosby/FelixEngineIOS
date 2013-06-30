@@ -145,7 +145,7 @@ struct Quaternion {
       return os << "(" << q.x << ", " << q.y << ", " << q.z << ", " << q.w << ")";
    }
    
-   static Quaternion Parse(const std::string &str) {
+   static Quaternion ParseFloat(const std::string &str) {
       Quaternion q;
       sscanf(str.c_str(), " %f , %f , %f , %f", &q.x, &q.y, &q.z, &q.w);
       return q;

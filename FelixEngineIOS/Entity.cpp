@@ -15,16 +15,21 @@ map<string, Entity*> Entity::EntityMap;
 EntityId* EntityId::IDs;
 
 
-Entity::Entity(XMLTag *tag): _tag(tag), _parrent(0), _subject(0) {
-   if (_tag && _tag->hasAttribute("name"))
-      EntityMap[_tag->getAttribute("name")] = this;
+Entity::Entity(XMLTag *tag): _tag(tag), _parrent(0) {
+   if (_tag) {
+      if (_tag->hasTag("Transform"))
+         _transform.setToTag(*_tag->getSubTag("Transform"));
+      else
+         _transform.setToTag(*_tag);
+      
+      if (_tag->hasAttribute("name"))
+         EntityMap[_tag->getAttribute("name")] = this;
+   }
 }
 
 Entity::~Entity() {
    clearListeners();
    clearChildren();
-   if (_subject)
-      _subject->removeListener(this);
 }
 
 void Entity::createChildren(XMLTag *tag) {
@@ -32,7 +37,7 @@ void Entity::createChildren(XMLTag *tag) {
       Entity *child = EntityId::CreateEntity(*itr);
       if (child) {
          addChild(child);
-         if (!child->_subject)
+         if (!child->getSubject())
             addListener(child);
       }
    }

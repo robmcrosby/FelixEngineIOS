@@ -22,28 +22,29 @@ IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Host(dev, size, scale) 
    _fileSys = new IOSFileSystem(this);
    
    createAppEntity();
-   handleEvent(EVENT_LOAD);
+   setActivePipeline(&_defPipe);
+   notify(EVENT_LOAD);
 }
 
 void IOSHost::lowMemory() {
    cout << "LOW MEMORY WARNING" << endl;
-   handleEvent(EVENT_MEM_WARNING);
+   notify(EVENT_MEM_WARNING);
 }
 
 void IOSHost::resize(int sizeX, int sizeY, float scale) {
    _size.x = sizeX;
    _size.y = sizeY;
    _scale = scale;
-   handleEvent(EVENT_RESIZE);
+   notify(EVENT_RESIZE);
 }
 
 void IOSHost::update(float td) {
-   handleEvent(Event(EVENT_UPDATE, &td));
+   notify(Event(EVENT_UPDATE, &td));
 }
 
 void IOSHost::render() {
    _display->emptyPasses();
-   handleEvent(EVENT_RENDER);
+   notify(EVENT_RENDER);
    
    _display->clearContext();
    _display->drawPass(MAIN_PASS);
@@ -51,15 +52,15 @@ void IOSHost::render() {
 }
 
 void IOSHost::touchDown(Moves moves) {
-   handleEvent(Event(EVENT_TOUCH_DOWN, &moves));
+   notify(Event(EVENT_TOUCH_DOWN, &moves));
 }
 
 void IOSHost::touchUp(Moves moves) {
-   handleEvent(Event(EVENT_TOUCH_UP, &moves));
+   notify(Event(EVENT_TOUCH_UP, &moves));
 }
 
 void IOSHost::touchMove(Moves moves) {
-   handleEvent(Event(EVENT_TOUCH_MOVE, &moves));
+   notify(Event(EVENT_TOUCH_MOVE, &moves));
 }
 
 void IOSHost::createAppEntity() {
