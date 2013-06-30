@@ -31,6 +31,16 @@ OpenGLShader* OpenGLShader::GetShader(const std::string &name) {
    return Shaders[name];
 }
 
+void OpenGLShader::CleanUpShaders() {
+   map<string, OpenGLShader*> shaders = Shaders;
+   map<string, OpenGLShader*>::iterator itr;
+   
+   for (itr = shaders.begin(); itr != shaders.end(); ++itr) {
+      if (!itr->second->getCount())
+         delete itr->second;
+   }
+}
+
 void OpenGLShader::ClearShaders() {
    map<string, OpenGLShader*>::iterator itr;
    for (itr = Shaders.begin(); itr != Shaders.end(); ++itr)

@@ -83,6 +83,12 @@ Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
    return ret;
 }
 
+void OpenGLDisplay::cleanUpResources() {
+   OpenGLShader::CleanUpShaders();
+   OpenGLTexture::CleanUpTextures();
+   OpenGLMesh::CleanUpMeshes();
+}
+
 
 const Shader* OpenGLDisplay::getShader(const std::string &name) {
    return OpenGLShader::GetShader(name);

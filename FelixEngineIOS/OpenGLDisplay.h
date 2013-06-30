@@ -27,6 +27,7 @@ public:
    virtual void clearPasses();
    
    virtual Resource* getResource(const XMLTag &tag);
+   virtual void cleanUpResources();
    virtual const Shader* getShader(const std::string &name);
    virtual const Texture* getTexture(const std::string &name);
    virtual const Mesh* getMesh(const std::string &name);

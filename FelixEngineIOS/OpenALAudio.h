@@ -17,6 +17,7 @@ public:
    virtual ~OpenALAudio() {}
    
    virtual Resource* getResource(const XMLTag &tag);
+   virtual void cleanUpResources();
    
 protected:
    Host *_host;

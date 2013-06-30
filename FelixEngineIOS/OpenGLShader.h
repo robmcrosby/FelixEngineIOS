@@ -22,6 +22,7 @@ private:
    
 public:
    static OpenGLShader* GetShader(const std::string &name);
+   static void CleanUpShaders();
    static void ClearShaders();
    
    virtual void load();

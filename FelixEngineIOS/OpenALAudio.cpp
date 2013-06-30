@@ -19,3 +19,7 @@ OpenALAudio::OpenALAudio(Host *host): _host(host) {
 Resource* OpenALAudio::getResource(const XMLTag &tag) {
    return NULL;
 }
+
+void OpenALAudio::cleanUpResources() {
+   // look at display cleanuResources for how to implement
+}

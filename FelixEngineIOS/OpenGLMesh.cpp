@@ -33,6 +33,16 @@ OpenGLMesh* OpenGLMesh::GetMesh(const string &name) {
    return Meshes[name];
 }
 
+void OpenGLMesh::CleanUpMeshes() {
+   map<string, OpenGLMesh*> meshes = Meshes;
+   map<string, OpenGLMesh*>::iterator itr;
+   
+   for (itr = meshes.begin(); itr != meshes.end(); ++itr) {
+      if (!itr->second->getCount())
+         delete itr->second;
+   }
+}
+
 void OpenGLMesh::ClearMeshes() {
    map<string, OpenGLMesh*>::iterator itr;
    for (itr = Meshes.begin(); itr != Meshes.end(); ++itr)

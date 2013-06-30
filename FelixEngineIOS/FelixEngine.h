@@ -37,6 +37,7 @@ public:
    virtual void clearPasses() = 0;
    
    virtual Resource* getResource(const XMLTag &tag) = 0;
+   virtual void cleanUpResources() = 0;
    virtual const Shader* getShader(const std::string &name) = 0;
    virtual const Texture* getTexture(const std::string &name) = 0;
    virtual const Mesh* getMesh(const std::string &name) = 0;
@@ -62,6 +63,7 @@ public:
    virtual ~HostAudio() {}
    
    virtual Resource* getResource(const XMLTag &tag) = 0;
+   virtual void cleanUpResources() = 0;
 };
 
 /**
@@ -97,6 +99,10 @@ public:
       else if (tag == "Sound")
          return _audio->getResource(tag);
       return NULL;
+   }
+   inline void cleanUpResources() {
+      _display->cleanUpResources();
+      _audio->cleanUpResources();
    }
    
    static Host* GetHost() {return Instance;}

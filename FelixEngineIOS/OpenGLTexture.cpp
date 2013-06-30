@@ -30,6 +30,16 @@ OpenGLTexture* OpenGLTexture::GetTexture(const string &name) {
    return Textures[name];
 }
 
+void OpenGLTexture::CleanUpTextures() {
+   map<string, OpenGLTexture*> textures = Textures;
+   map<string, OpenGLTexture*>::iterator itr;
+   
+   for (itr = textures.begin(); itr != textures.end(); ++itr) {
+      if (!itr->second->getCount())
+         delete itr->second;
+   }
+}
+
 void OpenGLTexture::ClearTextures() {
    map<string, OpenGLTexture*>::iterator itr;
    for (itr = Textures.begin(); itr != Textures.end(); ++itr)

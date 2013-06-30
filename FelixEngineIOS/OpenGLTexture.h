@@ -19,6 +19,7 @@ private:
    
 public:
    static OpenGLTexture* GetTexture(const std::string &name);
+   static void CleanUpTextures();
    static void ClearTextures();
    
    virtual void load();

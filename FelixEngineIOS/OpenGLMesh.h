@@ -19,6 +19,7 @@ private:
    
 public:
    static OpenGLMesh* GetMesh(const std::string &name);
+   static void CleanUpMeshes();
    static void ClearMeshes();
    
    virtual void load();
