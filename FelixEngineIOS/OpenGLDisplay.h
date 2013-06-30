@@ -31,6 +31,10 @@ public:
    virtual const Texture* getTexture(const std::string &name);
    virtual const Mesh* getMesh(const std::string &name);
    
+   virtual void setShaderData(const std::string &name, const ShaderData &data);
+   virtual void setTextureData(const std::string &name, const TextureData &data);
+   virtual void setMeshData(const std::string &name, const MeshData &data);
+   
    virtual void setCurShader(const Shader *sh);
    virtual void setCurUniforms(const Uniforms *uniforms);
    virtual void setCurAttributes(const Attributes *attributes);

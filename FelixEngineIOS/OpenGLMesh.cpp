@@ -16,14 +16,15 @@ using namespace std;
 map<string, OpenGLMesh*> OpenGLMesh::Meshes;
 
 OpenGLMesh::OpenGLMesh(const std::string &name): Mesh(XMLTag("Mesh")), _vertex(0), _index(0) {
-   _tag.setAttribute("name", name);
+   _tag.setAttribute(ATT_NAME, name);
    Meshes[name] = this;
    _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();
 }
 
 OpenGLMesh::~OpenGLMesh() {
-   
+   Meshes.erase(_tag.getAttribute(ATT_NAME));
+   deleteMesh();
 }
 
 OpenGLMesh* OpenGLMesh::GetMesh(const string &name) {
@@ -40,43 +41,48 @@ void OpenGLMesh::ClearMeshes() {
 }
 
 void OpenGLMesh::load() {
-   if (_tag.hasAttribute("src") && !loaded()) {
+   Mesh::load();
+   
+   if (!loaded() && _tag.hasAttribute("src")) {
       string src = _tag.getAttribute("src");
       string path = "Meshes/" + src;
       map<string, MeshData*> data;
       map<string, MeshData*>::iterator itr;
       
-      if (_tag.hasAttribute("name"))
-         data[_tag.getAttribute("name")] = NULL;
-      else
-         Mesh::load();
+      // create a null data item for this mesh
+      if (_tag.hasAttribute(ATT_NAME))
+         data[_tag.getAttribute(ATT_NAME)] = NULL;
       
+      // load the data to the meshes
       if (_filesys->loadMeshes(path, &data)) {
          for (itr = data.begin(); itr != data.end(); ++itr) {
-            GetMesh(itr->first)->loadData(*itr->second, src);
-            delete itr->second;
+            if (itr->second) {
+               itr->second->file = src;
+               GetMesh(itr->first)->setToData(*itr->second);
+            }
          }
       }
-      else {
-         for (itr = data.begin(); itr != data.end(); ++itr)
-            delete itr->second;
-      }
+      
+      // delete the data
+      for (itr = data.begin(); itr != data.end(); ++itr)
+         delete itr->second;
    }
-   else
-      Mesh::load();
 }
 
 void OpenGLMesh::unload() {
-   if (loaded()) {
-      Mesh::unload();
-      if (!loaded()) {
-         glDeleteBuffers(1, &_vertex);
-         if (_index)
-            glDeleteBuffers(1, &_index);
-         
-         cout << "unloaded mesh: " << _tag.getAttribute("name") << endl;
-      }
-   }
+   Mesh::unload();
+   
+   if (!getCount())
+      deleteMesh();
+}
+
+void OpenGLMesh::setToData(const MeshData &data) {
+   // set the src file for reloading
+   if (data.file != "")
+      _tag.setAttribute("src", data.file);
+   
+   // load the data
+   loadData(data);
 }
 
 void OpenGLMesh::use() const {
@@ -97,14 +103,7 @@ void OpenGLMesh::draw() const {
    }
 }
 
-void OpenGLMesh::loadData(const MeshData &data, const std::string &src) {
-   if (loaded()) {
-      Mesh::load();
-      return;
-   }
-   
-   _tag.setAttribute("src", src);
-   
+void OpenGLMesh::loadData(const MeshData &data) {
    _primType = data.primType == PRIM_TRI ? GL_TRIANGLES : GL_TRIANGLE_STRIP;
    _attributes = data.attributes;
    _drawCount = data.vertices.size()/_attributes.getStride();
@@ -137,6 +136,20 @@ void OpenGLMesh::loadData(const MeshData &data, const std::string &src) {
       _drawCount = data.indices.size();
    }
    
-   Mesh::load();
-   cout << "loaded mesh: " << _tag.getAttribute("name") << endl;
+   cout << "loaded mesh: " << _tag.getAttribute(ATT_NAME) << endl;
+   _loaded = true;
 }
+
+void OpenGLMesh::deleteMesh() {
+   if (!loaded()) {
+      glDeleteBuffers(1, &_vertex);
+      if (_index)
+         glDeleteBuffers(1, &_index);
+      
+      _vertex = 0;
+      _index = 0;
+      _loaded = false;
+      cout << "unloaded mesh: " << _tag.getAttribute(ATT_NAME) << endl;
+   }
+}
+

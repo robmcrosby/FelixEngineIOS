@@ -67,7 +67,7 @@ void OpenGLDisplay::clearPasses() {
 }
 
 Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
-   string name = tag.getAttribute("name");
+   string name = tag.getAttribute(ATT_NAME);
    Resource *ret = NULL;
    
    if (tag == "Shader")
@@ -83,6 +83,7 @@ Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
    return ret;
 }
 
+
 const Shader* OpenGLDisplay::getShader(const std::string &name) {
    return OpenGLShader::GetShader(name);
 }
@@ -95,6 +96,18 @@ const Mesh* OpenGLDisplay::getMesh(const std::string &name) {
    return OpenGLMesh::GetMesh(name);
 }
 
+
+void OpenGLDisplay::setShaderData(const string &name, const ShaderData &data) {
+   OpenGLShader::GetShader(name)->setToData(data);
+}
+
+void OpenGLDisplay::setTextureData(const string &name, const TextureData &data) {
+   OpenGLTexture::GetTexture(name)->setToData(data);
+}
+
+void OpenGLDisplay::setMeshData(const string &name, const MeshData &data) {
+   OpenGLMesh::GetMesh(name)->setToData(data);
+}
 
 
 void OpenGLDisplay::setCurShader(const Shader *sh) {

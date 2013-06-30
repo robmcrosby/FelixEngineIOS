@@ -24,12 +24,21 @@ enum PRIM_TYPE {
 };
 
 /**
+ Data for a shader
+ */
+struct ShaderData {
+   std::string vFile, fFile;
+   std::string vSrc, fSrc;
+};
+
+/**
  * Data for a texture
  */
 struct TextureData {
    TextureData(): data(0) {}
    ~TextureData() {free(data);}
    
+   std::string file;
    TEX_TYPE type;
    ivec2 size;
    int pixelSize;
@@ -40,6 +49,7 @@ struct TextureData {
  * Data for a mesh
  */
 struct MeshData {
+   std::string file;
    std::vector<float> vertices;
    std::vector<unsigned int> indices;
    Attributes attributes;

@@ -27,11 +27,15 @@ public:
    virtual void load();
    virtual void unload();
    
+   virtual void setToData(const ShaderData &data);
+   
    virtual void use() const;
    virtual void setUniforms(const Uniforms *unis) const;
    virtual void setAttributes(const Attributes *atts) const;
    
 private:
+   inline void loadData(const ShaderData &data);
+   inline void deleteShader();
    inline void setUniform(const std::string &name, const Uniform &uni) const;
    inline void setTextures();
    

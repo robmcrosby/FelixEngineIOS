@@ -24,11 +24,14 @@ public:
    virtual void load();
    virtual void unload();
    
+   virtual void setToData(const MeshData &data);
+   
    virtual void use() const;
    virtual void draw() const;
    
 private:
-   inline void loadData(const MeshData &data, const std::string &src);
+   inline void loadData(const MeshData &data);
+   inline void deleteMesh();
    
    HostDisplay *_display;
    HostFileSystem *_filesys;

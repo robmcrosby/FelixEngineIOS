@@ -14,14 +14,15 @@ map<string, OpenGLShader*> OpenGLShader::Shaders;
 
 
 OpenGLShader::OpenGLShader(const string &name): Shader(XMLTag("Shader")), _program(0) {
-   _tag.setAttribute("name", name);
+   _tag.setAttribute(ATT_NAME, name);
    Shaders[name] = this;
    _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();
 }
 
 OpenGLShader::~OpenGLShader() {
-   unload();
+   Shaders.erase(_tag.getAttribute(ATT_NAME));
+   deleteShader();
 }
 
 OpenGLShader* OpenGLShader::GetShader(const std::string &name) {
@@ -38,57 +39,32 @@ void OpenGLShader::ClearShaders() {
 }
 
 void OpenGLShader::load() {
-   if (!loaded()) {
-      ShaderPart vertPart(GL_VERTEX_SHADER), fragPart(GL_FRAGMENT_SHADER);
-      string vertSrc(_filesys->loadTxt("Shaders/" + _tag.getAttribute("vert")));
-      string fragSrc(_filesys->loadTxt("Shaders/" + _tag.getAttribute("frag")));
-      
-      if (vertPart.compile(vertSrc) && fragPart.compile(fragSrc)) {
-         GLint linkSuccess;
-         
-         _program = glCreateProgram();
-         if (!_program) {
-            cerr << "error creating shader program: ";
-            cerr << _tag.getAttribute("name") << endl;
-            return;
-         }
-         
-         vertPart.attach(_program);
-         fragPart.attach(_program);
-         glLinkProgram(_program);
-         glGetProgramiv(_program, GL_LINK_STATUS, &linkSuccess);
-         if (linkSuccess == GL_FALSE) {
-            GLchar messages[MSG_SIZE];
-            glGetProgramInfoLog(_program, sizeof(messages), 0, &messages[0]);
-            
-            vertPart.detatch(_program);
-            fragPart.detatch(_program);
-            _program = 0;
-            cerr << messages << endl;
-         }
-         else {
-            setTextures();
-            
-            vertPart.detatch(_program);
-            fragPart.detatch(_program);
-            
-            Shader::load();
-            cout << "loaded shader: " << _tag.getAttribute("name") << endl;
-         }
-      }
+   Shader::load();
+   
+   if (!loaded() && _tag.hasAttribute("vert") && _tag.hasAttribute("frag")) {
+      ShaderData data;
+      data.vSrc = _filesys->loadTxt("Shaders/" + _tag.getAttribute("vert"));
+      data.fSrc = _filesys->loadTxt("Shaders/" + _tag.getAttribute("frag"));
+      loadData(data);
    }
-   else
-      Shader::load();
 }
 
 void OpenGLShader::unload() {
-   if (loaded()) {
-      Shader::unload();
-      if (!loaded()) {
-         glDeleteProgram(_program);
-         _program = 0;
-         cout << "unloaded shader: " << _tag.getAttribute("name") << endl;
+   Shader::unload();
+   
+   if (!getCount())
+      deleteShader();
+}
+
+void OpenGLShader::setToData(const ShaderData &data) {
+   if (!loaded()) {
+      // set attributes for reloading
+      if (data.vFile != "" && data.fFile != "") {
+         _tag.setAttribute("vert", data.vFile);
+         _tag.setAttribute("frag", data.fFile);
       }
+      
+      loadData(data);
    }
 }
 
@@ -125,6 +101,53 @@ void OpenGLShader::setAttributes(const Attributes *atts) const {
             glVertexAttribPointer(loc, size, GL_FLOAT, GL_FALSE, stride, offset);
          }
       }
+   }
+}
+
+void OpenGLShader::loadData(const ShaderData &data) {
+   ShaderPart vertPart(GL_VERTEX_SHADER), fragPart(GL_FRAGMENT_SHADER);
+   
+   if (vertPart.compile(data.vSrc) && fragPart.compile(data.fSrc)) {
+      GLint linkSuccess;
+      
+      _program = glCreateProgram();
+      if (!_program) {
+         cerr << "error creating shader program: ";
+         cerr << _tag.getAttribute(ATT_NAME) << endl;
+         return;
+      }
+      
+      vertPart.attach(_program);
+      fragPart.attach(_program);
+      glLinkProgram(_program);
+      glGetProgramiv(_program, GL_LINK_STATUS, &linkSuccess);
+      if (linkSuccess == GL_FALSE) {
+         GLchar messages[MSG_SIZE];
+         glGetProgramInfoLog(_program, sizeof(messages), 0, &messages[0]);
+         
+         vertPart.detatch(_program);
+         fragPart.detatch(_program);
+         _program = 0;
+         cerr << messages << endl;
+      }
+      else {
+         setTextures();
+         
+         vertPart.detatch(_program);
+         fragPart.detatch(_program);
+
+         _loaded = true;
+         cout << "loaded shader: " << _tag.getAttribute(ATT_NAME) << endl;
+      }
+   }
+}
+
+void OpenGLShader::deleteShader() {
+   if (loaded()) {
+      glDeleteProgram(_program);
+      _program = 0;
+      _loaded = false;
+      cout << "deleted shader: " << _tag.getAttribute(ATT_NAME) << endl;
    }
 }
 

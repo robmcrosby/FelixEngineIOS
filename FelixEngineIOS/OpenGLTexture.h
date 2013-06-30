@@ -24,9 +24,13 @@ public:
    virtual void load();
    virtual void unload();
    
+   virtual void setToData(const TextureData &data);
    virtual void use(int idx) const;
    
 private:
+   inline void loadData(const TextureData &data);
+   inline void deleteTexture();
+   
    HostFileSystem *_filesys;
    GLuint _texture;
    
