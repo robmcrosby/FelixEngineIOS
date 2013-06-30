@@ -34,6 +34,18 @@ OpenGLDisplay::~OpenGLDisplay() {
    OpenGLMesh::ClearMeshes();
 }
 
+void OpenGLDisplay::handleEvent(const Event &event) {
+   if (event == EVENT_LOAD) {
+      OpenGLMesh *plane = OpenGLMesh::GetMesh("plane");
+      if (!plane->loaded()) {
+         MeshData *planeData = Mesh::GetPlaneData();
+         plane->setToData(*planeData);
+         plane->retain();
+         delete planeData;
+      }
+   }
+}
+
 void OpenGLDisplay::clearContext(Color color) {
    glClearColor(color.r, color.g, color.b, color.a);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

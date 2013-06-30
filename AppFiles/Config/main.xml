@@ -3,7 +3,6 @@
    <Resources>
       <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
       <Mesh name="bunny" src="bunny.obj"/>
-      <Mesh name="plane" src="plane.obj"/>
       <Texture name="grid" src="grid.png"/>
    </Resources>
    <Camera>

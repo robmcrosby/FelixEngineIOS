@@ -44,10 +44,11 @@ void OpenGLMesh::CleanUpMeshes() {
 }
 
 void OpenGLMesh::ClearMeshes() {
+   map<string, OpenGLMesh*> meshes = Meshes;
    map<string, OpenGLMesh*>::iterator itr;
+   
    for (itr = Meshes.begin(); itr != Meshes.end(); ++itr)
       delete itr->second;
-   Meshes.clear();
 }
 
 void OpenGLMesh::load() {

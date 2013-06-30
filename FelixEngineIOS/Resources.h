@@ -80,6 +80,8 @@ struct Mesh: public Resource {
    
    virtual void use() const = 0;
    virtual void draw() const = 0;
+   
+   static MeshData* GetPlaneData();
 };
 
 /**

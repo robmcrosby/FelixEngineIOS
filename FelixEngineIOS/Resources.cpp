@@ -66,3 +66,21 @@ void Resources::releaseResources() {
    Host::GetHost()->cleanUpResources();
 }
 
+
+MeshData* Mesh::GetPlaneData() {
+   MeshData *data = new MeshData();
+   float vertices[] {
+      0.5f, -0.5f, 0,   1.0f, 0.0f,   0, 0, 1.0f,
+      0.5f,  0.5f, 0,   1.0f, 1.0f,   0, 0, 1.0f,
+      -0.5f, -0.5f, 0,   0.0f, 0.0f,   0, 0, 1.0f,
+      -0.5f,  0.5f, 0,   0.0f, 1.0f,   0, 0, 1.0f
+   };
+   
+   data->vertices.insert(data->vertices.begin(), vertices, vertices+32);
+   data->primType = PRIM_TRI_STRIP;
+   data->attributes.addAttribute("Pos", 3, 0);
+   data->attributes.addAttribute("Tex", 2, 3);
+   data->attributes.addAttribute("Norm", 3, 5);
+   
+   return data;
+};

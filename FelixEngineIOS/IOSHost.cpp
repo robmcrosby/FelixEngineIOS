@@ -22,6 +22,7 @@ IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Host(dev, size, scale) 
    _fileSys = new IOSFileSystem(this);
    
    createAppEntity();
+   handleEvent(EVENT_LOAD);
 }
 
 void IOSHost::lowMemory() {

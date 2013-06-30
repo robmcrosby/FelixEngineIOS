@@ -15,14 +15,15 @@ DEFINE_ENTITY_ID(ObjViewer)
 ObjViewer::ObjViewer(XMLTag *tag): Entity(tag) {
    createChildren(_tag);
    
-   handleEvent(EVENT_LOAD);
-   
-   bunny = Entity::GetEntity("bunny");
    plane = Entity::GetEntity("plane");
-   
    if (plane) {
       plane->getTransform()->setPos(vec3(0, 0, -5));
-      plane->getTransform()->scale(5);
+      plane->getTransform()->scale(10);
+   }
+   
+   bunny = Entity::GetEntity("bunny");
+   if (bunny) {
+      bunny->getTransform()->setPos(vec3(0, -5, 0));
    }
 }
 
