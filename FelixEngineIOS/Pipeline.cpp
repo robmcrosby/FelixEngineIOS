@@ -29,14 +29,6 @@ Pipeline::~Pipeline() {
       delete *itr;
 }
 
-void Pipeline::notify(const Event &event) {
-   if (_display && event == EVENT_RESIZE) {
-      list<PipeItem*>::iterator itr;
-      for (itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
-         (*itr)->update();
-   }
-}
-
 void Pipeline::load(HostDisplay *display) {
    list<PipeItem*>::iterator itr;
    

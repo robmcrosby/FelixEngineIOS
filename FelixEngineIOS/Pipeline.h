@@ -22,7 +22,6 @@ public:
    Pipeline(XMLTag *tag);
    virtual ~Pipeline();
    
-   virtual void notify(const Event &event);
    virtual void load(HostDisplay *display);
    virtual void unload();
    virtual void exec();
@@ -37,7 +36,6 @@ public:
       
       virtual void load(HostDisplay *display) {_display = display;}
       virtual void unload() {_display = NULL;}
-      virtual void update() {}
       virtual void exec() {}
       
    protected:
