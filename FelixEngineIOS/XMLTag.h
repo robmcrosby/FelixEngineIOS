@@ -12,6 +12,7 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <set>
 #include <list>
 
 class XMLTag {
@@ -26,17 +27,17 @@ public:
       clearSubTags();
    }
    
-   typedef std::list<XMLTag*>::iterator iterator;
-   typedef std::list<XMLTag*>::const_iterator const_iterator;
+   typedef std::set<XMLTag*>::iterator iterator;
+   typedef std::set<XMLTag*>::const_iterator const_iterator;
    
    inline void clearSubTags() {
       while (_subTags.size())
-         delete _subTags.front();
+         delete *_subTags.begin();
    }
    inline void addSubTag(XMLTag *tag) {
       tag->_level = 1 + _level;
       tag->_parrent = this;
-      _subTags.push_back(tag);
+      _subTags.insert(tag);
    }
    inline void copySubTags(const XMLTag &tag) {
       for (const_iterator itr = tag.begin(); itr != tag.end(); ++itr)
@@ -46,7 +47,7 @@ public:
    inline void removeSubTag(XMLTag *tag) {
       tag->_level = 0;
       tag->_parrent = NULL;
-      _subTags.remove(tag);
+      _subTags.erase(tag);
    }
    inline bool deleteSubTag(const std::string &e) {
       iterator itr = find(e, begin());
@@ -112,10 +113,10 @@ public:
       const_iterator itr = findSubTag(e);
       return itr != end() ? *itr : NULL;
    }
-   inline void getSubTags(std::list<XMLTag*> *tags, const std::string &e) {
+   inline void getSubTags(std::set<XMLTag*> *tags, const std::string &e) {
       for (iterator itr = begin(); itr != end(); ++itr) {
          if (**itr == e)
-            tags->push_back(*itr);
+            tags->insert(*itr);
       }
    }
    
@@ -266,7 +267,7 @@ private:
    std::string _element;
    std::string _contents;
    
-   std::list<XMLTag*> _subTags;
+   std::set<XMLTag*> _subTags;
    std::map<std::string, std::string> _attributes;
 };
 

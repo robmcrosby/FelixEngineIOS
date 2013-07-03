@@ -45,10 +45,7 @@ void IOSHost::update(float td) {
 void IOSHost::render() {
    _display->emptyPasses();
    notify(EVENT_RENDER);
-   
-   _display->clearContext();
-   _display->drawPass(MAIN_PASS);
-   _display->drawPass(SCREEN_PASS);
+   _display->render();
 }
 
 void IOSHost::touchDown(Moves moves) {

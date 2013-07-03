@@ -111,41 +111,29 @@ public:
    virtual ~Entity();
    
    virtual void createChildren(XMLTag *tag);
-   virtual void addChild(Entity *child) {
-      if (child->_parrent)
-         child->_parrent->removeChild(child);
-      child->_parrent = this;
-      _children.insert(child);
-   }
-   virtual void removeChild(Entity *child) {
-      if (child->_parrent == this)
-         child->_parrent = NULL;
-      _children.erase(child);
-   }
+   virtual void addChild(Entity *child);
+   virtual void removeChild(Entity *child);
    inline void clearChildren() {
       std::set<Entity*>::iterator itr;
       for (itr = _children.begin(); itr != _children.end(); ++itr)
          delete *itr;
    }
    
-   inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
-   
-   inline std::string getName() const {
-      if (_tag && _tag->hasAttribute("name"))
-         return _tag->getAttribute("name");
-      return "";
-   }
-   
+   inline std::string getName() const {return _name;}
    inline Transform* getTransform() {return &_transform;}
    inline const Transform* getTransform() const {return &_transform;}
+   inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
    
    static Entity* GetEntity(const std::string &name);
    
 protected:
+   std::string _name;
    Transform _transform;
    XMLTag *_tag;
    
 private:
+   inline void applyTag();
+   
    std::set<Entity*> _children;
    Entity *_parrent;
    

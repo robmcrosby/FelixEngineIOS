@@ -16,15 +16,21 @@
 using namespace std;
 
 OpenGLDisplay::OpenGLDisplay(Host *host):
-_host(host), _curDrawType(DRAW_DEPTH), _curShader(0) {
+_host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPipeline(0) {
    host->addListener(this);
    
+   // set inital OpenGL settings
    glEnable(GL_CULL_FACE);
    glCullFace(GL_BACK);
    glEnable(GL_TEXTURE_2D);
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    glEnable(GL_DEPTH_TEST);
    
+   // set the default pipeline
+   _curPipeline = &_defPipeline;
+   _curPipeline->load(this);
+   
+   // initalize the default passes
    clearPasses();
 }
 
@@ -50,6 +56,10 @@ void OpenGLDisplay::notify(const Event &event) {
 void OpenGLDisplay::clearContext(Color color) {
    glClearColor(color.r, color.g, color.b, color.a);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void OpenGLDisplay::render() {
+   _curPipeline->exec();
 }
 
 void OpenGLDisplay::drawPass(const std::string &pass) {
@@ -147,6 +157,16 @@ void OpenGLDisplay::setCurAttributes(const Attributes *attributes) {
       _curShader->setAttributes(attributes);
 }
 
+void OpenGLDisplay::setCurPipeline(Pipeline *pipeline) {
+   if (!pipeline)
+      pipeline = &_defPipeline;
+   
+   if (_curPipeline != pipeline) {
+      _curPipeline->unload();
+      _curPipeline = pipeline;
+      _curPipeline->load(this);
+   }
+}
 
 
 void OpenGLDisplay::addPassUniform(const string &name, const Uniform &uniform, const std::string &pass) {

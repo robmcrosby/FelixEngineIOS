@@ -16,11 +16,26 @@
 #define MAIN_PASS "main"
 #define SCREEN_PASS "screen"
 
-class Drawable;
-
 enum DEV_TYPE {
    DEV_PHONE,
    DEV_TABLET,
+};
+
+struct Drawable {
+   virtual ~Drawable() {}
+   
+   virtual bool isVisible() const = 0;
+   virtual DRAW_TYPE getDrawType() const = 0;
+   virtual std::string getPass() const = 0;
+   virtual int getLayer() const = 0;
+   
+   virtual void setDrawType(DRAW_TYPE type) = 0;
+   virtual void setVisiblity(bool vis) = 0;
+   virtual void setPass(const std::string &pass) = 0;
+   virtual void setLayer(int layer) = 0;
+   
+   // used only by HostDisplay
+   virtual void draw() const = 0;
 };
 
 /**
@@ -31,6 +46,8 @@ public:
    virtual ~HostDisplay() {}
    
    virtual void clearContext(Color color = Color()) = 0;
+   
+   virtual void render() = 0;
    
    virtual void drawPass(const std::string &pass) = 0;
    virtual void addToPass(const Drawable *drawable, const std::string &pass) = 0;
@@ -50,6 +67,8 @@ public:
    virtual void setCurShader(const Shader *sh) = 0;
    virtual void setCurUniforms(const Uniforms *uniforms) = 0;
    virtual void setCurAttributes(const Attributes *attributes) = 0;
+   
+   virtual void setCurPipeline(Pipeline *pipeline = 0) = 0;
    
    virtual void addPassUniform(const std::string &name, const Uniform &uniform, const std::string &pass) = 0;
    virtual void removePassUniform(const std::string &name, const std::string &pass) = 0;
@@ -73,6 +92,7 @@ public:
 class HostFileSystem: public Entity {
 public:
    virtual ~HostFileSystem() {}
+   
    virtual std::string loadTxt(const std::string &path) const = 0;
    virtual XMLTag* loadXML(const std::string &path) const = 0;
    virtual TextureData* loadTexture(const std::string &path) const = 0;

@@ -11,7 +11,6 @@
 
 #include <map>
 #include "FelixEngine.h"
-#include "Drawable.h"
 
 
 class OpenGLDisplay: public HostDisplay {
@@ -21,6 +20,8 @@ public:
    
    virtual void notify(const Event &event);
    virtual void clearContext(Color color);
+   
+   virtual void render();
    
    virtual void drawPass(const std::string &pass);
    virtual void addToPass(const Drawable *drawable, const std::string &pass);
@@ -40,6 +41,8 @@ public:
    virtual void setCurShader(const Shader *sh);
    virtual void setCurUniforms(const Uniforms *uniforms);
    virtual void setCurAttributes(const Attributes *attributes);
+   
+   virtual void setCurPipeline(Pipeline *pipeline);
    
    virtual void addPassUniform(const std::string &name, const Uniform &uniform, const std::string &pass);
    virtual void removePassUniform(const std::string &name, const std::string &pass);
@@ -82,6 +85,8 @@ private:
    Host *_host;
    DRAW_TYPE _curDrawType;
    const Shader *_curShader;
+   Pipeline _defPipeline;
+   Pipeline *_curPipeline;
    std::string _curPass;
    
    Passes _passes;

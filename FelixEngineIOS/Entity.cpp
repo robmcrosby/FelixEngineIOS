@@ -16,20 +16,39 @@ EntityId* EntityId::IDs;
 
 
 Entity::Entity(XMLTag *tag): _tag(tag), _parrent(0) {
-   if (_tag) {
-      if (_tag->hasTag("Transform"))
-         _transform.setToTag(*_tag->getSubTag("Transform"));
-      else
-         _transform.setToTag(*_tag);
-      
-      if (_tag->hasAttribute("name"))
-         EntityMap[_tag->getAttribute("name")] = this;
-   }
+   applyTag();
 }
 
 Entity::~Entity() {
    clearListeners();
    clearChildren();
+}
+
+void Entity::applyTag() {
+   if (_tag) {
+      // set the transform
+      if (_tag->hasTag("Transform"))
+         _transform.applyTag(*_tag->getSubTag("Transform"));
+      else
+         _transform.applyTag(*_tag);
+      
+      // set the name and update the entity map
+      if (_tag->hasAttribute("name")) {
+         string name = _tag->getAttribute("name");
+         
+         // reset or add entity to entity map
+         if (_name != "" && _name != name)
+            EntityMap.erase(_name);
+         _name = name;
+         if (_name != "")
+            EntityMap[_name] = this;
+      }
+      else {
+         if (_name != "")
+            EntityMap.erase(_name);
+         _name = "";
+      }
+   }
 }
 
 void Entity::createChildren(XMLTag *tag) {
@@ -41,6 +60,19 @@ void Entity::createChildren(XMLTag *tag) {
             addListener(child);
       }
    }
+}
+
+void Entity::addChild(Entity *child) {
+   if (child->_parrent)
+      child->_parrent->removeChild(child);
+   child->_parrent = this;
+   _children.insert(child);
+}
+
+void Entity::removeChild(Entity *child) {
+   if (child->_parrent == this)
+      child->_parrent = NULL;
+   _children.erase(child);
 }
 
 Entity* Entity::GetEntity(const string &name) {
