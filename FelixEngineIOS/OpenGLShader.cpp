@@ -15,9 +15,9 @@ map<string, OpenGLShader*> OpenGLShader::Shaders;
 
 OpenGLShader::OpenGLShader(const string &name): Shader(XMLTag("Shader")), _program(0) {
    _tag.setAttribute(ATT_NAME, name);
-   Shaders[name] = this;
    _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();
+   Shaders[name] = this;
 }
 
 OpenGLShader::~OpenGLShader() {

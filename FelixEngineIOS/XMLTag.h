@@ -47,7 +47,8 @@ public:
    inline void removeSubTag(XMLTag *tag) {
       tag->_level = 0;
       tag->_parrent = NULL;
-      _subTags.erase(tag);
+      if (_subTags.find(tag) != _subTags.end())
+         _subTags.erase(tag);
    }
    inline bool deleteSubTag(const std::string &e) {
       iterator itr = find(e, begin());

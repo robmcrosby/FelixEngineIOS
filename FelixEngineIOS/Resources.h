@@ -21,7 +21,7 @@ enum DRAW_TYPE {
 };
 
 /**
- * Base class for all resources
+ Base class for all resources
  */
 class Resource {
 public:
@@ -43,11 +43,10 @@ protected:
    XMLTag _tag;
    size_t _count;
    bool _loaded;
-   
 };
 
 /**
- * Base class for shader resources
+ Base class for shader resources
  */
 class Shader: public Resource {
 public:
@@ -61,7 +60,7 @@ public:
 };
 
 /**
- * Base class for textures
+ Base class for textures
  */
 struct Texture: public Resource {
    Texture(const XMLTag &tag): Resource(tag) {}
@@ -71,7 +70,7 @@ struct Texture: public Resource {
 };
 
 /**
- * Base class for meshes
+ Base class for meshes
  */
 struct Mesh: public Resource {
    Mesh(const XMLTag &tag): Resource(tag) {}
@@ -85,8 +84,18 @@ struct Mesh: public Resource {
 };
 
 /**
- * Initally only contains file paths to resources. After loading, this
- * contains resources associated with the file paths.
+ Base class for frame buffer objects
+ */
+struct FrameBuff: public Resource {
+   FrameBuff(const XMLTag &tag): Resource(tag) {}
+   
+   virtual void setToData(const FrameBuffData &data) = 0;
+   virtual void use() const = 0;
+};
+
+/**
+ Initally only contains file paths to resources. After loading, this
+ contains resources associated with the file paths.
  */
 class Resources: Entity {
 public:

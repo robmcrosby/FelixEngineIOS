@@ -37,7 +37,7 @@ protected:
    float _near, _far;
    vec2 _size;
    
-   vec3 _eye, _center, _up;
+   vec3 _pos, _center, _up;
    
    Host *_host;
    HostDisplay *_display;

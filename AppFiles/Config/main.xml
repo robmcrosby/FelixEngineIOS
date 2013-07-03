@@ -4,17 +4,25 @@
       <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
       <Mesh name="bunny" src="bunny.obj"/>
       <Texture name="grid" src="grid.png"/>
+      <FrameBuff name="fbo1" flags="fixed">
+         <size>1024, 1024</size>
+         <Texture name="fbo1" type="RGBA"/>
+      </FrameBuff>
    </Resources>
    <Pipeline>
+      <Frame>fbo1</Frame>
       <Clear>0, 0, 0, 1</Clear>
       <Pass>main</Pass>
+      <Frame>final</Frame>
+      <Clear>0, 0, 1, 1</Clear>
       <Pass>screen</Pass>
    </Pipeline>
    <Camera>
-      <pos>0, 0, -10</pos>
+      <eye>0, 0, -10</eye>
       <target>0, 0, 0</target>
       <up>0, 1, 0</up>
-      <pass>0</pass>
+      <pass>main</pass>
+      <pass>screen</pass>
    </Camera>
    <Object3d name="bunny">
       <pos>0, -5, 0</pos>
@@ -22,13 +30,13 @@
       <Mesh name="bunny"/>
       <Texture name="grid"/>
    </Object3d>
-   <Object3d name="plane">
+   <Object3d name="plane" pass="screen">
       <Transform>
-         <pos>0, 0, -5</pos>
+         <pos>0, 0, 0</pos>
          <scale>10</scale>
       </Transform>
       <Shader name="texture"/>
       <Mesh name="plane"/>
-      <Texture name="grid"/>
+      <Texture name="fbo1"/>
    </Object3d>
 </ObjViewer>

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		372620C81780C31C00DC6AAD /* Pipeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372620C61780C19D00DC6AAD /* Pipeline.cpp */; };
+		37326A8B1783E53C00DF31F1 /* OpenGLFrameBuff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37326A891783E53C00DF31F1 /* OpenGLFrameBuff.cpp */; };
 		37376B0017751BF8008CFD8A /* OpenGLTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */; };
 		37376B0617767AB6008CFD8A /* ObjLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376B0417767AB6008CFD8A /* ObjLoader.cpp */; };
 		37376B0B17779677008CFD8A /* Entity.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376B0A17779677008CFD8A /* Entity.cpp */; };
@@ -45,6 +46,8 @@
 		370159EA177DEA0700665C58 /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
 		372620C61780C19D00DC6AAD /* Pipeline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pipeline.cpp; sourceTree = "<group>"; };
 		372620C71780C19D00DC6AAD /* Pipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pipeline.h; sourceTree = "<group>"; };
+		37326A891783E53C00DF31F1 /* OpenGLFrameBuff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLFrameBuff.cpp; sourceTree = "<group>"; };
+		37326A8A1783E53C00DF31F1 /* OpenGLFrameBuff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLFrameBuff.h; sourceTree = "<group>"; };
 		37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLTexture.cpp; sourceTree = "<group>"; };
 		37376AFF17751BF8008CFD8A /* OpenGLTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLTexture.h; sourceTree = "<group>"; };
 		37376B0117765B2C008CFD8A /* Color.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Color.h; sourceTree = "<group>"; };
@@ -293,6 +296,8 @@
 				37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */,
 				3741F38E1771721600DFEDAD /* OpenGLMesh.h */,
 				3741F38D1771721500DFEDAD /* OpenGLMesh.cpp */,
+				37326A8A1783E53C00DF31F1 /* OpenGLFrameBuff.h */,
+				37326A891783E53C00DF31F1 /* OpenGLFrameBuff.cpp */,
 			);
 			name = DisplayResources;
 			sourceTree = "<group>";
@@ -412,6 +417,7 @@
 				37376B0B17779677008CFD8A /* Entity.cpp in Sources */,
 				37A9D4C817780FD100CA9802 /* Camera.cpp in Sources */,
 				37A9D4CB17780FE500CA9802 /* Object3d.cpp in Sources */,
+				37326A8B1783E53C00DF31F1 /* OpenGLFrameBuff.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

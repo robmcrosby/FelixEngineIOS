@@ -23,6 +23,14 @@ enum PRIM_TYPE {
    PRIM_TRI_STRIP,
 };
 
+enum FBO_FLAGS {
+   FBO_FIXED_SIZE = 1,
+   FBO_COLOR_COMP = 2,
+   FBO_DEPTH_COMP = 4,
+   FBO_COLOR_TEX = 8,
+   FBO_DEPTH_TEX = 16,
+};
+
 /**
  Data for a shader
  */
@@ -54,6 +62,14 @@ struct MeshData {
    std::vector<unsigned int> indices;
    Attributes attributes;
    PRIM_TYPE primType;
+};
+
+/**
+ Data for a frame buffer object
+ */
+struct FrameBuffData {
+   unsigned int flags;
+   vec2 size;
 };
 
 #endif

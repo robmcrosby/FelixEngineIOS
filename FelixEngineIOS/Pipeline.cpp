@@ -51,7 +51,6 @@ void Pipeline::exec() {
       (*itr)->exec();
 }
 
-
 void Pipeline::ClearContext::exec() {
    if (_display)
       _display->clearContext(clearColor);

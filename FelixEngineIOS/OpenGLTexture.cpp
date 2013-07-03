@@ -15,8 +15,8 @@ map<string, OpenGLTexture*> OpenGLTexture::Textures;
 
 OpenGLTexture::OpenGLTexture(const string &name): Texture(XMLTag("Texture")), _texture(0) {
    _tag.setAttribute(ATT_NAME, name);
-   Textures[name] = this;
    _filesys = Host::GetHost()->getFileSystem();
+   Textures[name] = this;
 }
 
 OpenGLTexture::~OpenGLTexture() {

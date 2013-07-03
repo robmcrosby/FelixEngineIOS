@@ -12,6 +12,7 @@
 #include "OpenGLShader.h"
 #include "OpenGLTexture.h"
 #include "OpenGLMesh.h"
+#include "OpenGLFrameBuff.h"
 
 using namespace std;
 
@@ -113,16 +114,20 @@ void OpenGLDisplay::cleanUpResources() {
 }
 
 
-const Shader* OpenGLDisplay::getShader(const std::string &name) {
+const Shader* OpenGLDisplay::getShader(const string &name) {
    return OpenGLShader::GetShader(name);
 }
 
-const Texture* OpenGLDisplay::getTexture(const std::string &name) {
+const Texture* OpenGLDisplay::getTexture(const string &name) {
    return OpenGLTexture::GetTexture(name);
 }
 
-const Mesh* OpenGLDisplay::getMesh(const std::string &name) {
+const Mesh* OpenGLDisplay::getMesh(const string &name) {
    return OpenGLMesh::GetMesh(name);
+}
+
+const FrameBuff* OpenGLDisplay::getFrameBuff(const string &name) {
+   return NULL;
 }
 
 
@@ -136,6 +141,10 @@ void OpenGLDisplay::setTextureData(const string &name, const TextureData &data) 
 
 void OpenGLDisplay::setMeshData(const string &name, const MeshData &data) {
    OpenGLMesh::GetMesh(name)->setToData(data);
+}
+
+void OpenGLDisplay::setFrameBuffData(const string &name, const FrameBuffData &data) {
+   // implement!
 }
 
 

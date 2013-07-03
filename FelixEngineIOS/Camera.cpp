@@ -17,6 +17,10 @@ _near(CAM_NEAR), _far(CAM_FAR), _size(CAM_SIZE) {
    _host = Host::GetHost();
    _display = _host->getDisplay();
    
+   _pos = vec3(0, 0, 20);
+   _center = vec3(0, 0, 0);
+   _up = vec3(0, 1, 0);
+   
    updateProjMtx();
    updateViewMtx();
    
@@ -58,7 +62,7 @@ void Camera::updateProjMtx() {
 }
 
 void Camera::updateViewMtx() {
-   _viewMtx = mat4::LookAt(vec3(0, 0, 20), vec3(0, 0, 0), vec3(0, 1, 0));
+   _viewMtx = mat4::LookAt(_pos, _center, _up);
 }
 
 void Camera::setToPass(const string &pass) {

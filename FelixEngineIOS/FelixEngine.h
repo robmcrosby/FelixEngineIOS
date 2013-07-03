@@ -59,10 +59,12 @@ public:
    virtual const Shader* getShader(const std::string &name) = 0;
    virtual const Texture* getTexture(const std::string &name) = 0;
    virtual const Mesh* getMesh(const std::string &name) = 0;
+   virtual const FrameBuff* getFrameBuff(const std::string &name) = 0;
    
    virtual void setShaderData(const std::string &name, const ShaderData &data) = 0;
    virtual void setTextureData(const std::string &name, const TextureData &data) = 0;
    virtual void setMeshData(const std::string &name, const MeshData &data) = 0;
+   virtual void setFrameBuffData(const std::string &name, const FrameBuffData &data) = 0;
    
    virtual void setCurShader(const Shader *sh) = 0;
    virtual void setCurUniforms(const Uniforms *uniforms) = 0;

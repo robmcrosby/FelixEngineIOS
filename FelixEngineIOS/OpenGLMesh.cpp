@@ -17,9 +17,9 @@ map<string, OpenGLMesh*> OpenGLMesh::Meshes;
 
 OpenGLMesh::OpenGLMesh(const std::string &name): Mesh(XMLTag("Mesh")), _vertex(0), _index(0) {
    _tag.setAttribute(ATT_NAME, name);
-   Meshes[name] = this;
    _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();
+   Meshes[name] = this;
 }
 
 OpenGLMesh::~OpenGLMesh() {
