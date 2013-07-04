@@ -90,6 +90,7 @@ struct FrameBuff: public Resource {
    FrameBuff(const XMLTag &tag): Resource(tag) {}
    
    virtual void setToData(const FrameBuffData &data) = 0;
+   virtual ivec2 getSize() const = 0;
    virtual void use() const = 0;
 };
 

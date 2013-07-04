@@ -28,6 +28,8 @@ public:
    virtual void setToData(const TextureData &data);
    virtual void use(int idx) const;
    
+   virtual void setToId(GLuint tex);
+   
 private:
    inline void loadData(const TextureData &data);
    inline void deleteTexture();

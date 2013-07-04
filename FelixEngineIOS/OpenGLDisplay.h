@@ -12,6 +12,7 @@
 #include <map>
 #include "FelixEngine.h"
 
+class OpenGLFrameBuff;
 
 class OpenGLDisplay: public HostDisplay {
 public:
@@ -49,6 +50,8 @@ public:
    virtual void addPassUniform(const std::string &name, const Uniform &uniform, const std::string &pass);
    virtual void removePassUniform(const std::string &name, const std::string &pass);
    virtual void clearPassUniforms(const std::string &pass);
+   
+   inline vec2 getScreenSize() const {return _host->getScreenSize() * _host->getScreenScale();}
    
 private:
    
@@ -90,6 +93,9 @@ private:
    Pipeline _defPipeline;
    Pipeline *_curPipeline;
    std::string _curPass;
+   
+   FrameBuff *_curBuff;
+   OpenGLFrameBuff *_finalBuff;
    
    Passes _passes;
 };

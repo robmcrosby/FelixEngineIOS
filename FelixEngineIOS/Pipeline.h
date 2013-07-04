@@ -12,6 +12,7 @@
 #include "Entity.h"
 
 class HostDisplay;
+class FrameBuff;
 
 /**
  Defines a render pipeline with a list of PipeItems.
@@ -48,6 +49,7 @@ public:
    struct ClearContext: public PipeItem {
       ClearContext(const Color &c = Color()): clearColor(c) {}
       virtual void exec();
+      
       Color clearColor;
    };
    
@@ -57,10 +59,26 @@ public:
    struct DrawPass: public PipeItem {
       DrawPass(const std::string &p): pass(p) {}
       virtual void exec();
+      
       std::string pass;
    };
    
+   /**
+    Item for setting the frame buffer
+    */
+   struct UseFBO: public PipeItem {
+      UseFBO(const std::string &n): fboName(n), fbo(0) {}
+      virtual void load(HostDisplay *display);
+      virtual void unload();
+      virtual void exec();
+      
+      std::string fboName;
+      const FrameBuff *fbo;
+   };
+   
 private:
+   inline void applyTag();
+   
    std::list<PipeItem*> _pipeline;
    HostDisplay *_display;
    

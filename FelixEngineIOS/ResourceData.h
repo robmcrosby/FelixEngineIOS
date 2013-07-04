@@ -29,6 +29,7 @@ enum FBO_FLAGS {
    FBO_DEPTH_COMP = 4,
    FBO_COLOR_TEX = 8,
    FBO_DEPTH_TEX = 16,
+   FBO_FINAL = 32,
 };
 
 /**

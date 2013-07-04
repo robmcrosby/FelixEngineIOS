@@ -15,6 +15,7 @@
 #define APP_CONFIG "Config/main.xml"
 #define MAIN_PASS "main"
 #define SCREEN_PASS "screen"
+#define FINAL_FBO "final"
 
 enum DEV_TYPE {
    DEV_PHONE,
@@ -117,7 +118,7 @@ public:
    inline HostFileSystem *getFileSystem() const {return _fileSys;}
    
    inline Resource* getResource(const XMLTag &tag) {
-      if (tag == "Shader" || tag == "Texture" || tag == "Mesh")
+      if (tag == "Shader" || tag == "Texture" || tag == "Mesh" || tag == "FrameBuff")
          return _display->getResource(tag);
       else if (tag == "Sound")
          return _audio->getResource(tag);

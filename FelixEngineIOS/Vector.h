@@ -96,7 +96,7 @@ struct Vector2 {
    
    static Vector2<float> ParseFloat(const std::string &str) {
       Vector2<float> v;
-      int res = sscanf(str.c_str(), " %lf , %lf", &v.x, &v.y);
+      int res = sscanf(str.c_str(), " %f , %f", &v.x, &v.y);
       return res == 2 ? v : v.x;
    }
    

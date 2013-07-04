@@ -84,12 +84,14 @@ void OpenGLMesh::unload() {
 }
 
 void OpenGLMesh::setToData(const MeshData &data) {
-   // set the src file for reloading
-   if (data.file != "")
-      _tag.setAttribute("src", data.file);
-   
-   // load the data
-   loadData(data);
+   if (!loaded()) {
+      // set the src file for reloading
+      if (data.file != "")
+         _tag.setAttribute("src", data.file);
+      
+      // load the data
+      loadData(data);
+   }
 }
 
 void OpenGLMesh::use() const {
@@ -143,8 +145,8 @@ void OpenGLMesh::loadData(const MeshData &data) {
       _drawCount = data.indices.size();
    }
    
-   cout << "loaded mesh: " << _tag.getAttribute(ATT_NAME) << endl;
    _loaded = true;
+   cout << "loaded mesh: " << _tag.getAttribute(ATT_NAME) << endl;
 }
 
 void OpenGLMesh::deleteMesh() {

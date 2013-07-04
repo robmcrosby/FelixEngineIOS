@@ -65,12 +65,14 @@ void OpenGLTexture::unload() {
 }
 
 void OpenGLTexture::setToData(const TextureData &data) {
-   // set the src file for reloading
-   if (data.file != "")
-      _tag.setAttribute("src", data.file);
-   
-   // load the data
-   loadData(data);
+   if (!loaded()) {
+      // set the src file for reloading
+      if (data.file != "")
+         _tag.setAttribute("src", data.file);
+      
+      // load the data
+      loadData(data);
+   }
 }
 
 void OpenGLTexture::use(int idx) const {
@@ -78,6 +80,11 @@ void OpenGLTexture::use(int idx) const {
       glActiveTexture(GL_TEXTURE0 + idx);
       glBindTexture(GL_TEXTURE_2D, _texture);
    }
+}
+
+void OpenGLTexture::setToId(GLuint tex) {
+   _texture = tex;
+   _loaded = true;
 }
 
 void OpenGLTexture::loadData(const TextureData &data) {
@@ -90,8 +97,8 @@ void OpenGLTexture::loadData(const TextureData &data) {
    glTexImage2D(GL_TEXTURE_2D, 0, format, data.size.x, data.size.y, 0, format, GL_UNSIGNED_BYTE, data.data);
    glGenerateMipmap(GL_TEXTURE_2D);
    
-   cout << "loaded texture: " << _tag.getAttribute(ATT_NAME) << endl;
    _loaded = true;
+   cout << "loaded texture: " << _tag.getAttribute(ATT_NAME) << endl;
 }
 
 void OpenGLTexture::deleteTexture() {

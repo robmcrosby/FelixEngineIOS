@@ -14,8 +14,8 @@
 
 enum CAM_DEFAULTS {
    CAM_NEAR = 4,
-   CAM_SIZE = 2,
    CAM_FAR = 1000,
+   CAM_SIZE = 2,
 };
 
 class Camera: public Entity {
@@ -36,8 +36,9 @@ protected:
    
    float _near, _far;
    vec2 _size;
+   bool _abs;
    
-   vec3 _pos, _center, _up;
+   vec3 _pos, _target, _up;
    
    Host *_host;
    HostDisplay *_display;
@@ -45,6 +46,8 @@ protected:
    std::set<std::string> _passes;
    
 private:
+   inline void applyTag();
+   
    DECLARE_ENTITY_ID(Camera)
 };
 

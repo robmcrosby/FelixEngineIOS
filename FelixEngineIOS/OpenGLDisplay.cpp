@@ -31,6 +31,11 @@ _host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPipeline(0) {
    _curPipeline = &_defPipeline;
    _curPipeline->load(this);
    
+   // get the final buff
+   _finalBuff = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
+   _finalBuff->retain();
+   _curBuff = _finalBuff;
+   
    // initalize the default passes
    clearPasses();
 }
@@ -51,6 +56,9 @@ void OpenGLDisplay::notify(const Event &event) {
          delete planeData;
       }
    }
+   else if (event == EVENT_RESIZE)
+      OpenGLFrameBuff::UpdateFrameBuffs();
+   
    HostDisplay::notify(event);
 }
 
@@ -60,6 +68,7 @@ void OpenGLDisplay::clearContext(Color color) {
 }
 
 void OpenGLDisplay::render() {
+   _finalBuff->updateFinal();
    _curPipeline->exec();
 }
 
@@ -100,6 +109,8 @@ Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
       ret = OpenGLTexture::GetTexture(name);
    else if (tag == "Mesh")
       ret = OpenGLMesh::GetMesh(name);
+   else if (tag == "FrameBuff")
+      ret = OpenGLFrameBuff::GetFrameBuff(name);
    
    if (ret)
       ret->setToTag(tag);
@@ -127,7 +138,7 @@ const Mesh* OpenGLDisplay::getMesh(const string &name) {
 }
 
 const FrameBuff* OpenGLDisplay::getFrameBuff(const string &name) {
-   return NULL;
+   return OpenGLFrameBuff::GetFrameBuff(name);
 }
 
 
@@ -144,7 +155,7 @@ void OpenGLDisplay::setMeshData(const string &name, const MeshData &data) {
 }
 
 void OpenGLDisplay::setFrameBuffData(const string &name, const FrameBuffData &data) {
-   // implement!
+   OpenGLFrameBuff::GetFrameBuff(name)->setToData(data);
 }
 
 

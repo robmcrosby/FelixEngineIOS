@@ -13,18 +13,14 @@ using namespace std;
 DEFINE_ENTITY_ID(Camera)
 
 Camera::Camera(XMLTag *tag): Entity(tag),
-_near(CAM_NEAR), _far(CAM_FAR), _size(CAM_SIZE) {
+_near(CAM_NEAR), _far(CAM_FAR), _size(CAM_SIZE), _abs(0) {
    _host = Host::GetHost();
    _display = _host->getDisplay();
    
-   _pos = vec3(0, 0, 20);
-   _center = vec3(0, 0, 0);
-   _up = vec3(0, 1, 0);
+   applyTag();
    
    updateProjMtx();
    updateViewMtx();
-   
-   _passes.insert(MAIN_PASS);
 }
 
 Camera::~Camera() {
@@ -49,7 +45,7 @@ void Camera::notify(const Event &event) {
 }
 
 void Camera::updateProjMtx() {
-   vec2 screen = _host->getScreenSize();
+   vec2 screen = _abs ? vec2(1.0f) : vec2(_host->getScreenSize());
    
    if (screen.x < screen.y) {
       float w = 4.0f * screen.x / screen.y;
@@ -62,7 +58,7 @@ void Camera::updateProjMtx() {
 }
 
 void Camera::updateViewMtx() {
-   _viewMtx = mat4::LookAt(_pos, _center, _up);
+   _viewMtx = mat4::LookAt(_pos, _target, _up);
 }
 
 void Camera::setToPass(const string &pass) {
@@ -73,4 +69,38 @@ void Camera::setToPass(const string &pass) {
 void Camera::removeFromPass(const string &pass) {
    _display->removePassUniform(VAR_PROJ_MTX, pass);
    _display->removePassUniform(VAR_VIEW_MTX, pass);
+}
+
+void Camera::applyTag() {
+   if (_tag) {
+      XMLTag *subTag;
+      
+      // get position
+      subTag = _tag->getSubTag("pos");
+      _pos = subTag ? vec3::ParseFloat(subTag->getContents()) : vec3(0, 0, 10);
+      
+      // get target
+      subTag = _tag->getSubTag("target");
+      _target = subTag ? vec3::ParseFloat(subTag->getContents()) : vec3(0);
+      
+      // get up vector
+      subTag = _tag->getSubTag("up");
+      _up = subTag ? vec3::ParseFloat(subTag->getContents()) : vec3(0);
+      
+      // get pass or passes
+      subTag = _tag->getSubTag("passes");
+      if (subTag) {
+         XMLTag::iterator itr;
+         for (itr = subTag->begin(); itr != subTag->end(); ++itr)
+            _passes.insert((*itr)->getContents());
+      }
+      else {
+         subTag = _tag->getSubTag("pass");
+         if (subTag)
+            _passes.insert(subTag->getContents());
+      }
+      
+      // get flags
+      _abs = _tag->hasAttribute("flags");
+   }
 }

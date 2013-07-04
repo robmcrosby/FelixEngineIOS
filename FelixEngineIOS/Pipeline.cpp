@@ -20,7 +20,7 @@ Pipeline::Pipeline(): _display(0) {
 }
 
 Pipeline::Pipeline(XMLTag *tag): Entity(tag), _display(0) {
-   
+   applyTag();
 }
 
 Pipeline::~Pipeline() {
@@ -51,6 +51,25 @@ void Pipeline::exec() {
       (*itr)->exec();
 }
 
+void Pipeline::applyTag() {
+   if (_tag) {
+      XMLTag::iterator itr;
+      for (itr = _tag->begin(); itr != _tag->end(); ++itr) {
+         XMLTag &subTag = **itr;
+         
+         if (subTag == "clear")
+            _pipeline.push_back(new ClearContext(vec4::ParseFloat(subTag.getContents())));
+         else if (subTag == "pass")
+            _pipeline.push_back(new DrawPass(subTag.getContents()));
+         else if (subTag == "frame")
+            _pipeline.push_back(new UseFBO(subTag.getContents()));
+      }
+   }
+}
+
+
+
+
 void Pipeline::ClearContext::exec() {
    if (_display)
       _display->clearContext(clearColor);
@@ -60,3 +79,19 @@ void Pipeline::DrawPass::exec() {
    if (_display)
       _display->drawPass(pass);
 }
+
+void Pipeline::UseFBO::load(HostDisplay *display) {
+   PipeItem::load(display);
+   fbo = display->getFrameBuff(fboName);
+}
+
+void Pipeline::UseFBO::unload() {
+   PipeItem::unload();
+   fbo = NULL;
+}
+
+void Pipeline::UseFBO::exec() {
+   if (fbo)
+      fbo->use();
+}
+
