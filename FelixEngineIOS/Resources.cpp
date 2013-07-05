@@ -64,7 +64,7 @@ void Resources::releaseResources() {
    _resources.clear();
    
    // clean up any unused resources
-   //Host::GetHost()->cleanUpResources();
+   Host::GetHost()->cleanUpResources();
 }
 
 

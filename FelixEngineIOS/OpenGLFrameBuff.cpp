@@ -62,8 +62,10 @@ void OpenGLFrameBuff::UpdateFrameBuffs() {
 void OpenGLFrameBuff::load() {
    if (!loaded()) {
       FrameBuffData data;
-      data.size = _tag.hasTag("size") ? vec2::ParseFloat(_tag.getSubTag("size")->getContents()) : vec2(1);
+      data.size = _tag.hasAttribute("size") ? vec2::ParseFloat(_tag.getAttribute("size")) : vec2(1);
       data.flags = FBO_FIXED_SIZE | FBO_COLOR_COMP | FBO_DEPTH_COMP | FBO_COLOR_TEX;
+      data.colorTex = _tag.getAttribute("color");
+      
       loadData(data);
    }
 }
@@ -104,8 +106,10 @@ void OpenGLFrameBuff::loadData(const FrameBuffData &data) {
    _size = data.size;
    _flags = data.flags;
    
-   if (_flags & FBO_COLOR_TEX)
-      _colorTex = OpenGLTexture::GetTexture("fbo1");
+   if (_flags & FBO_COLOR_TEX) {
+      _colorTex = OpenGLTexture::GetTexture(data.colorTex);
+      _colorTex->retain();
+   }
    
    loadFbo();
 }

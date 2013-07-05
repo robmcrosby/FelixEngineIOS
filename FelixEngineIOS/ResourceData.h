@@ -71,6 +71,7 @@ struct MeshData {
 struct FrameBuffData {
    unsigned int flags;
    vec2 size;
+   std::string colorTex;
 };
 
 #endif

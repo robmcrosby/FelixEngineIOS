@@ -46,9 +46,10 @@ class HostDisplay: public Entity {
 public:
    virtual ~HostDisplay() {}
    
-   virtual void clearContext(Color color = Color()) = 0;
-   
    virtual void render() = 0;
+   
+   virtual void clearContext(Color color = Color()) = 0;
+   virtual void setDrawType(DRAW_TYPE type) = 0;
    
    virtual void drawPass(const std::string &pass) = 0;
    virtual void addToPass(const Drawable *drawable, const std::string &pass) = 0;

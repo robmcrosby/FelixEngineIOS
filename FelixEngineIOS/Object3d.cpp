@@ -14,7 +14,7 @@ DEFINE_ENTITY_ID(Object3d)
 
 
 Object3d::Object3d(XMLTag *tag): Entity(tag),
-_pass(MAIN_PASS), _layer(0), _visible(true), _display(0) {
+_pass(MAIN_PASS), _layer(0), _visible(true), _display(0), _drawType(DRAW_DEPTH) {
    applyTag();
    _uniforms.addUniform(VAR_TEX_MTX, VAL_MAT3X3, &_textureMtx);
    cout << "Created Object3d" << endl;
@@ -81,6 +81,7 @@ void Object3d::removeChild(Entity *child) {
 
 void Object3d::draw() const {
    if (_visible) {
+      _display->setDrawType(_drawType);
       _shader->use();
       _display->setCurUniforms(&_uniforms);
       _display->setCurUniforms(_transform.getUniforms());

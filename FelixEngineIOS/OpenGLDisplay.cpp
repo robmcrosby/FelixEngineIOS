@@ -62,14 +62,29 @@ void OpenGLDisplay::notify(const Event &event) {
    HostDisplay::notify(event);
 }
 
+void OpenGLDisplay::render() {
+   _finalBuff->updateFinal();
+   _curPipeline->exec();
+}
+
 void OpenGLDisplay::clearContext(Color color) {
+   setDrawType(DRAW_DEPTH);
    glClearColor(color.r, color.g, color.b, color.a);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void OpenGLDisplay::render() {
-   _finalBuff->updateFinal();
-   _curPipeline->exec();
+void OpenGLDisplay::setDrawType(DRAW_TYPE type) {
+   if (_curDrawType != type) {
+      if (type == DRAW_BLEND) {
+         glDepthMask(GL_FALSE);
+         glEnable(GL_BLEND);
+      }
+      else {
+         glDepthMask(GL_TRUE);
+         glDisable(GL_BLEND);
+      }
+      _curDrawType = type;
+   }
 }
 
 void OpenGLDisplay::drawPass(const std::string &pass) {
@@ -213,19 +228,4 @@ OpenGLDisplay::Draws* OpenGLDisplay::getPassDraws(const std::string &pass) {
 
 Uniforms* OpenGLDisplay::getPassUniforms(const std::string &pass) {
    return &getPass(pass)->uniforms;
-}
-
-
-void OpenGLDisplay::setDrawType(DRAW_TYPE type) {
-   if (_curDrawType != type) {
-      if (type == DRAW_BLEND) {
-         glDepthMask(GL_FALSE);
-         glEnable(GL_BLEND);
-      }
-      else {
-         glDepthMask(GL_TRUE);
-         glDisable(GL_BLEND);
-      }
-      _curDrawType = type;
-   }
 }

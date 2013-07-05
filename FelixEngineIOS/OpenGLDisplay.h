@@ -20,9 +20,11 @@ public:
    virtual ~OpenGLDisplay();
    
    virtual void notify(const Event &event);
-   virtual void clearContext(Color color);
    
    virtual void render();
+   
+   virtual void clearContext(Color color);
+   virtual void setDrawType(DRAW_TYPE type);
    
    virtual void drawPass(const std::string &pass);
    virtual void addToPass(const Drawable *drawable, const std::string &pass);
@@ -85,7 +87,6 @@ private:
    inline Pass* getPass(const std::string &pass);
    inline Draws* getPassDraws(const std::string &pass);
    inline Uniforms* getPassUniforms(const std::string &pass);
-   inline void setDrawType(DRAW_TYPE type);
    
    Host *_host;
    DRAW_TYPE _curDrawType;

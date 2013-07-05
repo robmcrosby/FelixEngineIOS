@@ -41,7 +41,7 @@ public:
    }
    inline void copySubTags(const XMLTag &tag) {
       for (const_iterator itr = tag.begin(); itr != tag.end(); ++itr)
-         addSubTag(*itr);
+         addSubTag(new XMLTag(**itr));
    }
    inline void copyAttributes(const XMLTag &tag) {_attributes = tag._attributes;}
    inline void removeSubTag(XMLTag *tag) {

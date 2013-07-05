@@ -68,6 +68,8 @@ TextureData* IOSFileSystem::loadTexture(const std::string &path) const {
    data->data = malloc(size.x * size.y * 4);
    
    CGContextRef imageContext = CGBitmapContextCreate(data->data, size.x, size.y, 8, size.x * 4, CGColorSpaceCreateDeviceRGB(), kCGImageAlphaPremultipliedLast);
+   CGAffineTransform flipVertical = CGAffineTransformMake(1, 0, 0, -1, 0, data->size.y);
+   CGContextConcatCTM(imageContext, flipVertical);
    CGContextDrawImage(imageContext, CGRectMake(0.0, 0.0, size.x, size.y), uiImage.CGImage);
    CGContextRelease(imageContext);
    

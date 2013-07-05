@@ -13,6 +13,9 @@
 
 class HostDisplay;
 class FrameBuff;
+class Shader;
+class Mesh;
+class Texture;
 
 /**
  Defines a render pipeline with a list of PipeItems.
@@ -74,6 +77,22 @@ public:
       
       std::string fboName;
       const FrameBuff *fbo;
+   };
+   
+   /**
+    Item for drawing images full screen
+    */
+   struct DrawFull: public PipeItem {
+      DrawFull(const XMLTag &tag);
+      virtual void load(HostDisplay *display);
+      virtual void unload();
+      virtual void exec();
+      
+      const Mesh *plane;
+      const Shader *shader;
+      std::list<const Texture*> texList;
+      Uniforms uniforms;
+      XMLTag tag;
    };
    
 private:

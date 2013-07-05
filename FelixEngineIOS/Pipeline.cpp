@@ -8,6 +8,7 @@
 
 #include "Pipeline.h"
 #include "FelixEngine.h"
+#include "Resources.h"
 
 using namespace std;
 DEFINE_ENTITY_ID(Pipeline)
@@ -63,6 +64,8 @@ void Pipeline::applyTag() {
             _pipeline.push_back(new DrawPass(subTag.getContents()));
          else if (subTag == "frame")
             _pipeline.push_back(new UseFBO(subTag.getContents()));
+         else if (subTag == "full")
+            _pipeline.push_back(new DrawFull(subTag));
       }
    }
 }
@@ -82,7 +85,7 @@ void Pipeline::DrawPass::exec() {
 
 void Pipeline::UseFBO::load(HostDisplay *display) {
    PipeItem::load(display);
-   fbo = display->getFrameBuff(fboName);
+   fbo = _display->getFrameBuff(fboName);
 }
 
 void Pipeline::UseFBO::unload() {
@@ -95,3 +98,49 @@ void Pipeline::UseFBO::exec() {
       fbo->use();
 }
 
+Pipeline::DrawFull::DrawFull(const XMLTag &tag): shader(0), tag(tag) {
+   
+}
+
+void Pipeline::DrawFull::load(HostDisplay *display) {
+   XMLTag::iterator itr;
+   
+   PipeItem::load(display);
+
+   for (itr = tag.begin(); itr != tag.end(); ++itr) {
+      const XMLTag &subTag = **itr;
+      
+      if (subTag == "Texture" && subTag.hasAttribute("name"))
+         texList.push_back(_display->getTexture(subTag.getAttribute("name")));
+      // add uniform tags
+   }
+   
+   plane = _display->getMesh("plane");
+   shader = _display->getShader(tag.getAttribute("shader"));
+}
+
+void Pipeline::DrawFull::unload() {
+   PipeItem::unload();
+}
+
+void Pipeline::DrawFull::exec() {
+   list<const Texture*>::iterator tex;
+   int i = 0;
+   
+   // set the display to blend
+   _display->setDrawType(DRAW_BLEND);
+   
+   // set the shader
+   shader->use();
+   shader->setUniforms(&uniforms);
+   
+   // set the plane
+   plane->use();
+   
+   // set the textures to the plane
+   for (tex = texList.begin(); tex != texList.end(); ++tex)
+      (*tex)->use(i++);
+   
+   // draw the plane
+   plane->draw();
+}

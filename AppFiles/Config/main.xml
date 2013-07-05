@@ -2,20 +2,24 @@
 <ObjViewer>
    <Resources>
       <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
+      <Shader name="fill" vert="fill.vert" frag="texture.frag"/>
       <Mesh name="bunny" src="bunny.obj"/>
       <Texture name="grid" src="grid.png"/>
-      <FrameBuff name="fbo1" flags="fixed">
-         <size>1024,1024</size>
-         <Texture name="fbo1" type="RGBA"/>
-      </FrameBuff>
+      <FrameBuff name="fbo1" size="1024,1024" flags="fixed" color="fbo1"/>
    </Resources>
    <Pipeline name="pipeline">
       <frame>fbo1</frame>
-      <clear>0, 0, 1, 1</clear>
+      <clear>0, 0, 0, 1</clear>
+      <full shader="fill">
+         <Texture name="grid"/>
+      </full>
       <pass>main</pass>
       <frame>final</frame>
       <clear>0, 0, 0, 1</clear>
       <pass>screen</pass>
+      <full shader="fill">
+         <Texture name="fbo1"/>
+      </full>
    </Pipeline>
    <Camera flags="abs">
       <pos>0, 0, 20</pos>
