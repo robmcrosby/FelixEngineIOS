@@ -59,7 +59,7 @@ void OpenGLDisplay::notify(const Event &event) {
    else if (event == EVENT_RESIZE)
       OpenGLFrameBuff::UpdateFrameBuffs();
    
-   HostDisplay::notify(event);
+   //HostDisplay::notify(event);
 }
 
 void OpenGLDisplay::render() {

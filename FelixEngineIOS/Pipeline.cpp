@@ -34,7 +34,7 @@ void Pipeline::load(HostDisplay *display) {
    list<PipeItem*>::iterator itr;
    
    _display = display;
-   _display->addListener(this);
+   //_display->addListener(this);
    for (itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
       (*itr)->load(_display);
 }
@@ -42,7 +42,7 @@ void Pipeline::load(HostDisplay *display) {
 void Pipeline::unload() {
    for (list<PipeItem*>::iterator itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
       (*itr)->unload();
-   _display->removeListener(this);
+   //_display->removeListener(this);
    _display = NULL;
 }
 

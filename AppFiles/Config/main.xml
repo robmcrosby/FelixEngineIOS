@@ -16,10 +16,10 @@
       <pass>main</pass>
       <frame>final</frame>
       <clear>0, 0, 0, 1</clear>
-      <pass>screen</pass>
       <full shader="fill">
          <Texture name="fbo1"/>
       </full>
+      <pass>screen</pass>
    </Pipeline>
    <Camera flags="abs">
       <pos>0, 0, 20</pos>
@@ -42,7 +42,7 @@
    <Object3d name="plane" pass="screen">
       <Transform>
          <pos>0, 0, 0</pos>
-         <scale>10</scale>
+         <scale>5</scale>
       </Transform>
       <Shader name="texture"/>
       <Mesh name="plane"/>

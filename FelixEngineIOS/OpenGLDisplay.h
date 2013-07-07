@@ -14,7 +14,7 @@
 
 class OpenGLFrameBuff;
 
-class OpenGLDisplay: public HostDisplay {
+class OpenGLDisplay: public Entity, public HostDisplay {
 public:
    OpenGLDisplay(Host *host);
    virtual ~OpenGLDisplay();

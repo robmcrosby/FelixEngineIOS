@@ -18,7 +18,7 @@ class Mesh;
 class Texture;
 
 /**
- Defines a render pipeline with a list of PipeItems.
+ * Defines a render pipeline with a list of PipeItems.
  */
 class Pipeline: public Entity {
 public:
