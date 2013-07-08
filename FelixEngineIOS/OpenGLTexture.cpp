@@ -60,8 +60,7 @@ void OpenGLTexture::load() {
 }
 
 void OpenGLTexture::unload() {
-   if (!getCount())
-      deleteTexture();
+   deleteTexture();
 }
 
 void OpenGLTexture::setToData(const TextureData &data) {

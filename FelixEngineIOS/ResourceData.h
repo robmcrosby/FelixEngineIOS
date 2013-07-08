@@ -72,6 +72,7 @@ struct FrameBuffData {
    unsigned int flags;
    vec2 size;
    std::string colorTex;
+   std::string depthTex;
 };
 
 #endif

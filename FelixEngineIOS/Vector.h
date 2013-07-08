@@ -100,6 +100,12 @@ struct Vector2 {
       return res == 2 ? v : v.x;
    }
    
+   static bool IsPowerOfTwo(T val) {
+      unsigned int iVal = val;
+      return !(val - (T)iVal) && (iVal != 0) && !(iVal & (iVal - 1));
+   }
+   bool isPowerOfTwo() const {return IsPowerOfTwo(x) && IsPowerOfTwo(y);}
+   
    union {T x; T r;};
    union {T y; T g;};
 };

@@ -14,7 +14,7 @@
 
 enum CAM_DEFAULTS {
    CAM_NEAR = 4,
-   CAM_FAR = 1000,
+   CAM_FAR = 100,
    CAM_SIZE = 2,
 };
 

@@ -3,9 +3,10 @@
    <Resources>
       <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
       <Shader name="fill" vert="fill.vert" frag="texture.frag"/>
+      <Shader name="depth" vert="depth.vert" frag="depth.frag"/>
       <Mesh name="bunny" src="bunny.obj"/>
       <Texture name="grid" src="grid.png"/>
-      <FrameBuff name="fbo1" size="1024,1024" flags="fixed" color="fbo1"/>
+      <FrameBuff name="fbo1" size="1024,1024" flags="fixed_size, depth_comp" color="fbo1_color"/>
    </Resources>
    <Pipeline name="pipeline">
       <frame>fbo1</frame>
@@ -17,7 +18,7 @@
       <frame>final</frame>
       <clear>0, 0, 0, 1</clear>
       <full shader="fill">
-         <Texture name="fbo1"/>
+         <Texture name="fbo1_color"/>s
       </full>
       <pass>screen</pass>
    </Pipeline>
@@ -35,17 +36,17 @@
    </Camera>
    <Object3d name="bunny" pass="main">
       <pos>0, -5, 0</pos>
-      <Shader name="texture"/>
+      <Shader name="depth"/>
       <Mesh name="bunny"/>
       <Texture name="grid"/>
    </Object3d>
    <Object3d name="plane" pass="screen">
       <Transform>
          <pos>0, 0, 0</pos>
-         <scale>5</scale>
+         <scale>8</scale>
       </Transform>
       <Shader name="texture"/>
       <Mesh name="plane"/>
-      <Texture name="fbo1"/>
+      <Texture name="fbo1_depth"/>
    </Object3d>
 </ObjViewer>

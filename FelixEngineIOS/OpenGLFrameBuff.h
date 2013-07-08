@@ -36,7 +36,13 @@ public:
 private:
    inline void loadFinal();
    inline void loadFbo();
-   inline void unloadFbo();
+   
+   inline void createColorRenderBuff();
+   inline void createColorTexureBuff();
+   inline void createDepthRenderBuff();
+   inline void createDepthTextureBuff();
+   
+   inline void deleteFbo();
    inline void loadData(const FrameBuffData &data);
    inline void updateSize(const ivec2 &screen);
    inline ivec2 buffSize() const;
@@ -45,9 +51,10 @@ private:
    ivec2 _screen;
    vec2 _size;
    unsigned int _flags;
-   GLuint _fboId, _colorId, _depthId;
+   GLuint _fboId, _colorId, _depthId, _depthBuff;
    
    OpenGLTexture *_colorTex;
+   OpenGLTexture *_depthTex;
    
    static std::map<std::string, OpenGLFrameBuff*> FrameBuffs;
 };

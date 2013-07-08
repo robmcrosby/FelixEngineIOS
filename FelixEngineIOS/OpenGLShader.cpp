@@ -58,8 +58,7 @@ void OpenGLShader::load() {
 }
 
 void OpenGLShader::unload() {
-   if (!getCount())
-      deleteShader();
+   deleteShader();
 }
 
 void OpenGLShader::setToData(const ShaderData &data) {
