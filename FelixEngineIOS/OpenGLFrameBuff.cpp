@@ -251,42 +251,11 @@ void OpenGLFrameBuff::createDepthRenderBuff() {
    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthId);
 }
 
-/*
-void OpenGLFrameBuff::createDepthTextureBuff() {
-   ivec2 size = buffSize();
-   
-   // Create a render buffer
-   glGenRenderbuffers(1, &_depthBuff);
-   glBindRenderbuffer(GL_RENDERBUFFER, _depthBuff);
-   
-   // Create a texture for storing the depth
-   glGenTextures(1, &_depthId);
-   glBindTexture(GL_TEXTURE_2D, _depthId);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-   
-   // Remove artifact on the edges of the shadowmap
-   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-   
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-   
-   // Attach the RGBA texture to FBO color attachment point
-   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _depthId, 0);
-   
-   // Allocate 16-bit depth buffer
-   glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, size.x, size.y);
-   
-   // Attach the render buffer as depth buffer - will be ignored
-   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuff);
-}*/
-
 void OpenGLFrameBuff::createDepthTextureBuff() {
    ivec2 size = buffSize();
    
    glGenRenderbuffers(1, &_depthBuff);
    glBindRenderbuffer(GL_RENDERBUFFER, _depthBuff);
-   
    
    glGenTextures(1, &_depthId);
    glBindTexture(GL_TEXTURE_2D, _depthId);
