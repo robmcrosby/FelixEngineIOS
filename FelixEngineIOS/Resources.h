@@ -67,6 +67,8 @@ struct Texture: public Resource {
    
    virtual void setToData(const TextureData &data) = 0;
    virtual void use(int idx) const = 0;
+   
+   static unsigned int ParseFilters(const std::string &filtStr);
 };
 
 /**

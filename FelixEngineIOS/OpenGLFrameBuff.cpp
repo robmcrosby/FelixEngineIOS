@@ -14,7 +14,7 @@ map<string, OpenGLFrameBuff*> OpenGLFrameBuff::FrameBuffs;
 
 
 OpenGLFrameBuff::OpenGLFrameBuff(const std::string &name): FrameBuff(XMLTag("FrameBuff")),
-_flags(0), _fboId(0), _colorId(0), _depthId(0), _colorTex(0), _depthTex(0) {
+_flags(0), _fboId(0), _colorId(0), _depthId(0), _colorTex(0) {
    _tag.setAttribute(ATT_NAME, name);
    _display = Host::GetHost()->getDisplay();
    FrameBuffs[name] = this;
@@ -77,6 +77,9 @@ void OpenGLFrameBuff::load() {
          data.colorTex = getName();
       }
       
+      // filters are shared for now
+      data.filters = Texture::ParseFilters(_tag.getAttribute("filters"));
+      
       // buffer size
       data.size = _tag.hasAttribute("size") ? vec2::ParseFloat(_tag.getAttribute("size")) : vec2(1);
       
@@ -102,7 +105,7 @@ void OpenGLFrameBuff::unload() {
 }
 
 void OpenGLFrameBuff::setToData(const FrameBuffData &data) {
-   
+   loadData(data);
 }
 
 void OpenGLFrameBuff::use() const {
@@ -132,6 +135,7 @@ void OpenGLFrameBuff::loadData(const FrameBuffData &data) {
    _screen = Host::GetHost()->getScreenSize() * Host::GetHost()->getScreenScale();
    _size = data.size;
    _flags = data.flags;
+   _filters = data.filters;
    
    if (_flags & FBO_COLOR_TEX) {
       _colorTex = OpenGLTexture::GetTexture(data.colorTex);
@@ -166,52 +170,51 @@ ivec2 OpenGLFrameBuff::buffSize() const {
 }
 
 void OpenGLFrameBuff::loadFbo() {
-   GLint tmp;
+   GLint curFbo;
    
-   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &tmp);
+   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &curFbo);
    
    glGenFramebuffers(1, &_fboId);
    glBindFramebuffer(GL_FRAMEBUFFER, _fboId);
    
-   // create color comp/texture.
-   if (_flags & FBO_COLOR_COMP) {
-      if (_colorTex) {
-         createColorTexureBuff();
-         _colorTex->setToId(_colorId);
-      }
-      else
-         createColorRenderBuff();
+   if (_colorTex) {
+      TextureData data;
+      data.format = TEX_RGBA;
+      data.filters = _filters;
+      data.size = buffSize();
+      _colorTex->setToData(data);
    }
+   else if (_flags & FBO_COLOR_COMP)
+      createColorRenderBuff();
    
-   // create depth comp/texture.
-   if (_flags & FBO_DEPTH_COMP) {
-      if (_depthTex) {
-         createDepthTextureBuff();
-         _depthTex->setToId(_depthId);
-      }
-      else
-         createDepthRenderBuff();
+   if (_depthTex) {
+      TextureData data;
+      data.format = TEX_DEPTH;
+      data.filters = _filters;
+      data.size = buffSize();
+      _depthTex->setToData(data);
    }
+   else if (_flags & FBO_DEPTH_COMP)
+      createDepthRenderBuff();
    
    // FBO status check
    GLenum status;
    status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
    switch(status) {
       case GL_FRAMEBUFFER_COMPLETE:
-         cout << "fbo complete\n";
+         cout << "loaded fbo: " << getName() << endl;
          break;
       case GL_FRAMEBUFFER_UNSUPPORTED:
-         cout << "fbo unsupported\n";
+         cout << "Unsupported fbo: " << getName() << endl;
          break;
       default:
          cout << "Framebuffer Error\n";
          break;
    }
    
-   glBindFramebuffer(GL_FRAMEBUFFER, tmp);
+   glBindFramebuffer(GL_FRAMEBUFFER, curFbo);
    
    _loaded = true;
-   cout << "loaded fbo: " << _tag.getAttribute("name") << endl;
 }
 
 void OpenGLFrameBuff::createColorRenderBuff() {
@@ -223,25 +226,6 @@ void OpenGLFrameBuff::createColorRenderBuff() {
    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _colorId);
 }
 
-void OpenGLFrameBuff::createColorTexureBuff() {
-   ivec2 size = buffSize();
-   
-   cout << size << endl;
-   
-   glGenTextures(1, &_colorId);
-   glBindTexture(GL_TEXTURE_2D, _colorId);
-   
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-   if (!size.isPowerOfTwo()) {
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-   }
-   
-   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _colorId, 0);
-}
-
 void OpenGLFrameBuff::createDepthRenderBuff() {
    ivec2 size = buffSize();
    glGenRenderbuffers(1, &_depthId);
@@ -249,26 +233,6 @@ void OpenGLFrameBuff::createDepthRenderBuff() {
    glBindRenderbuffer(GL_RENDERBUFFER, _depthId);
    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24_OES, size.x, size.y);
    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthId);
-}
-
-void OpenGLFrameBuff::createDepthTextureBuff() {
-   ivec2 size = buffSize();
-   
-   glGenRenderbuffers(1, &_depthBuff);
-   glBindRenderbuffer(GL_RENDERBUFFER, _depthBuff);
-   
-   glGenTextures(1, &_depthId);
-   glBindTexture(GL_TEXTURE_2D, _depthId);
-   
-   glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, size.x, size.y, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, NULL);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-   if (!size.isPowerOfTwo()) {
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-   }
-   
-   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depthId, 0);
 }
 
 void OpenGLFrameBuff::deleteFbo() {

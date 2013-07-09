@@ -13,7 +13,8 @@ using namespace::std;
 
 map<string, OpenGLTexture*> OpenGLTexture::Textures;
 
-OpenGLTexture::OpenGLTexture(const string &name): Texture(XMLTag("Texture")), _texture(0) {
+OpenGLTexture::OpenGLTexture(const string &name): Texture(XMLTag("Texture")),
+_texId(0), _format(TEX_RGBA), _filters(0), _fboTex(0) {
    _tag.setAttribute(ATT_NAME, name);
    _filesys = Host::GetHost()->getFileSystem();
    Textures[name] = this;
@@ -51,6 +52,7 @@ void OpenGLTexture::load() {
    if (!loaded() && _tag.hasAttribute("src")) {
       string texPath = "Textures/" + _tag.getAttribute("src");
       TextureData *data = _filesys->loadTexture(texPath);
+      data->filters = Texture::ParseFilters(_tag.getAttribute("filters"));
       
       if (data) {
          loadData(*data);
@@ -64,7 +66,9 @@ void OpenGLTexture::unload() {
 }
 
 void OpenGLTexture::setToData(const TextureData &data) {
-   if (!loaded()) {
+   _fboTex = !data.data;
+   
+   if (!loaded() || _fboTex) {
       // set the src file for reloading
       if (data.file != "")
          _tag.setAttribute("src", data.file);
@@ -75,36 +79,88 @@ void OpenGLTexture::setToData(const TextureData &data) {
 }
 
 void OpenGLTexture::use(int idx) const {
-   if (_texture) {
+   if (_texId) {
       glActiveTexture(GL_TEXTURE0 + idx);
-      glBindTexture(GL_TEXTURE_2D, _texture);
+      glBindTexture(GL_TEXTURE_2D, _texId);
    }
 }
 
 void OpenGLTexture::setToId(GLuint tex) {
-   _texture = tex;
+   _texId = tex;
    _loaded = true;
 }
 
 void OpenGLTexture::loadData(const TextureData &data) {
-   glGenTextures(1, &_texture);
-   glBindTexture(GL_TEXTURE_2D, _texture);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+   _filters = data.filters;
+   _format = data.format;
+   _size = data.size;
    
-   GLint format = data.type == TEX_RGBA ? GL_RGBA : GL_RGB; //update for other types
-   glTexImage2D(GL_TEXTURE_2D, 0, format, data.size.x, data.size.y, 0, format, GL_UNSIGNED_BYTE, data.data);
-   glGenerateMipmap(GL_TEXTURE_2D);
+   // enforce no mip maps for fbo textures.
+   if (_fboTex)
+      _filters &= ~(FILT_MIP_NEAR | FILT_MIP_LINE);
+   
+   createTexture(data.data);
+}
+
+void OpenGLTexture::createTexture(void *data) {
+   GLint format = _format == TEX_DEPTH ? GL_DEPTH_COMPONENT : _format == TEX_RGBA ? GL_RGBA : GL_RGB;
+   GLenum type = _format == TEX_DEPTH ? GL_UNSIGNED_SHORT : GL_UNSIGNED_BYTE;
+   
+   // delete the previous texture.
+   if (_texId)
+      deleteTexture();
+   
+   // generate and bind the texture id.
+   glGenTextures(1, &_texId);
+   glBindTexture(GL_TEXTURE_2D, _texId);
+   
+   // setup for any non-powers of two textures.
+   if (!_size.isPowerOfTwo()) {
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+      _filters &= ~(FILT_MIP_NEAR | FILT_MIP_LINE); // remove any mip map filters
+   }
+   
+   // set texture filters
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, getMin(_filters));
+   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, getMag(_filters));
+   
+   // create the texture
+   glTexImage2D(GL_TEXTURE_2D, 0, format, _size.x, _size.y, 0, format, type, data);
+   
+   // attach texture to the active frame buffer.
+   if (_fboTex) {
+      GLenum attachment = _format == TEX_DEPTH ? GL_DEPTH_ATTACHMENT : GL_COLOR_ATTACHMENT0;
+      glFramebufferTexture2D(GL_FRAMEBUFFER, attachment, GL_TEXTURE_2D, _texId, 0);
+   }
+   
+   // generate mip maps
+   if (_filters & (FILT_MIP_NEAR | FILT_MIP_LINE))
+      glGenerateMipmap(GL_TEXTURE_2D);
+   glBindTexture(GL_TEXTURE_2D, 0);
    
    _loaded = true;
-   cout << "loaded texture: " << _tag.getAttribute(ATT_NAME) << endl;
+   cout << "loaded texture: " << getName() << endl;
 }
 
 void OpenGLTexture::deleteTexture() {
-   if (!loaded()) {
-      glDeleteBuffers(1, &_texture);
-      _texture = 0;
+   if (_texId) {
+      if (!_fboTex)
+         glDeleteBuffers(1, &_texId);
+      _texId = 0;
       _loaded = false;
       cout << "unloaded texture: " << _tag.getAttribute(ATT_NAME) << endl;
    }
+}
+
+GLint OpenGLTexture::getMin(unsigned int filters) {
+   if (filters & FILT_MIP_NEAR)
+      return filters & FILT_MIN_NEAR ? GL_NEAREST_MIPMAP_NEAREST : GL_LINEAR_MIPMAP_NEAREST;
+   if (filters & FILT_MIP_LINE)
+      return filters & FILT_MIN_NEAR ? GL_NEAREST_MIPMAP_LINEAR : GL_LINEAR_MIPMAP_LINEAR;
+   return filters & FILT_MIN_NEAR ? GL_NEAREST : GL_LINEAR;
+}
+
+GLint OpenGLTexture::getMag(unsigned int filters) {
+   return filters & FILT_MAG_NEAR ? GL_NEAREST : GL_LINEAR;
 }

@@ -58,7 +58,7 @@ TextureData* IOSFileSystem::loadTexture(const std::string &path) const {
    NSString *nsPath = [[NSString alloc] initWithUTF8String:fullPath.c_str()];
    TextureData *data = new TextureData();
    
-   data->type = TEX_RGBA;
+   data->format = TEX_RGBA;
    data->size = 0;
    
    UIImage* uiImage = [UIImage imageWithContentsOfFile:nsPath];

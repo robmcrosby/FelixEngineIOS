@@ -67,6 +67,13 @@ void Resources::releaseResources() {
    Host::GetHost()->cleanUpResources();
 }
 
+unsigned int Texture::ParseFilters(const std::string &filtStr) {
+   unsigned int filters = filtStr.find("near_nearest") != string::npos ? FILT_MIN_NEAR : FILT_MIN_LINE;
+   filters |= filtStr.find("mip_nearest") != string::npos ? FILT_MIP_NEAR : filtStr.find("mip") != string::npos ? FILT_MIP_LINE : 0;
+   filters |= filtStr.find("far_nearest") != string::npos ? FILT_MAG_NEAR : FILT_MAG_LINE;
+   return filters;
+}
+
 
 MeshData* Mesh::GetPlaneData() {
    MeshData *data = new MeshData();

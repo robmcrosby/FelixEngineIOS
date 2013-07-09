@@ -5,7 +5,7 @@
       <Shader name="fill" vert="fill.vert" frag="texture.frag"/>
       <Shader name="depth" vert="texture.vert" frag="depth.frag"/>
       <Mesh name="bunny" src="bunny.obj"/>
-      <Texture name="grid" src="grid.png"/>
+      <Texture name="grid" src="grid.png" filters="mip"/>
       <FrameBuff name="fbo1" color="fbo1_color" depth="fbo1_depth"/>
    </Resources>
    <Pipeline name="pipeline">
@@ -22,7 +22,7 @@
       </full>
       <pass>screen</pass>
    </Pipeline>
-   <Camera flags="abs">
+   <Camera>
       <pos>0, 0, 20</pos>
       <target>0, 0, 0</target>
       <up>0, 1, 0</up>

@@ -38,9 +38,7 @@ private:
    inline void loadFbo();
    
    inline void createColorRenderBuff();
-   inline void createColorTexureBuff();
    inline void createDepthRenderBuff();
-   inline void createDepthTextureBuff();
    
    inline void deleteFbo();
    inline void loadData(const FrameBuffData &data);
@@ -51,7 +49,8 @@ private:
    ivec2 _screen;
    vec2 _size;
    unsigned int _flags;
-   GLuint _fboId, _colorId, _depthId, _depthBuff;
+   unsigned int _filters;
+   GLuint _fboId, _colorId, _depthId;
    
    OpenGLTexture *_colorTex;
    OpenGLTexture *_depthTex;

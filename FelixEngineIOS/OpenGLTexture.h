@@ -32,10 +32,19 @@ public:
    
 private:
    inline void loadData(const TextureData &data);
+   
+   inline void createTexture(void *data = 0);
    inline void deleteTexture();
    
+   inline GLint getMin(unsigned int filters);
+   inline GLint getMag(unsigned int filters);
+   
    HostFileSystem *_filesys;
-   GLuint _texture;
+   unsigned int _filters;
+   TEX_FORMAT _format;
+   ivec2 _size;
+   GLuint _texId;
+   bool _fboTex;
    
    static std::map<std::string, OpenGLTexture*> Textures;
 };

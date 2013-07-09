@@ -11,11 +11,21 @@
 
 #include "ShaderVaribles.h"
 
-enum TEX_TYPE {
+enum TEX_FORMAT {
    TEX_GRAY,
    TEX_GRAY_ALPHA,
    TEX_RGB,
    TEX_RGBA,
+   TEX_DEPTH,
+};
+
+enum FILT_TYPE {
+   FILT_MIN_NEAR = 1,
+   FILT_MIN_LINE = 2,
+   FILT_MAG_NEAR = 4,
+   FILT_MAG_LINE = 8,
+   FILT_MIP_NEAR = 16,
+   FILT_MIP_LINE = 32,
 };
 
 enum PRIM_TYPE {
@@ -44,11 +54,12 @@ struct ShaderData {
  * Data for a texture
  */
 struct TextureData {
-   TextureData(): data(0) {}
+   TextureData(): data(0), filters(0) {}
    ~TextureData() {free(data);}
    
    std::string file;
-   TEX_TYPE type;
+   unsigned int filters;
+   TEX_FORMAT format;
    ivec2 size;
    int pixelSize;
    void *data;
@@ -70,6 +81,7 @@ struct MeshData {
  */
 struct FrameBuffData {
    unsigned int flags;
+   unsigned int filters;
    vec2 size;
    std::string colorTex;
    std::string depthTex;
