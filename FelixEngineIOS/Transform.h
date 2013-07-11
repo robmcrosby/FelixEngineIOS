@@ -28,11 +28,11 @@ public:
    inline void setScale(vec3 s) {_scale = s; _updated = false;}
    
    inline void applyTag(const XMLTag &tag) {
-      if (tag.hasTag("pos"))
+      if (tag.hasSubTag("pos"))
          setPos(vec3::ParseFloat(tag.getSubContents("pos")));
-      if (tag.hasTag("rot"))
+      if (tag.hasSubTag("rot"))
          setRot(quat::ParseFloat(tag.getSubContents("rot")));
-      if (tag.hasTag("scale"))
+      if (tag.hasSubTag("scale"))
          setScale(vec3::ParseFloat(tag.getSubContents("scale")));
    }
    
