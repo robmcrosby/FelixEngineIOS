@@ -1,13 +1,13 @@
 //
 //  Quaternion.h
-//  TackyEngine
+//  FelixEngineIOS
 //
 //  Created by Robert Crosby on 12/9/12.
 //  Copyright (c) 2012 Robert Crosby. All rights reserved.
 //
 
-#ifndef TackyEngine_Quaternion_h
-#define TackyEngine_Quaternion_h
+#ifndef FelixEngineIOS_Quaternion_h
+#define FelixEngineIOS_Quaternion_h
 
 #include "Vector.h"
 #include "Matrix.h"

@@ -1,13 +1,13 @@
 //
 //  XMLTag.h
-//  TackyEngine
+//  FelixEngineIOS
 //
 //  Created by Robert Crosby on 1/6/13.
 //  Copyright (c) 2013 Robert Crosby. All rights reserved.
 //
 
-#ifndef __TackyEngine__XMLTag__
-#define __TackyEngine__XMLTag__
+#ifndef __FelixEngineIOS__XMLTag__
+#define __FelixEngineIOS__XMLTag__
 
 #include <iostream>
 #include <string>
@@ -595,4 +595,4 @@ private:
    std::map<std::string, std::string> _attributes; /**< map of Attributes */
 };
 
-#endif /* defined(__TackyEngine__XMLTag__) */
+#endif /* defined(__FelixEngineIOS__XMLTag__) */

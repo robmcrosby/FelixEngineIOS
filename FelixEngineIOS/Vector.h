@@ -1,13 +1,13 @@
 //
 //  Vector.h
-//  TackyEngine
+//  FelixEngineIOS
 //
 //  Created by Robert Crosby on 12/9/12.
 //  Copyright (c) 2012 Robert Crosby. All rights reserved.
 //
 
-#ifndef TackyEngine_Vector_h
-#define TackyEngine_Vector_h
+#ifndef FelixEngineIOS_Vector_h
+#define FelixEngineIOS_Vector_h
 
 #include <cmath>
 #include <iostream>

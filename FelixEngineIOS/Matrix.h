@@ -1,13 +1,13 @@
 //
 //  Matrix.h
-//  TackyEngine
+//  FelixEngineIOS
 //
 //  Created by Robert Crosby on 12/9/12.
 //  Copyright (c) 2012 Robert Crosby. All rights reserved.
 //
 
-#ifndef TackyEngine_Matrix_h
-#define TackyEngine_Matrix_h
+#ifndef FelixEngineIOS_Matrix_h
+#define FelixEngineIOS_Matrix_h
 
 #include "Vector.h"
 
