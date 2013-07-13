@@ -10,6 +10,7 @@
 #define __FelixEngineIOS__Pipeline__
 
 #include "Entity.h"
+#include "Color.h"
 
 class HostDisplay;
 class FrameBuff;

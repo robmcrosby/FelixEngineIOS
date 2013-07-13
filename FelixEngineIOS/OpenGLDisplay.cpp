@@ -118,13 +118,13 @@ Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
    string name = tag.getAttribute(ATT_NAME);
    Resource *ret = NULL;
    
-   if (tag == "Shader")
+   if (tag == SHADER_TAG)
       ret = OpenGLShader::GetShader(name);
-   else if (tag == "Texture")
+   else if (tag == TEXTURE_TAG)
       ret = OpenGLTexture::GetTexture(name);
-   else if (tag == "Mesh")
+   else if (tag == MESH_TAG)
       ret = OpenGLMesh::GetMesh(name);
-   else if (tag == "FrameBuff")
+   else if (tag == FBO_TAG)
       ret = OpenGLFrameBuff::GetFrameBuff(name);
    
    if (ret)

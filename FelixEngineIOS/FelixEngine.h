@@ -11,6 +11,7 @@
 
 #include "Resources.h"
 #include "Pipeline.h"
+#include "Color.h"
 
 #define APP_CONFIG "Config/main.xml" /**< Main configuration file for the engine to load. */ 
 #define MAIN_PASS "main" /**< A default general pass name. */
@@ -379,9 +380,9 @@ public:
     * @return Resource pointer or NULL if it can not be found.
     */
    inline Resource* getResource(const XMLTag &tag) {
-      if (tag == "Shader" || tag == "Texture" || tag == "Mesh" || tag == "FrameBuff")
+      if (tag == SHADER_TAG || tag == TEXTURE_TAG || tag == MESH_TAG || tag == FBO_TAG)
          return _display->getResource(tag);
-      else if (tag == "Sound")
+      else if (tag == SOUND_TAG)
          return _audio->getResource(tag);
       return NULL;
    }

@@ -15,6 +15,9 @@
 #include "ShaderVaribles.h"
 #include "XMLTag.h"
 
+
+#define TRANSFORM_TAG "Transform"
+
 class Transform {
 public:
    Transform(): _scale(1.0f), _parrent(0), _updated(0) {

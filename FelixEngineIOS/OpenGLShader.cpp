@@ -13,7 +13,7 @@ using namespace std;
 map<string, OpenGLShader*> OpenGLShader::Shaders;
 
 
-OpenGLShader::OpenGLShader(const string &name): Shader(XMLTag("Shader")), _program(0) {
+OpenGLShader::OpenGLShader(const string &name): Shader(XMLTag(SHADER_TAG)), _program(0) {
    _tag.setAttribute(ATT_NAME, name);
    _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();

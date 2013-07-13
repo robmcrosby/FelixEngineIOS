@@ -31,24 +31,24 @@ void Object3d::applyTag() {
       _display = Host::GetHost()->getDisplay();
       
       // add the shader
-      subtag = _tag->getSubTag("Shader");
+      subtag = _tag->getSubTag(SHADER_TAG);
       _shader = subtag ? _display->getShader(subtag->getAttribute("name")) : NULL;
       
       // add the mesh
-      subtag = _tag->getSubTag("Mesh");
+      subtag = _tag->getSubTag(MESH_TAG);
       _mesh = subtag ? _display->getMesh(subtag->getAttribute("name")) : NULL;
       
       // add a texture
-      subtag = _tag->getSubTag("Texture");
+      subtag = _tag->getSubTag(TEXTURE_TAG);
       if (subtag)
          _textures.push_back(_display->getTexture(subtag->getAttribute("name")));
       
       // add textures
-      subtag = _tag->getSubTag("Textures");
+      subtag = _tag->getSubTag(TEXTURES_TAG);
       if (subtag) {
          XMLTag::const_iterator itr;
          for (itr = subtag->begin(); itr != subtag->end(); ++itr) {
-            if (**itr == "Texture")
+            if (**itr == TEXTURE_TAG)
                _textures.push_back(_display->getTexture((*itr)->getAttribute("name")));
          }
       }

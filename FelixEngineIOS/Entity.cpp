@@ -27,8 +27,8 @@ Entity::~Entity() {
 void Entity::applyTag() {
    if (_tag) {
       // set the transform
-      if (_tag->hasSubTag("Transform"))
-         _transform.applyTag(*_tag->getSubTag("Transform"));
+      if (_tag->hasSubTag(TRANSFORM_TAG))
+         _transform.applyTag(*_tag->getSubTag(TRANSFORM_TAG));
       else
          _transform.applyTag(*_tag);
       

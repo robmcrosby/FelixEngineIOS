@@ -13,8 +13,6 @@
 #include <set>
 #include <vector>
 #include "XMLTag.h"
-#include "Vector.h"
-#include "Color.h"
 #include "Transform.h"
 
 /**

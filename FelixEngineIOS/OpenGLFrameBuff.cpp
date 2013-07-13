@@ -13,7 +13,7 @@ using namespace std;
 map<string, OpenGLFrameBuff*> OpenGLFrameBuff::FrameBuffs;
 
 
-OpenGLFrameBuff::OpenGLFrameBuff(const std::string &name): FrameBuff(XMLTag("FrameBuff")),
+OpenGLFrameBuff::OpenGLFrameBuff(const std::string &name): FrameBuff(XMLTag(FBO_TAG)),
 _flags(0), _fboId(0), _colorId(0), _depthId(0), _colorTex(0) {
    _tag.setAttribute(ATT_NAME, name);
    _display = Host::GetHost()->getDisplay();
@@ -101,7 +101,7 @@ void OpenGLFrameBuff::load() {
 
 void OpenGLFrameBuff::unload() {
    if (loaded())
-      unload();
+      deleteFbo();
 }
 
 void OpenGLFrameBuff::setToData(const FrameBuffData &data) {

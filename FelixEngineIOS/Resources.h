@@ -13,6 +13,15 @@
 #include "ResourceData.h"
 #include "ShaderVaribles.h"
 
+
+#define SHADER_TAG "Shader"
+#define TEXTURE_TAG "Texture"
+#define TEXTURES_TAG "Textures"
+#define MESH_TAG "Mesh"
+#define FBO_TAG "FrameBuff"
+
+#define SOUND_TAG "Sound"
+
 #define ATT_NAME "name"
 
 enum DRAW_TYPE {
@@ -28,20 +37,21 @@ public:
    Resource(const XMLTag &tag): _tag(tag), _count(0), _loaded(0) {}
    virtual ~Resource() {}
    
-   inline void retain() {++_count;}
-   inline void release() {_count -= _count == 0 ? 0 : 1;}
+   inline void retain() const {++_count;}
+   inline void release() const {_count -= _count == 0 ? 0 : 1;}
+   inline size_t getCount() const {return _count;}
+   
    inline void setToTag(const XMLTag &tag) {_tag = tag;}
    
    virtual void load() = 0;
    virtual void unload() = 0;
-   
    inline bool loaded() const {return _loaded;}
-   inline size_t getCount() const {return _count;}
+   
    inline std::string getName() const {return _tag.getAttribute(ATT_NAME);}
    
 protected:
    XMLTag _tag;
-   size_t _count;
+   mutable size_t _count;
    bool _loaded;
 };
 
@@ -72,7 +82,7 @@ struct Texture: public Resource {
 };
 
 /**
- Base class for meshes
+ * Base class for meshes
  */
 struct Mesh: public Resource {
    Mesh(const XMLTag &tag): Resource(tag) {}
@@ -86,7 +96,7 @@ struct Mesh: public Resource {
 };
 
 /**
- Base class for frame buffer objects
+ * Base class for frame buffer objects
  */
 struct FrameBuff: public Resource {
    FrameBuff(const XMLTag &tag): Resource(tag) {}
@@ -97,8 +107,8 @@ struct FrameBuff: public Resource {
 };
 
 /**
- Initally only contains file paths to resources. After loading, this
- contains resources associated with the file paths.
+ * Initally only contains file paths to resources. After loading, this
+ * contains resources associated with the file paths.
  */
 class Resources: Entity {
 public:
