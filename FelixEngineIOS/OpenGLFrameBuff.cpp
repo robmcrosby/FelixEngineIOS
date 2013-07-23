@@ -61,6 +61,12 @@ void OpenGLFrameBuff::UpdateFrameBuffs() {
       itr->second->updateSize(screen);
 }
 
+void OpenGLFrameBuff::SetData(const ResourceData *data) {
+   const FrameBuffData *fData = dynamic_cast<const FrameBuffData*>(data);
+   if (fData)
+      GetFrameBuff(fData->targetName)->setToData(*fData);
+}
+
 void OpenGLFrameBuff::load() {
    if (!loaded()) {
       FrameBuffData data;

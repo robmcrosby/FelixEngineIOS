@@ -48,6 +48,12 @@ void OpenGLTexture::ClearTextures() {
    Textures.clear();
 }
 
+void OpenGLTexture::SetData(const ResourceData *data) {
+   const TextureData *tData = dynamic_cast<const TextureData*>(data);
+   if (tData)
+      GetTexture(tData->targetName)->setToData(*tData);
+}
+
 void OpenGLTexture::load() {
    if (!loaded() && _tag.hasAttribute("src")) {
       string texPath = "Textures/" + _tag.getAttribute("src");

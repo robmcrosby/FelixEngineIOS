@@ -43,9 +43,20 @@ enum FBO_FLAGS {
 };
 
 /**
+ Data base struct
+ */
+struct ResourceData {
+   virtual ~ResourceData() {}
+   
+   std::string targetName;
+};
+
+/**
  Data for a shader
  */
-struct ShaderData {
+struct ShaderData: public ResourceData {
+   virtual ~ShaderData() {}
+   
    std::string vFile, fFile;
    std::string vSrc, fSrc;
 };
@@ -53,9 +64,9 @@ struct ShaderData {
 /**
  * Data for a texture
  */
-struct TextureData {
+struct TextureData: public ResourceData {
    TextureData(): data(0), filters(0) {}
-   ~TextureData() {free(data);}
+   virtual ~TextureData() {free(data);}
    
    std::string file;
    unsigned int filters;
@@ -68,7 +79,9 @@ struct TextureData {
 /**
  * Data for a mesh
  */
-struct MeshData {
+struct MeshData: public ResourceData {
+   virtual ~MeshData() {}
+   
    std::string file;
    std::vector<float> vertices;
    std::vector<unsigned int> indices;
@@ -79,7 +92,9 @@ struct MeshData {
 /**
  Data for a frame buffer object
  */
-struct FrameBuffData {
+struct FrameBuffData: public ResourceData {
+   virtual ~FrameBuffData() {}
+   
    unsigned int flags;
    unsigned int filters;
    vec2 size;

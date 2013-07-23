@@ -182,35 +182,11 @@ struct HostDisplay {
     */
    virtual const FrameBuff* getFrameBuff(const std::string &name) = 0;
    
-   
    /**
-    * Sets ShaderData to the Shader with the name, creates a new Shader if not avalible.
-    * @param name string name of the Shader.
-    * @param data ShaderData to be set to the Shader.
+    * Sets the ResourceData with the targetName resource.
+    * @param data ResourceData to be set to a resource in the display.
     */
-   virtual void setShaderData(const std::string &name, const ShaderData &data) = 0;
-   
-   /**
-    * Sets TextureData to the Texture with the name, creates a new Texture if not avalible.
-    * @param name string name of the Texture.
-    * @param data TextureData to set to the Texture.
-    */
-   virtual void setTextureData(const std::string &name, const TextureData &data) = 0;
-   
-   /**
-    * Sets MeshData to the Mesh with the name, creates a new Mesh if not avalible.
-    * @param name string name of the Mesh.
-    * @param data MeshData to be set to Mesh.
-    */
-   virtual void setMeshData(const std::string &name, const MeshData &data) = 0;
-   
-   /**
-    * Sets FrameBuffData to the FrameBuff with the name, creates a new FrameBuff if not avalible.
-    * @param name string name of the FrameBuff.
-    * @param data FrameBuffData to set the FrameBuff.
-    */
-   virtual void setFrameBuffData(const std::string &name, const FrameBuffData &data) = 0;
-   
+   virtual void setResourceData(const ResourceData *data) = 0;
    
    /**
     * Set the active shader for the context.

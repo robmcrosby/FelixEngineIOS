@@ -156,23 +156,12 @@ const FrameBuff* OpenGLDisplay::getFrameBuff(const string &name) {
    return OpenGLFrameBuff::GetFrameBuff(name);
 }
 
-
-void OpenGLDisplay::setShaderData(const string &name, const ShaderData &data) {
-   OpenGLShader::GetShader(name)->setToData(data);
+void OpenGLDisplay::setResourceData(const ResourceData *data) {
+   OpenGLShader::SetData(data);
+   OpenGLTexture::SetData(data);
+   OpenGLMesh::SetData(data);
+   OpenGLFrameBuff::SetData(data);
 }
-
-void OpenGLDisplay::setTextureData(const string &name, const TextureData &data) {
-   OpenGLTexture::GetTexture(name)->setToData(data);
-}
-
-void OpenGLDisplay::setMeshData(const string &name, const MeshData &data) {
-   OpenGLMesh::GetMesh(name)->setToData(data);
-}
-
-void OpenGLDisplay::setFrameBuffData(const string &name, const FrameBuffData &data) {
-   OpenGLFrameBuff::GetFrameBuff(name)->setToData(data);
-}
-
 
 void OpenGLDisplay::setCurShader(const Shader *sh) {
    if (sh != _curShader) {

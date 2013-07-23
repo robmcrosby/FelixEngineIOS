@@ -21,6 +21,7 @@ public:
    static OpenGLMesh* GetMesh(const std::string &name);
    static void CleanUpMeshes();
    static void ClearMeshes();
+   static void SetData(const ResourceData *data);
    
    virtual void load();
    virtual void unload();

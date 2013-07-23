@@ -24,6 +24,7 @@ public:
    static OpenGLShader* GetShader(const std::string &name);
    static void CleanUpShaders();
    static void ClearShaders();
+   static void SetData(const ResourceData *data);
    
    virtual void load();
    virtual void unload();

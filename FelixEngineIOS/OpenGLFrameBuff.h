@@ -23,6 +23,7 @@ public:
    static void CleanUpFrameBuffs();
    static void ClearFrameBuffs();
    static void UpdateFrameBuffs();
+   static void SetData(const ResourceData *data);
    
    virtual void load();
    virtual void unload();

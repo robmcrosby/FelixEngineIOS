@@ -51,6 +51,12 @@ void OpenGLMesh::ClearMeshes() {
       delete itr->second;
 }
 
+void OpenGLMesh::SetData(const ResourceData *data) {
+   const MeshData *mData = dynamic_cast<const MeshData*>(data);
+   if (mData)
+      GetMesh(mData->targetName)->setToData(*mData);
+}
+
 void OpenGLMesh::load() {
    if (!loaded() && _tag.hasAttribute("src")) {
       string src = _tag.getAttribute("src");

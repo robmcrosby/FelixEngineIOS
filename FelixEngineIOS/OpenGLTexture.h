@@ -21,6 +21,7 @@ public:
    static OpenGLTexture* GetTexture(const std::string &name);
    static void CleanUpTextures();
    static void ClearTextures();
+   static void SetData(const ResourceData *data);
    
    virtual void load();
    virtual void unload();

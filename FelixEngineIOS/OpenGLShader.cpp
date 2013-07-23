@@ -48,6 +48,12 @@ void OpenGLShader::ClearShaders() {
    Shaders.clear();
 }
 
+void OpenGLShader::SetData(const ResourceData *data) {
+   const ShaderData *sData = dynamic_cast<const ShaderData*>(data);
+   if (sData)
+      GetShader(sData->targetName)->setToData(*sData);
+}
+
 void OpenGLShader::load() {
    if (!loaded() && _tag.hasAttribute("vert") && _tag.hasAttribute("frag")) {
       ShaderData data;
