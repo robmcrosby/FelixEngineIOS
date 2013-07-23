@@ -34,7 +34,9 @@ enum DRAW_TYPE {
  */
 class Resource {
 public:
-   Resource(const XMLTag &tag): _tag(tag), _count(0), _loaded(0) {}
+   Resource(const std::string &name, const std::string &tag): _tag(tag), _count(0), _loaded(0) {
+      _tag.setAttribute(ATT_NAME, name);
+   }
    virtual ~Resource() {}
    
    inline void retain() const {++_count;}
@@ -60,7 +62,7 @@ protected:
  */
 class Shader: public Resource {
 public:
-   Shader(const XMLTag &tag): Resource(tag) {}
+   Shader(const std::string &name): Resource(name, SHADER_TAG) {}
    
    virtual void setToData(const ShaderData &data) = 0;
    
@@ -73,7 +75,7 @@ public:
  Base class for textures
  */
 struct Texture: public Resource {
-   Texture(const XMLTag &tag): Resource(tag) {}
+   Texture(const std::string &name): Resource(name, TEXTURE_TAG) {}
    
    virtual void setToData(const TextureData &data) = 0;
    virtual void use(int idx) const = 0;
@@ -85,7 +87,7 @@ struct Texture: public Resource {
  * Base class for meshes
  */
 struct Mesh: public Resource {
-   Mesh(const XMLTag &tag): Resource(tag) {}
+   Mesh(const std::string &name): Resource(name, MESH_TAG) {}
    
    virtual void setToData(const MeshData &data) = 0;
    
@@ -99,7 +101,7 @@ struct Mesh: public Resource {
  * Base class for frame buffer objects
  */
 struct FrameBuff: public Resource {
-   FrameBuff(const XMLTag &tag): Resource(tag) {}
+   FrameBuff(const std::string &name): Resource(name, FBO_TAG) {}
    
    virtual void setToData(const FrameBuffData &data) = 0;
    virtual ivec2 getSize() const = 0;

@@ -15,15 +15,14 @@ using namespace std;
 
 map<string, OpenGLMesh*> OpenGLMesh::Meshes;
 
-OpenGLMesh::OpenGLMesh(const std::string &name): Mesh(XMLTag(MESH_TAG)), _vertex(0), _index(0) {
-   _tag.setAttribute(ATT_NAME, name);
+OpenGLMesh::OpenGLMesh(const std::string &name): Mesh(name), _vertex(0), _index(0) {
    _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();
    Meshes[name] = this;
 }
 
 OpenGLMesh::~OpenGLMesh() {
-   Meshes.erase(_tag.getAttribute(ATT_NAME));
+   Meshes.erase(getName());
    deleteMesh();
 }
 
@@ -66,7 +65,7 @@ void OpenGLMesh::load() {
       
       // create a null data item for this mesh
       if (_tag.hasAttribute(ATT_NAME))
-         data[_tag.getAttribute(ATT_NAME)] = NULL;
+         data[getName()] = NULL;
       
       // load the data to the meshes
       if (_filesys->loadMeshes(path, &data)) {
@@ -152,7 +151,7 @@ void OpenGLMesh::loadData(const MeshData &data) {
    }
    
    _loaded = true;
-   cout << "loaded mesh: " << _tag.getAttribute(ATT_NAME) << endl;
+   cout << "loaded mesh: " << getName() << endl;
 }
 
 void OpenGLMesh::deleteMesh() {
@@ -164,7 +163,7 @@ void OpenGLMesh::deleteMesh() {
       _vertex = 0;
       _index = 0;
       _loaded = false;
-      cout << "unloaded mesh: " << _tag.getAttribute(ATT_NAME) << endl;
+      cout << "unloaded mesh: " << getName() << endl;
    }
 }
 

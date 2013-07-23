@@ -13,15 +13,14 @@ using namespace::std;
 
 map<string, OpenGLTexture*> OpenGLTexture::Textures;
 
-OpenGLTexture::OpenGLTexture(const string &name): Texture(XMLTag(TEXTURE_TAG)),
+OpenGLTexture::OpenGLTexture(const string &name): Texture(name),
 _texId(0), _format(TEX_RGBA), _filters(0), _fboTex(0) {
-   _tag.setAttribute(ATT_NAME, name);
    _filesys = Host::GetHost()->getFileSystem();
    Textures[name] = this;
 }
 
 OpenGLTexture::~OpenGLTexture() {
-   Textures.erase(_tag.getAttribute(ATT_NAME));
+   Textures.erase(getName());
    deleteTexture();
 }
 
@@ -155,7 +154,7 @@ void OpenGLTexture::deleteTexture() {
          glDeleteBuffers(1, &_texId);
       _texId = 0;
       _loaded = false;
-      cout << "unloaded texture: " << _tag.getAttribute(ATT_NAME) << endl;
+      cout << "unloaded texture: " << getName() << endl;
    }
 }
 

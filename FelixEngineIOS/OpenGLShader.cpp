@@ -13,15 +13,14 @@ using namespace std;
 map<string, OpenGLShader*> OpenGLShader::Shaders;
 
 
-OpenGLShader::OpenGLShader(const string &name): Shader(XMLTag(SHADER_TAG)), _program(0) {
-   _tag.setAttribute(ATT_NAME, name);
+OpenGLShader::OpenGLShader(const string &name): Shader(name), _program(0) {
    _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();
    Shaders[name] = this;
 }
 
 OpenGLShader::~OpenGLShader() {
-   Shaders.erase(_tag.getAttribute(ATT_NAME));
+   Shaders.erase(getName());
    deleteShader();
 }
 
@@ -124,7 +123,7 @@ void OpenGLShader::loadData(const ShaderData &data) {
       _program = glCreateProgram();
       if (!_program) {
          cerr << "error creating shader program: ";
-         cerr << _tag.getAttribute(ATT_NAME) << endl;
+         cerr << getName() << endl;
          return;
       }
       
@@ -148,7 +147,7 @@ void OpenGLShader::loadData(const ShaderData &data) {
          fragPart.detatch(_program);
 
          _loaded = true;
-         cout << "loaded shader: " << _tag.getAttribute(ATT_NAME) << endl;
+         cout << "loaded shader: " << getName() << endl;
       }
    }
 }
@@ -158,7 +157,7 @@ void OpenGLShader::deleteShader() {
       glDeleteProgram(_program);
       _program = 0;
       _loaded = false;
-      cout << "deleted shader: " << _tag.getAttribute(ATT_NAME) << endl;
+      cout << "deleted shader: " << getName() << endl;
    }
 }
 
