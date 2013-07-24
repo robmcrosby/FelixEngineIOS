@@ -26,7 +26,7 @@ Resources::Resources(XMLTag *tag): Entity(tag), _loaded(0) {
    }
    
    // clean up any unused resources
-   //host->cleanUpResources();
+   host->cleanUpResources();
 }
 
 Resources::~Resources() {
