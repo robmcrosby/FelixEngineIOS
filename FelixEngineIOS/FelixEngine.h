@@ -14,9 +14,12 @@
 #include "Color.h"
 
 #define APP_CONFIG "Config/main.xml" /**< Main configuration file for the engine to load. */ 
-#define MAIN_PASS "main" /**< A default general pass name. */
-#define SCREEN_PASS "screen" /**< A default pass name for drawing 2d elements. (hud, text, etc...) */
+#define MAIN_PASS "main" /**< Default general pass name. */
+#define SCREEN_PASS "screen" /**< Default pass name for drawing 2d elements. (hud, text, etc...) */
 #define FINAL_FBO "final" /**< Name for the final system Frame Buffer. */
+
+#define DEF_NEAR -10 /**< Default near value. */
+#define DEF_FAR 10 /**< Default far value */
 
 /**
  * Defines what device the engine is running on.

@@ -36,6 +36,8 @@ _host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPipeline(0) {
    _finalBuff->retain();
    _curBuff = _finalBuff;
    
+   updateDefaultProjection();
+   
    // initalize the default passes
    clearPasses();
 }
@@ -56,8 +58,10 @@ void OpenGLDisplay::notify(const Event &event) {
          delete planeData;
       }
    }
-   else if (event == EVENT_RESIZE)
+   else if (event == EVENT_RESIZE) {
+      updateDefaultProjection();
       OpenGLFrameBuff::UpdateFrameBuffs();
+   }
    
    Entity::notify(event);
 }
@@ -109,9 +113,13 @@ void OpenGLDisplay::emptyPasses() {
 
 void OpenGLDisplay::clearPasses() {
    _passes.clear();
+   
    _passes[SCREEN_PASS] = Pass();
    _passes[MAIN_PASS] = Pass();
    _curPass = MAIN_PASS;
+   
+   addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_defProjMtx), SCREEN_PASS);
+   addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_defViewMtx), SCREEN_PASS);
 }
 
 Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
@@ -203,6 +211,11 @@ void OpenGLDisplay::removePassUniform(const string &name, const std::string &pas
 
 void OpenGLDisplay::clearPassUniforms(const std::string &pass) {
    getPassUniforms(pass)->clear();
+}
+
+void OpenGLDisplay::updateDefaultProjection() {
+   vec2 size = _host->getScreenSize() * _host->getScreenScale();
+   _defProjMtx = mat4::Ortho(-size.x/2.0f, size.x/2.0f, -size.y/2.0f, size.y/2.0f, DEF_NEAR, DEF_FAR);
 }
 
 OpenGLDisplay::Pass* OpenGLDisplay::getPass(const std::string &pass) {

@@ -16,7 +16,7 @@ ObjViewer::ObjViewer(XMLTag *tag): Entity(tag) {
    createChildren(_tag);
    
    plane = Entity::GetEntity("plane");
-   bunny = Entity::GetEntity("bunny");
+   //bunny = Entity::GetEntity("bunny");
    Pipeline *pipeline = dynamic_cast<Pipeline*>(Entity::GetEntity("pipeline"));
    
    if (pipeline)
@@ -29,12 +29,12 @@ ObjViewer::~ObjViewer() {
 
 
 void ObjViewer::notify(const Event &event) {
-   if (event == EVENT_UPDATE) {
+   /*if (event == EVENT_UPDATE) {
       float td = *(float*)event.data;
       
       if (bunny)
          bunny->getTransform()->rotate(quat(vec3(0, 1, 0), td));
-   }
+   }*/
    
    Entity::notify(event);
 }

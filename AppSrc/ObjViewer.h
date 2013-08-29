@@ -20,7 +20,7 @@ public:
    virtual void notify(const Event &event);
    
 private:
-   Entity *bunny;
+   //Entity *bunny;
    Entity *plane;
    
    DECLARE_ENTITY_ID(ObjViewer)

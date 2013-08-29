@@ -81,6 +81,8 @@ private:
     */
    typedef std::map<std::string, Pass> Passes;
    
+   inline void updateDefaultProjection();
+   
    inline Pass* getPass(const std::string &pass);
    inline Draws* getPassDraws(const std::string &pass);
    inline Uniforms* getPassUniforms(const std::string &pass);
@@ -91,6 +93,9 @@ private:
    Pipeline _defPipeline;
    Pipeline *_curPipeline;
    std::string _curPass;
+   
+   mat4 _defProjMtx;
+   mat4 _defViewMtx;
    
    FrameBuff *_curBuff;
    OpenGLFrameBuff *_finalBuff;
