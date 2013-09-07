@@ -1,23 +1,23 @@
 
 <ObjViewer>
-   <Resources>
-      <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
-      <Shader name="fill" vert="fill.vert" frag="texture.frag"/>
-      <Texture name="green" src="green.png" filters="mip"/>
-      <Texture name="red" src="red.png" filters="mip"/>
-   </Resources>
-   <Pipeline name="pipeline">
-      <clear>0, 0, 0, 1</clear>
-      <pass>screen</pass>
-   </Pipeline>
-   <Object3d name="plane" pass="screen">
-      <Transform>
-         <pos>0, 0, 0</pos>
-         <scale>256, 128, 1</scale>
-      </Transform>
-      <Shader name="texture"/>
-      <Mesh name="plane"/>
-      <Texture name="green"/>
-   </Object3d>
-
+  <Resources>
+    <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
+    <Shader name="fill" vert="fill.vert" frag="texture.frag"/>
+    <Texture name="green" src="green.png" filters="mip"/>
+    <Texture name="red" src="red.png" filters="mip"/>
+  </Resources>
+  <Pipeline name="pipeline">
+    <clear>0, 0, 0, 1</clear>
+    <pass>screen</pass>
+  </Pipeline>
+  <Object3d name="plane" pass="screen">
+    <Transform>
+      <pos>0, 0, 0</pos>
+      <scale>128, 128, 1</scale>
+    </Transform>
+    <Shader name="texture"/>
+    <Mesh name="plane"/>
+    <Texture name="green"/>
+  </Object3d>
+  <UITouchArea name="area1" />
 </ObjViewer>

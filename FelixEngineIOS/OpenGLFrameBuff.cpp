@@ -207,13 +207,13 @@ void OpenGLFrameBuff::loadFbo() {
    status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
    switch(status) {
       case GL_FRAMEBUFFER_COMPLETE:
-         cout << "loaded fbo: " << getName() << endl;
+         //cout << "loaded fbo: " << getName() << endl;
          break;
       case GL_FRAMEBUFFER_UNSUPPORTED:
-         cout << "Unsupported fbo: " << getName() << endl;
+         cerr << "Unsupported fbo: " << getName() << endl;
          break;
       default:
-         cout << "Framebuffer Error\n";
+         cerr << "Framebuffer Error\n";
          break;
    }
    

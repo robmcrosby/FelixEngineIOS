@@ -214,7 +214,7 @@ void OpenGLDisplay::clearPassUniforms(const std::string &pass) {
 }
 
 void OpenGLDisplay::updateDefaultProjection() {
-   vec2 size = _host->getScreenSize() * _host->getScreenScale();
+   vec2 size = _host->getScreenSize();
    _defProjMtx = mat4::Ortho(-size.x/2.0f, size.x/2.0f, -size.y/2.0f, size.y/2.0f, DEF_NEAR, DEF_FAR);
 }
 

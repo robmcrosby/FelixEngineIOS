@@ -151,7 +151,7 @@ void OpenGLMesh::loadData(const MeshData &data) {
    }
    
    _loaded = true;
-   cout << "loaded mesh: " << getName() << endl;
+   //cout << "loaded mesh: " << getName() << endl;
 }
 
 void OpenGLMesh::deleteMesh() {
@@ -163,7 +163,7 @@ void OpenGLMesh::deleteMesh() {
       _vertex = 0;
       _index = 0;
       _loaded = false;
-      cout << "unloaded mesh: " << getName() << endl;
+      //cout << "unloaded mesh: " << getName() << endl;
    }
 }
 

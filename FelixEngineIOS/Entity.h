@@ -33,7 +33,7 @@ enum EVENT_TYPE {
 
 
 /**
- * Base struct for all events used Entities
+ * Base struct for all events used by Entities
  */
 struct Event {
    Event(EVENT_TYPE e = EVENT_OTHER, void *d = NULL): type(e), data(d) {}

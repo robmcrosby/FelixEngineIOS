@@ -147,7 +147,7 @@ void OpenGLShader::loadData(const ShaderData &data) {
          fragPart.detatch(_program);
 
          _loaded = true;
-         cout << "loaded shader: " << getName() << endl;
+         //cout << "loaded shader: " << getName() << endl;
       }
    }
 }
@@ -157,7 +157,7 @@ void OpenGLShader::deleteShader() {
       glDeleteProgram(_program);
       _program = 0;
       _loaded = false;
-      cout << "deleted shader: " << getName() << endl;
+      //cout << "deleted shader: " << getName() << endl;
    }
 }
 

@@ -145,7 +145,7 @@ void OpenGLTexture::createTexture(void *data) {
    glBindTexture(GL_TEXTURE_2D, 0);
    
    _loaded = true;
-   cout << "loaded texture: " << getName() << endl;
+   //cout << "loaded texture: " << getName() << endl;
 }
 
 void OpenGLTexture::deleteTexture() {
@@ -154,7 +154,7 @@ void OpenGLTexture::deleteTexture() {
          glDeleteBuffers(1, &_texId);
       _texId = 0;
       _loaded = false;
-      cout << "unloaded texture: " << getName() << endl;
+      //cout << "unloaded texture: " << getName() << endl;
    }
 }
 
