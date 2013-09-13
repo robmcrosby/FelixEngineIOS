@@ -17,10 +17,6 @@ ObjViewer::ObjViewer(XMLTag *tag): Entity(tag) {
    
    plane = Entity::GetEntity("plane");
    //bunny = Entity::GetEntity("bunny");
-   Pipeline *pipeline = dynamic_cast<Pipeline*>(Entity::GetEntity("pipeline"));
-   
-   if (pipeline)
-      Host::GetHost()->getDisplay()->setCurPipeline(pipeline);
 }
 
 ObjViewer::~ObjViewer() {

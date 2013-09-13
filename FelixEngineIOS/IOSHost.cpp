@@ -42,20 +42,20 @@ void IOSHost::update(float td) {
 }
 
 void IOSHost::render() {
-   _display->emptyPasses();
+   //_display->emptyPasses();
    notify(EVENT_RENDER);
-   _display->render();
+   //_display->render();
 }
 
-void IOSHost::touchDown(Moves moves) {
+void IOSHost::touchDown(const Moves &moves) {
    notify(Event(EVENT_TOUCH_DOWN, &moves));
 }
 
-void IOSHost::touchUp(Moves moves) {
+void IOSHost::touchUp(const Moves &moves) {
    notify(Event(EVENT_TOUCH_UP, &moves));
 }
 
-void IOSHost::touchMove(Moves moves) {
+void IOSHost::touchMove(const Moves &moves) {
    notify(Event(EVENT_TOUCH_MOVE, &moves));
 }
 

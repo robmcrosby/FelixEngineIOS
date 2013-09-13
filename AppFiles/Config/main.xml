@@ -6,18 +6,19 @@
     <Texture name="green" src="green.png" filters="mip"/>
     <Texture name="red" src="red.png" filters="mip"/>
   </Resources>
-  <Pipeline name="pipeline">
-    <clear>0, 0, 0, 1</clear>
-    <pass>screen</pass>
-  </Pipeline>
-  <Object3d name="plane" pass="screen">
-    <Transform>
-      <pos>0, 0, 0</pos>
-      <scale>128, 128, 1</scale>
-    </Transform>
-    <Shader name="texture"/>
-    <Mesh name="plane"/>
-    <Texture name="green"/>
-  </Object3d>
-  <UITouchArea name="area1" />
+  <View name="MainView">
+    <Pipeline name="MainPipeline">
+      <clear>0, 0, 0, 1</clear>
+      <pass>MainView</pass>
+    </Pipeline>
+    <Object3d name="plane" pass="MainView">
+      <Transform>
+        <pos>0, 0, 0</pos>
+        <scale>128, 128, 1</scale>
+      </Transform>
+      <Shader name="texture"/>
+      <Mesh name="plane"/>
+      <Texture name="green"/>
+    </Object3d>
+  </View>
 </ObjViewer>

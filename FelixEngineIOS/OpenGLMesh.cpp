@@ -100,10 +100,12 @@ void OpenGLMesh::setToData(const MeshData &data) {
 }
 
 void OpenGLMesh::use() const {
-   if (loaded()) {
-      glBindBuffer(GL_ARRAY_BUFFER, _vertex);
-      _display->setCurAttributes(&_attributes);
-   }
+  const Shader *activeShader = Shader::GetActiveShader();
+  
+  if (loaded() && activeShader) {
+    glBindBuffer(GL_ARRAY_BUFFER, _vertex);
+    activeShader->setAttributes(&_attributes);
+  }
 }
 
 void OpenGLMesh::draw() const {

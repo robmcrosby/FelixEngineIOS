@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3716F67A17DAC7DF001E4E05 /* UITouchArea.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3716F67817DAC7DF001E4E05 /* UITouchArea.cpp */; };
 		372620C81780C31C00DC6AAD /* Pipeline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 372620C61780C19D00DC6AAD /* Pipeline.cpp */; };
 		37326A8B1783E53C00DF31F1 /* OpenGLFrameBuff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37326A891783E53C00DF31F1 /* OpenGLFrameBuff.cpp */; };
 		37376B0017751BF8008CFD8A /* OpenGLTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37376AFE17751BF8008CFD8A /* OpenGLTexture.cpp */; };
@@ -35,18 +34,18 @@
 		3741F3821770EE7F00DFEDAD /* ObjViewer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F3801770EE7F00DFEDAD /* ObjViewer.cpp */; };
 		3741F389177171B400DFEDAD /* OpenGLShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F387177171B300DFEDAD /* OpenGLShader.cpp */; };
 		3741F38F1771721600DFEDAD /* OpenGLMesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3741F38D1771721500DFEDAD /* OpenGLMesh.cpp */; };
+		376CEE7417E2B30100FF62BF /* Drawable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 376CEE7217E2B30100FF62BF /* Drawable.cpp */; };
 		3792DF681773D63900E1A410 /* Resources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3792DF661773D63900E1A410 /* Resources.cpp */; };
 		3792DF6E1774EEF300E1A410 /* Meshes in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF6B1774EEF300E1A410 /* Meshes */; };
 		3792DF6F1774EEF300E1A410 /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF6C1774EEF300E1A410 /* Shaders */; };
 		3792DF711774F25700E1A410 /* Textures in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF701774F25700E1A410 /* Textures */; };
+		379DF9D317DC2B67004CE079 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 379DF9D117DC2B67004CE079 /* View.cpp */; };
 		37A9D4C817780FD100CA9802 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A9D4C617780FD100CA9802 /* Camera.cpp */; };
 		37A9D4CB17780FE500CA9802 /* Object3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A9D4C917780FE400CA9802 /* Object3d.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		370159EA177DEA0700665C58 /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
-		3716F67817DAC7DF001E4E05 /* UITouchArea.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UITouchArea.cpp; sourceTree = "<group>"; };
-		3716F67917DAC7DF001E4E05 /* UITouchArea.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UITouchArea.h; sourceTree = "<group>"; };
 		372620C61780C19D00DC6AAD /* Pipeline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pipeline.cpp; sourceTree = "<group>"; };
 		372620C71780C19D00DC6AAD /* Pipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pipeline.h; sourceTree = "<group>"; };
 		37326A891783E53C00DF31F1 /* OpenGLFrameBuff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLFrameBuff.cpp; sourceTree = "<group>"; };
@@ -100,11 +99,15 @@
 		3741F388177171B400DFEDAD /* OpenGLShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLShader.h; sourceTree = "<group>"; };
 		3741F38D1771721500DFEDAD /* OpenGLMesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLMesh.cpp; sourceTree = "<group>"; };
 		3741F38E1771721600DFEDAD /* OpenGLMesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLMesh.h; sourceTree = "<group>"; };
+		376CEE7217E2B30100FF62BF /* Drawable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawable.cpp; sourceTree = "<group>"; };
+		376CEE7317E2B30100FF62BF /* Drawable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Drawable.h; sourceTree = "<group>"; };
 		3792DF661773D63900E1A410 /* Resources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resources.cpp; sourceTree = "<group>"; };
 		3792DF671773D63900E1A410 /* Resources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Resources.h; sourceTree = "<group>"; };
 		3792DF6B1774EEF300E1A410 /* Meshes */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Meshes; path = AppFiles/Meshes; sourceTree = SOURCE_ROOT; };
 		3792DF6C1774EEF300E1A410 /* Shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Shaders; path = AppFiles/Shaders; sourceTree = SOURCE_ROOT; };
 		3792DF701774F25700E1A410 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Textures; path = AppFiles/Textures; sourceTree = SOURCE_ROOT; };
+		379DF9D117DC2B67004CE079 /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
+		379DF9D217DC2B67004CE079 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
 		37A9D4C617780FD100CA9802 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		37A9D4C717780FD100CA9802 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		37A9D4C917780FE400CA9802 /* Object3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object3d.cpp; sourceTree = "<group>"; };
@@ -127,15 +130,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3716F67417DAC3A4001E4E05 /* UIClasses */ = {
-			isa = PBXGroup;
-			children = (
-				3716F67917DAC7DF001E4E05 /* UITouchArea.h */,
-				3716F67817DAC7DF001E4E05 /* UITouchArea.cpp */,
-			);
-			name = UIClasses;
-			sourceTree = "<group>";
-		};
 		37376B0317767AA4008CFD8A /* Loaders */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,6 +223,10 @@
 			children = (
 				3741F344176E8AB200DFEDAD /* FelixEngine.h */,
 				37376B131777A029008CFD8A /* ShaderVaribles.h */,
+				376CEE7317E2B30100FF62BF /* Drawable.h */,
+				376CEE7217E2B30100FF62BF /* Drawable.cpp */,
+				379DF9D217DC2B67004CE079 /* View.h */,
+				379DF9D117DC2B67004CE079 /* View.cpp */,
 				3792DF691773DA7100E1A410 /* EngineEntities */,
 				3741F349176FAD7700DFEDAD /* Utils */,
 				3741F31B176E7FF000DFEDAD /* Supporting Files */,
@@ -326,7 +324,6 @@
 				372620C71780C19D00DC6AAD /* Pipeline.h */,
 				372620C61780C19D00DC6AAD /* Pipeline.cpp */,
 				370159EA177DEA0700665C58 /* Transform.h */,
-				3716F67417DAC3A4001E4E05 /* UIClasses */,
 				37376B121777978B008CFD8A /* FelixHost */,
 				37A9D4CC1778100200CA9802 /* Drawables */,
 			);
@@ -431,7 +428,8 @@
 				37A9D4C817780FD100CA9802 /* Camera.cpp in Sources */,
 				37A9D4CB17780FE500CA9802 /* Object3d.cpp in Sources */,
 				37326A8B1783E53C00DF31F1 /* OpenGLFrameBuff.cpp in Sources */,
-				3716F67A17DAC7DF001E4E05 /* UITouchArea.cpp in Sources */,
+				379DF9D317DC2B67004CE079 /* View.cpp in Sources */,
+				376CEE7417E2B30100FF62BF /* Drawable.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

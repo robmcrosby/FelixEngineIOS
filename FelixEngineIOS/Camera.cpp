@@ -62,13 +62,13 @@ void Camera::updateViewMtx() {
 }
 
 void Camera::setToPass(const string &pass) {
-   _display->addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_projMtx), pass);
-   _display->addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_viewMtx), pass);
+   //_display->addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_projMtx), pass);
+   //_display->addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_viewMtx), pass);
 }
 
 void Camera::removeFromPass(const string &pass) {
-   _display->removePassUniform(VAR_PROJ_MTX, pass);
-   _display->removePassUniform(VAR_VIEW_MTX, pass);
+   //_display->removePassUniform(VAR_PROJ_MTX, pass);
+   //_display->removePassUniform(VAR_VIEW_MTX, pass);
 }
 
 void Camera::applyTag() {

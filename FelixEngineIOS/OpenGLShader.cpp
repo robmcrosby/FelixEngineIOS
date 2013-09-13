@@ -14,7 +14,6 @@ map<string, OpenGLShader*> OpenGLShader::Shaders;
 
 
 OpenGLShader::OpenGLShader(const string &name): Shader(name), _program(0) {
-   _display = Host::GetHost()->getDisplay();
    _filesys = Host::GetHost()->getFileSystem();
    Shaders[name] = this;
 }
@@ -79,10 +78,10 @@ void OpenGLShader::setToData(const ShaderData &data) {
 }
 
 void OpenGLShader::use() const {
-   if (loaded() && _program) {
-      glUseProgram(_program);
-      _display->setCurShader(this);
-   }
+  if (loaded() && _program) {
+    glUseProgram(_program);
+    Shader::use();
+  }
 }
 
 void OpenGLShader::setUniforms(const Uniforms *unis) const {

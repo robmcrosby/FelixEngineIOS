@@ -62,13 +62,20 @@ protected:
  */
 class Shader: public Resource {
 public:
-   Shader(const std::string &name): Resource(name, SHADER_TAG) {}
-   
-   virtual void setToData(const ShaderData &data) = 0;
-   
-   virtual void use() const = 0;
-   virtual void setUniforms(const Uniforms *unis) const = 0;
-   virtual void setAttributes(const Attributes *atts) const = 0;
+  Shader(const std::string &name): Resource(name, SHADER_TAG) {}
+  
+  virtual void setToData(const ShaderData &data) = 0;
+  
+  virtual void use() const;
+  virtual void setUniforms(const Uniforms *unis) const = 0;
+  virtual void setAttributes(const Attributes *atts) const = 0;
+  
+  static const Shader* GetActiveShader();
+  static void SetActiveUniforms(const Uniforms *uniforms);
+  
+protected:
+  static const Uniforms *ActiveUniforms;
+  static const Shader   *ActiveShader;
 };
 
 /**

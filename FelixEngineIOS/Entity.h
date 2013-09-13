@@ -36,11 +36,11 @@ enum EVENT_TYPE {
  * Base struct for all events used by Entities
  */
 struct Event {
-   Event(EVENT_TYPE e = EVENT_OTHER, void *d = NULL): type(e), data(d) {}
+   Event(EVENT_TYPE e = EVENT_OTHER, const void *d = NULL): type(e), data(d) {}
    bool operator==(const Event &e) const {return e.type == type;}
    
    EVENT_TYPE type;
-   void *data;
+   const void *data;
 };
 
 
@@ -105,37 +105,38 @@ private:
  */
 class Entity: public EventHandler {
 public:
-   Entity(XMLTag *tag = NULL);
-   virtual ~Entity();
-   
-   virtual void createChildren(XMLTag *tag);
-   virtual void addChild(Entity *child);
-   virtual void removeChild(Entity *child);
-   inline void clearChildren() {
-      std::set<Entity*>::iterator itr;
-      for (itr = _children.begin(); itr != _children.end(); ++itr)
-         delete *itr;
-   }
-   
-   inline std::string getName() const {return _name;}
-   inline Transform* getTransform() {return &_transform;}
-   inline const Transform* getTransform() const {return &_transform;}
-   inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
-   
-   static Entity* GetEntity(const std::string &name);
-   
+  Entity(XMLTag *tag = NULL);
+  virtual ~Entity();
+  
+  virtual void createChildren(XMLTag *tag);
+  virtual void addChild(Entity *child);
+  virtual void removeChild(Entity *child);
+  
+  inline void clearChildren() {
+    std::set<Entity*>::iterator itr;
+    for (itr = _children.begin(); itr != _children.end(); ++itr)
+      delete *itr;
+  }
+  
+  inline std::string getName() const {return _name;}
+  inline Transform* getTransform() {return &_transform;}
+  inline const Transform* getTransform() const {return &_transform;}
+  inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
+  
+  static Entity* GetEntity(const std::string &name);
+  
 protected:
-   std::string _name;
-   Transform _transform;
-   XMLTag *_tag;
-   
+  std::string _name;
+  Transform _transform;
+  XMLTag *_tag;
+  
 private:
-   inline void applyTag();
-   
-   std::set<Entity*> _children;
-   Entity *_parrent;
-   
-   static std::map<std::string, Entity*> EntityMap;
+  inline void applyTag();
+  
+  std::set<Entity*> _children;
+  Entity *_parrent;
+  
+  static std::map<std::string, Entity*> EntityMap;
 };
 
 
@@ -144,17 +145,17 @@ private:
  */
 class EntityId {
 public:
-   static Entity* CreateEntity(XMLTag *tag);
-   
+  static Entity* CreateEntity(XMLTag *tag);
+  
 protected:
-   EntityId(const std::string &idStr);
-   virtual ~EntityId() {}
-   virtual Entity* create(XMLTag *tag) = 0;
-   
-   std::string _idStr;
-   EntityId *_next;
-   
-   static EntityId *IDs;
+  EntityId(const std::string &idStr);
+  virtual ~EntityId() {}
+  virtual Entity* create(XMLTag *tag) = 0;
+  
+  std::string _idStr;
+  EntityId *_next;
+  
+  static EntityId *IDs;
 };
 
 

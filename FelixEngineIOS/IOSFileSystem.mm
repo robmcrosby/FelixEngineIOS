@@ -20,6 +20,11 @@ IOSFileSystem::IOSFileSystem(Host *host): _host(host) {
    _basePath += "/";
 }
 
+/**
+ * Loads a textfile into a string.
+ * @param path String value for the path to the text file.
+ * @return string contents of the file or empty if unable to open the file.
+ */
 string IOSFileSystem::loadTxt(const string &path) const {
    fstream fileIn;
    string txtStr, fullPath = _basePath + path;
@@ -35,6 +40,11 @@ string IOSFileSystem::loadTxt(const string &path) const {
    return txtStr;
 }
 
+/**
+ * Creates an XMLTag from an xml file.
+ * @param path string path to the xml file.
+ * @return XMLTag pointer or NULL if unable to open the file.
+ */
 XMLTag* IOSFileSystem::loadXML(const string &path) const {
    fstream fileIn;
    string fullPath = _basePath + path;
@@ -52,7 +62,11 @@ XMLTag* IOSFileSystem::loadXML(const string &path) const {
    return tag;
 }
 
-
+/**
+ * Creates Texture Data from an image file.
+ * @param path string path to the image file.
+ * @return TextureData pointer or NULL if unable to open the file.
+ */
 TextureData* IOSFileSystem::loadTexture(const std::string &path) const {
    string fullPath = _basePath + path;
    NSString *nsPath = [[NSString alloc] initWithUTF8String:fullPath.c_str()];
@@ -76,7 +90,12 @@ TextureData* IOSFileSystem::loadTexture(const std::string &path) const {
    return data;
 }
 
-
+/**
+ * Creates Mesh Data from a 3d object file.
+ * @param path string path to the 3d object file.
+ * @param data [in,out] map to add MeshData to.
+ * @return true if able to open and read the file or false if not.
+ */
 bool IOSFileSystem::loadMeshes(const string &path, map<string, MeshData*> *data) const {
    fstream fileIn;
    string fullPath = _basePath + path;

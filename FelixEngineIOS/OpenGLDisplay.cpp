@@ -17,7 +17,7 @@
 using namespace std;
 
 OpenGLDisplay::OpenGLDisplay(Host *host):
-_host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPipeline(0) {
+_host(host), _curDrawType(DRAW_DEPTH) {
    host->addListener(this);
    
    // set inital OpenGL settings
@@ -27,19 +27,9 @@ _host(host), _curDrawType(DRAW_DEPTH), _curShader(0), _curPipeline(0) {
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
    glEnable(GL_DEPTH_TEST);
    
-   // set the default pipeline
-   _curPipeline = &_defPipeline;
-   _curPipeline->load(this);
-   
    // get the final buff
    _finalBuff = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
    _finalBuff->retain();
-   _curBuff = _finalBuff;
-   
-   updateDefaultProjection();
-   
-   // initalize the default passes
-   clearPasses();
 }
 
 OpenGLDisplay::~OpenGLDisplay() {
@@ -59,24 +49,26 @@ void OpenGLDisplay::notify(const Event &event) {
       }
    }
    else if (event == EVENT_RESIZE) {
-      updateDefaultProjection();
       OpenGLFrameBuff::UpdateFrameBuffs();
    }
    
    Entity::notify(event);
 }
 
-void OpenGLDisplay::render() {
-   _finalBuff->updateFinal();
-   _curPipeline->exec();
-}
-
+/**
+ * Clears the active color and depth buffers.
+ * @param color Color to draw in the color buffer, the default is black.
+ */
 void OpenGLDisplay::clearContext(Color color) {
    setDrawType(DRAW_DEPTH);
    glClearColor(color.r, color.g, color.b, color.a);
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+/**
+ * Sets the current draw mode or type.
+ * @param type Either blend or depth draw type enum.
+ */
 void OpenGLDisplay::setDrawType(DRAW_TYPE type) {
    if (_curDrawType != type) {
       if (type == DRAW_BLEND) {
@@ -91,37 +83,11 @@ void OpenGLDisplay::setDrawType(DRAW_TYPE type) {
    }
 }
 
-void OpenGLDisplay::drawPass(const std::string &pass) {
-   Draws::iterator drawable;
-   Draws *draws = getPassDraws(pass);
-   
-   _curShader = NULL;
-   _curPass = pass;
-   
-   for (drawable = draws->begin(); drawable != draws->end(); ++drawable)
-      (*drawable)->draw();
-}
-
-void OpenGLDisplay::addToPass(const Drawable *drawable, const std::string &pass) {
-   getPassDraws(pass)->insert(drawable);
-}
-
-void OpenGLDisplay::emptyPasses() {
-   for (Passes::iterator itr = _passes.begin(); itr != _passes.end(); ++itr)
-      itr->second.draws.clear();
-}
-
-void OpenGLDisplay::clearPasses() {
-   _passes.clear();
-   
-   _passes[SCREEN_PASS] = Pass();
-   _passes[MAIN_PASS] = Pass();
-   _curPass = MAIN_PASS;
-   
-   addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_defProjMtx), SCREEN_PASS);
-   addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_defViewMtx), SCREEN_PASS);
-}
-
+/**
+ * Gets a pointer to Resource defined by a tag.
+ * @param tag XMLTag that defines a Resource.
+ * @return Resource pointer or NULL if it can not be determined from the tag.
+ */
 Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
    string name = tag.getAttribute(ATT_NAME);
    Resource *ret = NULL;
@@ -141,29 +107,55 @@ Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
    return ret;
 }
 
+/**
+ * Cleans up any resources not being currently used.
+ */
 void OpenGLDisplay::cleanUpResources() {
    OpenGLShader::CleanUpShaders();
    OpenGLTexture::CleanUpTextures();
    OpenGLMesh::CleanUpMeshes();
 }
 
-
+/**
+ * Gets a Shader associated by a name, creates a new Shader if not avalible.
+ * @param name string name of the Shader.
+ * @return Shader pointer.
+ */
 const Shader* OpenGLDisplay::getShader(const string &name) {
    return OpenGLShader::GetShader(name);
 }
 
+/**
+ * Gets a Texture associated by a name, creates a new Texture if not avalible.
+ * @param name string name of the Texture.
+ * @return Texture pointer.
+ */
 const Texture* OpenGLDisplay::getTexture(const string &name) {
    return OpenGLTexture::GetTexture(name);
 }
 
+/**
+ * Gets a Mesh associated by a name, creates a new Mesh if not avalible.
+ * @param name string name of the Mesh.
+ * @return Mesh pointer.
+ */
 const Mesh* OpenGLDisplay::getMesh(const string &name) {
    return OpenGLMesh::GetMesh(name);
 }
 
+/**
+ * Gets a FrameBuff associated by a name, creates a new FrameBuff if not avalible.
+ * @param name string name of the FrameBuff.
+ * @return FrameBuffer pointer.
+ */
 const FrameBuff* OpenGLDisplay::getFrameBuff(const string &name) {
    return OpenGLFrameBuff::GetFrameBuff(name);
 }
 
+/**
+ * Sets the ResourceData with the targetName resource.
+ * @param data ResourceData to be set to a resource in the display.
+ */
 void OpenGLDisplay::setResourceData(const ResourceData *data) {
    OpenGLShader::SetData(data);
    OpenGLTexture::SetData(data);
@@ -171,63 +163,4 @@ void OpenGLDisplay::setResourceData(const ResourceData *data) {
    OpenGLFrameBuff::SetData(data);
 }
 
-void OpenGLDisplay::setCurShader(const Shader *sh) {
-   if (sh != _curShader) {
-      _curShader = sh;
-      if (_curShader)
-         _curShader->setUniforms(getPassUniforms(_curPass));
-   }
-}
 
-void OpenGLDisplay::setCurUniforms(const Uniforms *uniforms) {
-   if (_curShader)
-      _curShader->setUniforms(uniforms);
-}
-
-void OpenGLDisplay::setCurAttributes(const Attributes *attributes) {
-   if (_curShader)
-      _curShader->setAttributes(attributes);
-}
-
-void OpenGLDisplay::setCurPipeline(Pipeline *pipeline) {
-   if (!pipeline)
-      pipeline = &_defPipeline;
-   
-   if (_curPipeline != pipeline) {
-      _curPipeline->unload();
-      _curPipeline = pipeline;
-      _curPipeline->load(this);
-   }
-}
-
-
-void OpenGLDisplay::addPassUniform(const string &name, const Uniform &uniform, const std::string &pass) {
-   getPassUniforms(pass)->addUniform(name, uniform);
-}
-
-void OpenGLDisplay::removePassUniform(const string &name, const std::string &pass) {
-   getPassUniforms(pass)->remove(name);
-}
-
-void OpenGLDisplay::clearPassUniforms(const std::string &pass) {
-   getPassUniforms(pass)->clear();
-}
-
-void OpenGLDisplay::updateDefaultProjection() {
-   vec2 size = _host->getScreenSize();
-   _defProjMtx = mat4::Ortho(-size.x/2.0f, size.x/2.0f, -size.y/2.0f, size.y/2.0f, DEF_NEAR, DEF_FAR);
-}
-
-OpenGLDisplay::Pass* OpenGLDisplay::getPass(const std::string &pass) {
-   if (_passes.find(pass) == _passes.end())
-      _passes[pass] = Pass();
-   return &_passes[pass];
-}
-
-OpenGLDisplay::Draws* OpenGLDisplay::getPassDraws(const std::string &pass) {
-   return &getPass(pass)->draws;
-}
-
-Uniforms* OpenGLDisplay::getPassUniforms(const std::string &pass) {
-   return &getPass(pass)->uniforms;
-}

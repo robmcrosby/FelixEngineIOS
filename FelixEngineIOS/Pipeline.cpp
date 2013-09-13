@@ -79,8 +79,8 @@ void Pipeline::ClearContext::exec() {
 }
 
 void Pipeline::DrawPass::exec() {
-   if (_display)
-      _display->drawPass(pass);
+   //if (_display)
+   //   _display->drawPass(pass);
 }
 
 void Pipeline::UseFBO::load(HostDisplay *display) {

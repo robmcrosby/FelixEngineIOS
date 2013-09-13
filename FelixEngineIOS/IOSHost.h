@@ -20,9 +20,9 @@ public:
    void resize(int sizeX, int sizeY, float scale);
    void update(float td);
    void render();
-   void touchDown(Moves moves);
-   void touchUp(Moves moves);
-   void touchMove(Moves moves);
+   void touchDown(const Moves &moves);
+   void touchUp(const Moves &moves);
+   void touchMove(const Moves &moves);
    
    static IOSHost* CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale);
    

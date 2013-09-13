@@ -14,6 +14,10 @@ DEFINE_ENTITY_ID(Resources)
 using namespace std;
 
 
+const Uniforms* Shader::ActiveUniforms = NULL;
+const Shader*   Shader::ActiveShader = NULL;
+
+
 Resources::Resources(XMLTag *tag): Entity(tag), _loaded(0) {
    Host *host = Host::GetHost();
    
@@ -65,6 +69,26 @@ void Resources::releaseResources() {
    
    // clean up any unused resources
    Host::GetHost()->cleanUpResources();
+}
+
+void Shader::use() const {
+  if (this != ActiveShader) {
+    ActiveShader = this;
+    
+    if (ActiveUniforms)
+      setUniforms(ActiveUniforms);
+  }
+}
+
+const Shader* Shader::GetActiveShader() {
+  return ActiveShader;
+}
+
+void Shader::SetActiveUniforms(const Uniforms *uniforms) {
+  ActiveUniforms = uniforms;
+  
+  if (ActiveShader && ActiveUniforms)
+    ActiveShader->setUniforms(ActiveUniforms);
 }
 
 unsigned int Texture::ParseFilters(const std::string &filtStr) {
