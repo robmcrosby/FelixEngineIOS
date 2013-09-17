@@ -13,9 +13,46 @@
 
 using namespace std;
 
-Host* Host::Instance = NULL;
 
-IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Host(dev, size, scale) {
+IOSHost* IOSHost::Instance = NULL;
+
+
+
+/**
+ * Gets the Host singlton instance.
+ * @return Host pointer.
+ */
+Host* Host::GetHost() {
+  return IOSHost::GetIOSHost();
+}
+
+/**
+ * Gets the IOSHost singlton instance.
+ * @return IOSHost pointer.
+ */
+IOSHost* IOSHost::GetIOSHost() {
+  return Instance;
+}
+
+IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale) {
+  if (!Instance)
+    Instance = new IOSHost(dev, ivec2(sizeX, sizeY), scale);
+  
+  return Instance;
+}
+
+
+
+
+/**
+ * The IOSHost Constructor.
+ * @param dev enum for the device.
+ * @param size ivec2 of the screen size.
+ * @param scale float for the screen scale.
+ */
+IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(size), _scale(scale) {
+  Instance = this;
+  
    // create the host components
    _display = new OpenGLDisplay(this);
    _audio   = new OpenALAudio(this);
@@ -24,6 +61,16 @@ IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Host(dev, size, scale) 
    createAppEntity();
    notify(EVENT_LOAD);
 }
+
+/**
+ * Destructor deletes the HostDisplay, HostAudio, and HostFileSystem.
+ */
+IOSHost::~IOSHost() {
+  delete _display;
+  delete _audio;
+  delete _fileSys;
+}
+
 
 void IOSHost::lowMemory() {
    cout << "LOW MEMORY WARNING" << endl;
@@ -78,16 +125,74 @@ void IOSHost::createAppEntity() {
 
 
 
+/**
+ * Gets the device type of the Host.
+ * @return Enum for the device.
+ */
+DEV_TYPE IOSHost::getDeviceType()  const {
+  return _device;
+}
 
-IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale) {
-   IOSHost *host;
-   
-   if (!Instance) {
-      host = new IOSHost(dev, ivec2(sizeX, sizeY), scale);
-      Instance = host;
-   }
-   else
-      host = dynamic_cast<IOSHost*>(Instance);
-   
-   return host;
+
+/**
+ * Gets the current screen size of the Host.
+ * @return ivec2
+ */
+ivec2 IOSHost::getScreenSize()  const {
+  return _size;
+}
+
+/**
+ * Gets the scale of the screen. (2.0f for Retina and 1.0f for Non-Retina Displays)
+ * @return float scale.
+ */
+float IOSHost::getScreenScale() const {
+  return _scale;
+}
+
+/**
+ * Gets the HostDisplay.
+ * @return HostDisplay pointer.
+ */
+HostDisplay* IOSHost::getDisplay() const {
+  return _display;
+}
+
+/**
+ * Gets the HostAudio.
+ * @return HostAudio pointer.
+ */
+HostAudio* IOSHost::getAudio() const {
+  return _audio;
+}
+
+/**
+ * Gets the HostFileSystem.
+ * @return HostFileSystem pointer.
+ */
+HostFileSystem* IOSHost::getFileSystem() const {
+  return _fileSys;
+}
+
+
+
+/**
+ * Gets the resource for the tag from either the Display or Audo Context.
+ * @param tag XMLTag that specifies the Resource to get.
+ * @return Resource pointer or NULL if it can not be found.
+ */
+Resource* IOSHost::getResource(const XMLTag &tag) {
+  if (tag == SHADER_TAG || tag == TEXTURE_TAG || tag == MESH_TAG || tag == FBO_TAG)
+    return _display->getResource(tag);
+  else if (tag == SOUND_TAG)
+    return _audio->getResource(tag);
+  return NULL;
+}
+
+/**
+ * Clean up the unused Resources in HostDisplay and HostAudio.
+ */
+void IOSHost::cleanUpResources() {
+  _display->cleanUpResources();
+  _audio->cleanUpResources();
 }
