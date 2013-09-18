@@ -6,12 +6,12 @@
     <Texture name="green" src="green.png" filters="mip"/>
     <Texture name="red" src="red.png" filters="mip"/>
   </Resources>
-  <View name="MainView">
+  <View name="MainView" pass="main">
     <Pipeline name="MainPipeline">
       <clear>0, 0, 0, 1</clear>
       <pass>MainView</pass>
     </Pipeline>
-    <Object3d name="plane" pass="MainView">
+    <Object3d name="plane" pass="main">
       <Transform>
         <pos>0, 0, 0</pos>
         <scale>128, 128, 1</scale>

@@ -63,16 +63,24 @@ void Entity::createChildren(XMLTag *tag) {
 }
 
 void Entity::addChild(Entity *child) {
-   if (child->_parrent)
-      child->_parrent->removeChild(child);
-   child->_parrent = this;
-   _children.insert(child);
+  if (child->_parrent)
+    child->_parrent->removeChild(child);
+  child->_parrent = this;
+  _children.insert(child);
 }
 
 void Entity::removeChild(Entity *child) {
-   if (child->_parrent == this)
-      child->_parrent = NULL;
+  if (child->_parrent == this)
+    child->_parrent = NULL;
    _children.erase(child);
+}
+
+View* Entity::getView() {
+  return getParrentView();
+}
+
+View* Entity::getParrentView() {
+  return _parrent ? _parrent->getView() : NULL;
 }
 
 Entity* Entity::GetEntity(const string &name) {

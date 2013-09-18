@@ -71,7 +71,7 @@ struct HostFileSystem {
 /**
  * Base class that represents the host system.
  */
-struct Host: public Entity {
+struct Host: public View {
   virtual ~Host() {}
   
   virtual DEV_TYPE getDeviceType() const = 0;

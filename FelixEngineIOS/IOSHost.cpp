@@ -90,7 +90,8 @@ void IOSHost::update(float td) {
 
 void IOSHost::render() {
    //_display->emptyPasses();
-   notify(EVENT_RENDER);
+  notify(EVENT_RENDER);
+  draw();
    //_display->render();
 }
 

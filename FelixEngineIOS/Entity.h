@@ -15,6 +15,8 @@
 #include "XMLTag.h"
 #include "Transform.h"
 
+class View;
+
 /**
  * Defines the type of event
  */
@@ -111,6 +113,7 @@ public:
   virtual void createChildren(XMLTag *tag);
   virtual void addChild(Entity *child);
   virtual void removeChild(Entity *child);
+  virtual View* getView();
   
   inline void clearChildren() {
     std::set<Entity*>::iterator itr;
@@ -126,6 +129,8 @@ public:
   static Entity* GetEntity(const std::string &name);
   
 protected:
+  View* getParrentView();
+  
   std::string _name;
   Transform _transform;
   XMLTag *_tag;

@@ -27,8 +27,6 @@ void Object3d::applyTag() {
    if (_tag) {
       const XMLTag *subtag;
       
-      //_display = Host::GetHost()->getDisplay();
-      
       // add the shader
       subtag = _tag->getSubTag(SHADER_TAG);
       //_shader = subtag ? _display->getShader(subtag->getAttribute("name")) : NULL;
@@ -65,6 +63,7 @@ void Object3d::removeChild(Entity *child) {
 }
 
 void Object3d::draw() const {
+  cout << "Draw: " << getName() << endl;
   /*
   if (isVisible()) {
       _display->setDrawType(getDrawType());

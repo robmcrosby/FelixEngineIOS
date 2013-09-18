@@ -26,7 +26,7 @@
  */
 class Drawable: public Entity {
 public:
-  Drawable(XMLTag *tag);
+  Drawable(XMLTag *tag = NULL);
   virtual ~Drawable();
   
   inline bool isVisible() const;

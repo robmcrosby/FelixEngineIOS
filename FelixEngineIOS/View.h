@@ -41,20 +41,27 @@ typedef std::map<std::string, Pass> Passes;
 /**
  * View Class
  */
-class View: Drawable {
+class View: public Drawable {
 public:
-  View(XMLTag *tag);
+  View(XMLTag *tag = NULL);
   virtual ~View();
   
   virtual void notify(const Event &event);
+  virtual View* getView();
+  virtual void draw() const;
   
-  inline void drawPass(const std::string &pass);
-  inline void addDrawable(const Drawable *drawable);
+  void addDrawable(const Drawable *drawable);
+  
+  inline void drawPass(const std::string &pass) const;
   inline void useShader(const Shader *sh);
   
   inline void addPassUniform(const std::string &key, const Uniform &uniform, const std::string &pass);
   inline void removePassUniform(const std::string &key, const std::string &pass);
   inline void clearPassUniforms(const std::string &pass);
+  
+protected:
+  mat4 _projMtx;
+  mat4 _viewMtx;
   
 private:
   inline void emptyPasses();
@@ -63,6 +70,10 @@ private:
   inline Pass* getPass(const std::string &pass);
   inline Draws* getPassDraws(const std::string &pass);
   inline Uniforms* getPassUniforms(const std::string &pass);
+  
+  inline const Pass* getPass(const std::string &pass) const;
+  inline const Draws* getPassDraws(const std::string &pass) const;
+  inline const Uniforms* getPassUniforms(const std::string &pass) const;
   
   Passes        _passes;
   std::string   _curPass;
@@ -81,23 +92,15 @@ private:
  * Draws all of the Drawables in a pass.
  * @param pass string name of a pass to be drawn.
  */
-void View::drawPass(const std::string &pass) {
-  Draws::iterator drawable;
-  Draws *draws = getPassDraws(pass);
+void View::drawPass(const std::string &pass) const {
+  const Draws *draws = getPassDraws(pass);
   
-  _curShader = NULL;
-  _curPass = pass;
-  
-  for (drawable = draws->begin(); drawable != draws->end(); ++drawable)
-    (*drawable)->draw();
-}
-
-/**
- * Adds a Drawable to a pass.
- * @param drawable Drawable pointer.
- */
-void View::addDrawable(const Drawable *drawable) {
-  getPassDraws(drawable->getPassName())->insert(drawable);
+  if (draws) {
+    // TODO: Set the pass uniforms to the shader.
+    
+    for (Draws::const_iterator drawable = draws->begin(); drawable != draws->end(); ++drawable)
+      (*drawable)->draw();
+  }
 }
 
 /**

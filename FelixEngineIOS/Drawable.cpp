@@ -7,6 +7,7 @@
 //
 
 #include "Drawable.h"
+#include "View.h"
 
 using namespace std;
 
@@ -45,8 +46,12 @@ void Drawable::applyTag() {
  * Adds self to the pass.
  */
 void Drawable::notify(const Event &event) {
-  //if (_display && event == EVENT_RENDER && isVisible())
-  //  _display->addToPass(this, _passName);
+  if (event == EVENT_RENDER && isVisible()) {
+    View *view = getView();
+    if (view)
+      view->addDrawable(this);
+  }
+  
   Entity::notify(event);
 }
 
