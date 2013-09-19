@@ -7,6 +7,7 @@
 //
 
 #include "Object3d.h"
+#include "FelixEngine.h"
 
 using namespace std;
 
@@ -24,32 +25,35 @@ Object3d::~Object3d() {
 }
 
 void Object3d::applyTag() {
-   if (_tag) {
-      const XMLTag *subtag;
-      
-      // add the shader
-      subtag = _tag->getSubTag(SHADER_TAG);
-      //_shader = subtag ? _display->getShader(subtag->getAttribute("name")) : NULL;
-      
-      // add the mesh
-      subtag = _tag->getSubTag(MESH_TAG);
-      //_mesh = subtag ? _display->getMesh(subtag->getAttribute("name")) : NULL;
-      
-      // add a texture
-      subtag = _tag->getSubTag(TEXTURE_TAG);
-      //if (subtag)
-      //   _textures.push_back(_display->getTexture(subtag->getAttribute("name")));
-      
-      // add textures
-      /*subtag = _tag->getSubTag(TEXTURES_TAG);
-      if (subtag) {
-         XMLTag::const_iterator itr;
-         for (itr = subtag->begin(); itr != subtag->end(); ++itr) {
-            if (**itr == TEXTURE_TAG)
-               _textures.push_back(_display->getTexture((*itr)->getAttribute("name")));
-         }
-      }*/
-   }
+  Host *host = Host::GetHost();
+  HostDisplay *display = host ? host->getDisplay() : NULL;
+  
+  if (_tag && display) {
+    const XMLTag *subtag;
+    
+    // add the shader
+    subtag = _tag->getSubTag(SHADER_TAG);
+    _shader = subtag ? display->getShader(subtag->getAttribute("name")) : NULL;
+    
+    // add the mesh
+    subtag = _tag->getSubTag(MESH_TAG);
+    _mesh = subtag ? display->getMesh(subtag->getAttribute("name")) : NULL;
+    
+    // add a texture
+    subtag = _tag->getSubTag(TEXTURE_TAG);
+    if (subtag)
+       _textures.push_back(display->getTexture(subtag->getAttribute("name")));
+    
+    // add textures
+    subtag = _tag->getSubTag(TEXTURES_TAG);
+    if (subtag) {
+      XMLTag::const_iterator itr;
+      for (itr = subtag->begin(); itr != subtag->end(); ++itr) {
+          if (**itr == TEXTURE_TAG)
+            _textures.push_back(display->getTexture((*itr)->getAttribute("name")));
+      }
+     }
+  }
 }
 
 void Object3d::addChild(Entity *child) {
@@ -63,16 +67,16 @@ void Object3d::removeChild(Entity *child) {
 }
 
 void Object3d::draw() const {
-  cout << "Draw: " << getName() << endl;
-  /*
   if (isVisible()) {
-      _display->setDrawType(getDrawType());
-      _shader->use();
-      _display->setCurUniforms(&_uniforms);
-      _display->setCurUniforms(_transform.getUniforms());
-      for (int i = 0; i < _textures.size(); ++i)
-         _textures.at(i)->use(i);
-      _mesh->use();
-      _mesh->draw();
-   }*/
+    //_display->setDrawType(getDrawType());
+    _shader->use();
+    _shader->setUniforms(&_uniforms);
+    _shader->setUniforms(_transform.getUniforms());
+    
+    for (int i = 0; i < _textures.size(); ++i)
+      _textures.at(i)->use(i);
+    
+    _mesh->use();
+    _mesh->draw();
+  }
 }

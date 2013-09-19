@@ -89,10 +89,13 @@ void IOSHost::update(float td) {
 }
 
 void IOSHost::render() {
-   //_display->emptyPasses();
+  HostDisplay *display = Host::GetHost()->getDisplay();
+  
   notify(EVENT_RENDER);
+  
+  display->clearContext();
+  
   draw();
-   //_display->render();
 }
 
 void IOSHost::touchDown(const Moves &moves) {

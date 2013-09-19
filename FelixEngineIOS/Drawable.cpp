@@ -8,6 +8,7 @@
 
 #include "Drawable.h"
 #include "View.h"
+#include "FelixEngine.h"
 
 using namespace std;
 

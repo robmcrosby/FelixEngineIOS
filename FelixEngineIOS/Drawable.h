@@ -21,6 +21,8 @@
 #define DEF_FAR 10 /**< Default far value */
 
 
+class HostDisplay;
+
 /**
  * Defines a drawable item in the engine.
  */
@@ -46,7 +48,7 @@ public:
   inline bool operator<(const Drawable &rhs) const;
   
 protected:
-  //HostDisplay *_display; // remove when views implemented.
+  HostDisplay *_hostDisplay;
   
 private:
   inline void applyTag();

@@ -7,6 +7,7 @@
 //
 
 #include "View.h"
+#include "FelixEngine.h"
 
 
 using namespace std;
@@ -19,6 +20,7 @@ DEFINE_ENTITY_ID(View)
 View::View(XMLTag *tag): Drawable(tag) {
   if (_tag)
     createChildren(_tag);
+  clearPasses();
 }
 
 /**
@@ -57,6 +59,10 @@ void View::addDrawable(const Drawable *drawable) {
  */
 View* View::getView() {
   return this;
+}
+
+HostDisplay* View::getDisplay() {
+  return Host::GetHost()->getDisplay();
 }
 
 /**

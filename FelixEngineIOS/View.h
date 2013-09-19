@@ -11,6 +11,7 @@
 
 #include "Drawable.h"
 
+class HostDisplay;
 
 /**
  * Comparator for Drawables
@@ -48,12 +49,12 @@ public:
   
   virtual void notify(const Event &event);
   virtual View* getView();
+  virtual HostDisplay* getDisplay();
   virtual void draw() const;
   
   void addDrawable(const Drawable *drawable);
   
-  inline void drawPass(const std::string &pass) const;
-  inline void useShader(const Shader *sh);
+  inline void drawPass(const std::string &passName) const;
   
   inline void addPassUniform(const std::string &key, const Uniform &uniform, const std::string &pass);
   inline void removePassUniform(const std::string &key, const std::string &pass);
@@ -77,7 +78,6 @@ private:
   
   Passes        _passes;
   std::string   _curPass;
-  const Shader  *_curShader;
   
   DECLARE_ENTITY_ID(View)
 };
@@ -92,26 +92,14 @@ private:
  * Draws all of the Drawables in a pass.
  * @param pass string name of a pass to be drawn.
  */
-void View::drawPass(const std::string &pass) const {
-  const Draws *draws = getPassDraws(pass);
+void View::drawPass(const std::string &passName) const {
+  const Pass *pass = getPass(passName);
   
-  if (draws) {
-    // TODO: Set the pass uniforms to the shader.
+  if (pass) {
+    Shader::SetActiveUniforms(&pass->uniforms);
     
-    for (Draws::const_iterator drawable = draws->begin(); drawable != draws->end(); ++drawable)
+    for (Draws::const_iterator drawable = pass->draws.begin(); drawable != pass->draws.end(); ++drawable)
       (*drawable)->draw();
-  }
-}
-
-/**
- * Sets the shader to apply pass attributes.
- * @param sh Pointer to a Shader.
- */
-void View::useShader(const Shader *sh) {
-  if (sh != _curShader) {
-    _curShader = sh;
-    if (_curShader)
-      _curShader->setUniforms(getPassUniforms(_curPass));
   }
 }
 

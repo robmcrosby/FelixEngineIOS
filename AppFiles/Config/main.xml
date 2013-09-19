@@ -14,7 +14,7 @@
     <Object3d name="plane" pass="main">
       <Transform>
         <pos>0, 0, 0</pos>
-        <scale>128, 128, 1</scale>
+        <scale>0.5, 0.5, 1</scale>
       </Transform>
       <Shader name="texture"/>
       <Mesh name="plane"/>
