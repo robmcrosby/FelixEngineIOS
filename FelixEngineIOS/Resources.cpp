@@ -17,6 +17,9 @@ using namespace std;
 const Uniforms* Shader::ActiveUniforms = NULL;
 const Shader*   Shader::ActiveShader = NULL;
 
+const FrameBuff* FrameBuff::ActiveFBO = NULL;
+DRAW_TYPE FrameBuff::ActiveDrawType = DRAW_DEPTH;
+
 
 Resources::Resources(XMLTag *tag): Entity(tag), _loaded(0) {
    Host *host = Host::GetHost();
@@ -84,11 +87,23 @@ const Shader* Shader::GetActiveShader() {
   return ActiveShader;
 }
 
+const Uniforms* Shader::GetActiveUniforms() {
+  return ActiveUniforms;
+}
+
 void Shader::SetActiveUniforms(const Uniforms *uniforms) {
   ActiveUniforms = uniforms;
   
   if (ActiveShader && ActiveUniforms)
     ActiveShader->setUniforms(ActiveUniforms);
+}
+
+void FrameBuff::use() const {
+  ActiveFBO = this;
+}
+
+const FrameBuff* FrameBuff::GetActiveFBO() {
+  return ActiveFBO;
 }
 
 unsigned int Texture::ParseFilters(const std::string &filtStr) {

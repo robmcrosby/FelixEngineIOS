@@ -15,9 +15,30 @@ using namespace std;
 DEFINE_ENTITY_ID(View)
 
 /**
+ * Captures the current view enviroment.
+ */
+ViewEnviroment::ViewEnviroment() {
+  _frameBuff = FrameBuff::GetActiveFBO();
+  _shader = Shader::GetActiveShader();
+  _uniforms = Shader::GetActiveUniforms();
+}
+
+/**
+ * Re-applies the saved enviroment.
+ */
+ViewEnviroment::~ViewEnviroment() {
+  if (_frameBuff)
+    _frameBuff->use();
+  if (_shader)
+    _shader->use();
+  Shader::SetActiveUniforms(_uniforms);
+}
+
+
+/**
  *
  */
-View::View(XMLTag *tag): Drawable(tag) {
+View::View(XMLTag *tag): Drawable(tag), _viewFbo(0) {
   if (_tag)
     createChildren(_tag);
   clearPasses();
@@ -57,18 +78,34 @@ void View::addDrawable(const Drawable *drawable) {
 /**
  *
  */
+const FrameBuff* View::getFBO() const {
+  if (_viewFbo)
+    return _viewFbo;
+  else {
+    const View *view = getParrentView();
+    return view ? view->getFBO() : NULL;
+  }
+}
+
+/**
+ *
+ */
 View* View::getView() {
   return this;
 }
 
 HostDisplay* View::getDisplay() {
-  return Host::GetHost()->getDisplay();
+  Host *host = Host::GetHost();
+  return host ? host->getDisplay() : NULL;
 }
 
 /**
  *
  */
 void View::draw() const {
+  // saves the previous enviroment and restores it when out of scope.
+  ViewEnviroment parrentEnv;
+  
   // run the view's pipeline.
   drawPass(MAIN_PASS);
 }
@@ -89,7 +126,6 @@ void View::clearPasses() {
   
   addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_projMtx), MAIN_PASS);
   addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_viewMtx), MAIN_PASS);
-  _curPass = MAIN_PASS;
 }
 
 /**

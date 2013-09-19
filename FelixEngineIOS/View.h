@@ -37,7 +37,19 @@ struct Pass {
 
 typedef std::map<std::string, Pass> Passes;
 
-
+/**
+ * Captures the view enviroment and re-applies it when destructed.
+ */
+class ViewEnviroment {
+public:
+  ViewEnviroment();
+  ~ViewEnviroment();
+  
+private:
+  const Shader *_shader;
+  const Uniforms *_uniforms;
+  const FrameBuff *_frameBuff;
+};
 
 /**
  * View Class
@@ -53,6 +65,7 @@ public:
   virtual void draw() const;
   
   void addDrawable(const Drawable *drawable);
+  const FrameBuff* getFBO() const;
   
   inline void drawPass(const std::string &passName) const;
   
@@ -61,6 +74,7 @@ public:
   inline void clearPassUniforms(const std::string &pass);
   
 protected:
+  FrameBuff *_viewFbo;
   mat4 _projMtx;
   mat4 _viewMtx;
   
@@ -76,8 +90,7 @@ private:
   inline const Draws* getPassDraws(const std::string &pass) const;
   inline const Uniforms* getPassUniforms(const std::string &pass) const;
   
-  Passes        _passes;
-  std::string   _curPass;
+  Passes _passes;
   
   DECLARE_ENTITY_ID(View)
 };

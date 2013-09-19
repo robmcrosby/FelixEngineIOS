@@ -8,6 +8,7 @@
 
 #include "IOSHost.h"
 #include "OpenGLDisplay.h"
+#include "OpenGLFrameBuff.h"
 #include "OpenALAudio.h"
 #include "IOSFileSystem.h"
 
@@ -53,13 +54,17 @@ IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale)
 IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(size), _scale(scale) {
   Instance = this;
   
-   // create the host components
-   _display = new OpenGLDisplay(this);
-   _audio   = new OpenALAudio(this);
-   _fileSys = new IOSFileSystem(this);
-   
-   createAppEntity();
-   notify(EVENT_LOAD);
+  // create the host components
+  _display = new OpenGLDisplay(this);
+  _audio   = new OpenALAudio(this);
+  _fileSys = new IOSFileSystem(this);
+  
+  // get the final FBO
+  _finalFbo = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
+  _viewFbo = _finalFbo;
+  
+  createAppEntity();
+  notify(EVENT_LOAD);
 }
 
 /**
@@ -89,12 +94,8 @@ void IOSHost::update(float td) {
 }
 
 void IOSHost::render() {
-  HostDisplay *display = Host::GetHost()->getDisplay();
-  
+  _finalFbo->updateFinal();
   notify(EVENT_RENDER);
-  
-  display->clearContext();
-  
   draw();
 }
 

@@ -130,6 +130,7 @@ public:
   
 protected:
   View* getParrentView();
+  const View* getParrentView() const;
   
   std::string _name;
   Transform _transform;

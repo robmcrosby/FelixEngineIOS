@@ -11,6 +11,8 @@
 
 #include "FelixEngine.h"
 
+class OpenGLFrameBuff;
+
 class IOSHost: public Host {
 public:
   IOSHost(DEV_TYPE dev, ivec2 size, float scale);
@@ -39,6 +41,7 @@ public:
 private:
   inline void createAppEntity();
   
+  OpenGLFrameBuff *_finalFbo;
   DEV_TYPE _device; /**< device type of the host. */
   ivec2 _size; /**< screen size */
   float _scale; /**< screen scale */

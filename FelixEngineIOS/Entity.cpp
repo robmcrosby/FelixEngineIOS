@@ -83,6 +83,10 @@ View* Entity::getParrentView() {
   return _parrent ? _parrent->getView() : NULL;
 }
 
+const View* Entity::getParrentView() const {
+  return _parrent ? _parrent->getView() : NULL;
+}
+
 Entity* Entity::GetEntity(const string &name) {
    map<string, Entity*>::iterator itr;
    itr = EntityMap.find(name);

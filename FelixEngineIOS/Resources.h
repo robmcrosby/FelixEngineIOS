@@ -12,6 +12,7 @@
 #include "Entity.h"
 #include "ResourceData.h"
 #include "ShaderVaribles.h"
+#include "Color.h"
 
 
 #define SHADER_TAG "Shader"
@@ -25,8 +26,8 @@
 #define ATT_NAME "name"
 
 enum DRAW_TYPE {
-   DRAW_DEPTH,
-   DRAW_BLEND,
+  DRAW_DEPTH,
+  DRAW_BLEND,
 };
 
 /**
@@ -71,6 +72,7 @@ public:
   virtual void setAttributes(const Attributes *atts) const = 0;
   
   static const Shader* GetActiveShader();
+  static const Uniforms* GetActiveUniforms();
   static void SetActiveUniforms(const Uniforms *uniforms);
   
 protected:
@@ -107,12 +109,21 @@ struct Mesh: public Resource {
 /**
  * Base class for frame buffer objects
  */
-struct FrameBuff: public Resource {
-   FrameBuff(const std::string &name): Resource(name, FBO_TAG) {}
-   
-   virtual void setToData(const FrameBuffData &data) = 0;
-   virtual ivec2 getSize() const = 0;
-   virtual void use() const = 0;
+class FrameBuff: public Resource {
+public:
+  FrameBuff(const std::string &name): Resource(name, FBO_TAG) {}
+  
+  virtual void use() const;
+  virtual void setToData(const FrameBuffData &data) = 0;
+  virtual ivec2 getSize() const = 0;
+  virtual void clear(Color color = Color()) const = 0;
+  virtual void setDrawType(DRAW_TYPE type) const = 0;
+  
+  static const FrameBuff* GetActiveFBO();
+  
+protected:
+  static const FrameBuff *ActiveFBO;
+  static DRAW_TYPE ActiveDrawType;
 };
 
 /**
