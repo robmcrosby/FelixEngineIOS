@@ -11,7 +11,7 @@
 
 #include "FelixEngine.h"
 
-class OpenALAudio: public Entity, public HostAudio {
+class OpenALAudio: public HostAudio {
 public:
    OpenALAudio(Host *host);
    virtual ~OpenALAudio() {}

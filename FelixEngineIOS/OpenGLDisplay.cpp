@@ -8,6 +8,7 @@
 
 #include "OpenGLDisplay.h"
 
+#include "Drawable.h"
 #include "OpenGLIncludes.h"
 #include "OpenGLShader.h"
 #include "OpenGLTexture.h"
@@ -18,69 +19,24 @@ using namespace std;
 
 OpenGLDisplay::OpenGLDisplay(Host *host):
 _host(host), _curDrawType(DRAW_DEPTH) {
-   host->addListener(this);
-   
-   // set inital OpenGL settings
-   glEnable(GL_CULL_FACE);
-   glCullFace(GL_BACK);
-   glEnable(GL_TEXTURE_2D);
-   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-   glEnable(GL_DEPTH_TEST);
-   
-   // get the final buff
-   _finalBuff = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
-   _finalBuff->retain();
+  //host->addListener(this);
+
+  // set inital OpenGL settings
+  glEnable(GL_CULL_FACE);
+  glCullFace(GL_BACK);
+  glEnable(GL_TEXTURE_2D);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glEnable(GL_DEPTH_TEST);
+
+  // get the final buff
+  _finalBuff = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
+  _finalBuff->retain();
 }
 
 OpenGLDisplay::~OpenGLDisplay() {
-   OpenGLShader::ClearShaders();
-   OpenGLTexture::ClearTextures();
-   OpenGLMesh::ClearMeshes();
-}
-
-void OpenGLDisplay::notify(const Event &event) {
-   if (event == EVENT_LOAD) {
-      OpenGLMesh *plane = OpenGLMesh::GetMesh("plane");
-      if (!plane->loaded()) {
-         MeshData *planeData = Mesh::GetPlaneData();
-         plane->setToData(*planeData);
-         plane->retain();
-         delete planeData;
-      }
-   }
-   else if (event == EVENT_RESIZE) {
-      OpenGLFrameBuff::UpdateFrameBuffs();
-   }
-   
-   Entity::notify(event);
-}
-
-/**
- * Clears the active color and depth buffers.
- * @param color Color to draw in the color buffer, the default is black.
- */
-void OpenGLDisplay::clearContext(Color color) {
-   setDrawType(DRAW_DEPTH);
-   glClearColor(color.r, color.g, color.b, color.a);
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-/**
- * Sets the current draw mode or type.
- * @param type Either blend or depth draw type enum.
- */
-void OpenGLDisplay::setDrawType(DRAW_TYPE type) {
-   if (_curDrawType != type) {
-      if (type == DRAW_BLEND) {
-         glDepthMask(GL_FALSE);
-         glEnable(GL_BLEND);
-      }
-      else {
-         glDepthMask(GL_TRUE);
-         glDisable(GL_BLEND);
-      }
-      _curDrawType = type;
-   }
+  OpenGLShader::ClearShaders();
+  OpenGLTexture::ClearTextures();
+  OpenGLMesh::ClearMeshes();
 }
 
 /**
@@ -89,31 +45,42 @@ void OpenGLDisplay::setDrawType(DRAW_TYPE type) {
  * @return Resource pointer or NULL if it can not be determined from the tag.
  */
 Resource* OpenGLDisplay::getResource(const XMLTag &tag) {
-   string name = tag.getAttribute(ATT_NAME);
-   Resource *ret = NULL;
-   
-   if (tag == SHADER_TAG)
-      ret = OpenGLShader::GetShader(name);
-   else if (tag == TEXTURE_TAG)
-      ret = OpenGLTexture::GetTexture(name);
-   else if (tag == MESH_TAG)
-      ret = OpenGLMesh::GetMesh(name);
-   else if (tag == FBO_TAG)
-      ret = OpenGLFrameBuff::GetFrameBuff(name);
-   
-   if (ret)
-      ret->setToTag(tag);
-   
-   return ret;
+  string name = tag.getAttribute(ATT_NAME);
+  Resource *ret = NULL;
+
+  if (tag == SHADER_TAG)
+    ret = OpenGLShader::GetShader(name);
+  else if (tag == TEXTURE_TAG)
+    ret = OpenGLTexture::GetTexture(name);
+  else if (tag == MESH_TAG)
+    ret = OpenGLMesh::GetMesh(name);
+  else if (tag == FBO_TAG)
+    ret = OpenGLFrameBuff::GetFrameBuff(name);
+
+  if (ret)
+    ret->setToTag(tag);
+
+  return ret;
 }
 
 /**
  * Cleans up any resources not being currently used.
  */
-void OpenGLDisplay::cleanUpResources() {
-   OpenGLShader::CleanUpShaders();
-   OpenGLTexture::CleanUpTextures();
-   OpenGLMesh::CleanUpMeshes();
+void OpenGLDisplay::updateResources() {
+
+  OpenGLMesh *plane = OpenGLMesh::GetMesh("plane");
+  if (!plane->loaded()) {
+    MeshData *planeData = Mesh::GetPlaneData();
+    plane->setToData(*planeData);
+    plane->retain();
+    delete planeData;
+  }
+
+  OpenGLFrameBuff::UpdateFrameBuffs();
+
+  //OpenGLShader::CleanUpShaders();
+  //OpenGLTexture::CleanUpTextures();
+  //OpenGLMesh::CleanUpMeshes();
 }
 
 /**
@@ -122,7 +89,7 @@ void OpenGLDisplay::cleanUpResources() {
  * @return Shader pointer.
  */
 const Shader* OpenGLDisplay::getShader(const string &name) {
-   return OpenGLShader::GetShader(name);
+  return OpenGLShader::GetShader(name);
 }
 
 /**
@@ -131,7 +98,7 @@ const Shader* OpenGLDisplay::getShader(const string &name) {
  * @return Texture pointer.
  */
 const Texture* OpenGLDisplay::getTexture(const string &name) {
-   return OpenGLTexture::GetTexture(name);
+  return OpenGLTexture::GetTexture(name);
 }
 
 /**
@@ -140,7 +107,7 @@ const Texture* OpenGLDisplay::getTexture(const string &name) {
  * @return Mesh pointer.
  */
 const Mesh* OpenGLDisplay::getMesh(const string &name) {
-   return OpenGLMesh::GetMesh(name);
+  return OpenGLMesh::GetMesh(name);
 }
 
 /**
@@ -149,7 +116,14 @@ const Mesh* OpenGLDisplay::getMesh(const string &name) {
  * @return FrameBuffer pointer.
  */
 const FrameBuff* OpenGLDisplay::getFrameBuff(const string &name) {
-   return OpenGLFrameBuff::GetFrameBuff(name);
+  return OpenGLFrameBuff::GetFrameBuff(name);
+}
+
+/**
+ * Updates the frame buffers dependent on the screen size.
+ */
+void OpenGLDisplay::updateFrameBuffs() {
+  OpenGLFrameBuff::UpdateFrameBuffs();
 }
 
 /**
@@ -157,10 +131,10 @@ const FrameBuff* OpenGLDisplay::getFrameBuff(const string &name) {
  * @param data ResourceData to be set to a resource in the display.
  */
 void OpenGLDisplay::setResourceData(const ResourceData *data) {
-   OpenGLShader::SetData(data);
-   OpenGLTexture::SetData(data);
-   OpenGLMesh::SetData(data);
-   OpenGLFrameBuff::SetData(data);
+  OpenGLShader::SetData(data);
+  OpenGLTexture::SetData(data);
+  OpenGLMesh::SetData(data);
+  OpenGLFrameBuff::SetData(data);
 }
 
 

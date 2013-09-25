@@ -10,6 +10,7 @@
 #define __FelixEngineIOS__Object3d__
 
 #include "FelixEngine.h"
+#include "Drawable.h"
 
 
 class Object3d: public Drawable {

@@ -10,10 +10,11 @@
 #define __FelixEngineIOS__IOSHost__
 
 #include "FelixEngine.h"
+#include "View.h"
 
 class OpenGLFrameBuff;
 
-class IOSHost: public Host {
+class IOSHost: public View, public Host {
 public:
   IOSHost(DEV_TYPE dev, ivec2 size, float scale);
   virtual ~IOSHost();
@@ -22,6 +23,7 @@ public:
   void resize(int sizeX, int sizeY, float scale);
   void update(float td);
   void render();
+
   void touchDown(const Moves &moves);
   void touchUp(const Moves &moves);
   void touchMove(const Moves &moves);

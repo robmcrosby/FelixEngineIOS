@@ -16,8 +16,8 @@ DEFINE_ENTITY_ID(Pipeline)
 
 Pipeline::Pipeline(): _display(0) {
    _pipeline.push_back(new ClearContext());
-   _pipeline.push_back(new DrawPass(MAIN_PASS));
-   _pipeline.push_back(new DrawPass(SCREEN_PASS));
+   //_pipeline.push_back(new DrawPass(MAIN_PASS));
+   //_pipeline.push_back(new DrawPass(SCREEN_PASS));
 }
 
 Pipeline::Pipeline(XMLTag *tag): Entity(tag), _display(0) {
@@ -74,8 +74,8 @@ void Pipeline::applyTag() {
 
 
 void Pipeline::ClearContext::exec() {
-   if (_display)
-      _display->clearContext(clearColor);
+   //if (_display)
+   //   _display->clearContext(clearColor);
 }
 
 void Pipeline::DrawPass::exec() {
@@ -128,7 +128,7 @@ void Pipeline::DrawFull::exec() {
    int i = 0;
    
    // set the display to blend
-   _display->setDrawType(DRAW_BLEND);
+   //_display->setDrawType(DRAW_BLEND);
    
    // set the shader
    shader->use();

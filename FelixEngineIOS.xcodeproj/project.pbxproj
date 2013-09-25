@@ -223,10 +223,7 @@
 			children = (
 				3741F344176E8AB200DFEDAD /* FelixEngine.h */,
 				37376B131777A029008CFD8A /* ShaderVaribles.h */,
-				376CEE7317E2B30100FF62BF /* Drawable.h */,
-				376CEE7217E2B30100FF62BF /* Drawable.cpp */,
-				379DF9D217DC2B67004CE079 /* View.h */,
-				379DF9D117DC2B67004CE079 /* View.cpp */,
+				37376B121777978B008CFD8A /* FelixHost */,
 				3792DF691773DA7100E1A410 /* EngineEntities */,
 				3741F349176FAD7700DFEDAD /* Utils */,
 				3741F31B176E7FF000DFEDAD /* Supporting Files */,
@@ -317,26 +314,21 @@
 			children = (
 				37376B0717779436008CFD8A /* Entity.h */,
 				37376B0A17779677008CFD8A /* Entity.cpp */,
+				376CEE7317E2B30100FF62BF /* Drawable.h */,
+				376CEE7217E2B30100FF62BF /* Drawable.cpp */,
+				379DF9D217DC2B67004CE079 /* View.h */,
+				379DF9D117DC2B67004CE079 /* View.cpp */,
 				3792DF671773D63900E1A410 /* Resources.h */,
 				3792DF661773D63900E1A410 /* Resources.cpp */,
+				37A9D4CA17780FE500CA9802 /* Object3d.h */,
+				37A9D4C917780FE400CA9802 /* Object3d.cpp */,
 				37A9D4C717780FD100CA9802 /* Camera.h */,
 				37A9D4C617780FD100CA9802 /* Camera.cpp */,
 				372620C71780C19D00DC6AAD /* Pipeline.h */,
 				372620C61780C19D00DC6AAD /* Pipeline.cpp */,
 				370159EA177DEA0700665C58 /* Transform.h */,
-				37376B121777978B008CFD8A /* FelixHost */,
-				37A9D4CC1778100200CA9802 /* Drawables */,
 			);
 			name = EngineEntities;
-			sourceTree = "<group>";
-		};
-		37A9D4CC1778100200CA9802 /* Drawables */ = {
-			isa = PBXGroup;
-			children = (
-				37A9D4CA17780FE500CA9802 /* Object3d.h */,
-				37A9D4C917780FE400CA9802 /* Object3d.cpp */,
-			);
-			name = Drawables;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

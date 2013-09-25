@@ -10,16 +10,13 @@
 #define __FelixEngineIOS__FelixEngine__
 
 #include "Resources.h"
-#include "Pipeline.h"
-#include "Color.h"
-#include "View.h"
 
 /**
  * Defines what device the engine is running on.
  */
 enum DEV_TYPE {
-  DEV_PHONE, /**< A phone like device. (iphone or ipod touch) */
-  DEV_TABLET, /**< A tablet device. */
+  DEV_PHONE, /**< Phone like device. (iphone or ipod touch) */
+  DEV_TABLET, /**< Tablet Device. (ipad) */
 };
 
 
@@ -28,16 +25,14 @@ enum DEV_TYPE {
  */
 struct HostDisplay {
   virtual ~HostDisplay() {}
-   
-  virtual void clearContext(Color color = Color()) = 0;
-  virtual void setDrawType(DRAW_TYPE type) = 0;
   
   virtual Resource* getResource(const XMLTag &tag) = 0;
-  virtual void cleanUpResources() = 0;
+  virtual void updateResources() = 0;
   virtual const Shader* getShader(const std::string &name) = 0;
   virtual const Texture* getTexture(const std::string &name) = 0;
   virtual const Mesh* getMesh(const std::string &name) = 0;
   virtual const FrameBuff* getFrameBuff(const std::string &name) = 0;
+  virtual void updateFrameBuffs() = 0;
   virtual void setResourceData(const ResourceData *data) = 0;
 };
 
@@ -71,7 +66,7 @@ struct HostFileSystem {
 /**
  * Base class that represents the host system.
  */
-struct Host: public View {
+struct Host {
   virtual ~Host() {}
   
   virtual DEV_TYPE getDeviceType() const = 0;

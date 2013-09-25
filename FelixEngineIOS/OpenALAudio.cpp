@@ -12,7 +12,7 @@ using namespace std;
 
 
 OpenALAudio::OpenALAudio(Host *host): _host(host) {
-   host->addListener(this);
+
 }
 
 
@@ -21,5 +21,5 @@ Resource* OpenALAudio::getResource(const XMLTag &tag) {
 }
 
 void OpenALAudio::cleanUpResources() {
-   // look at display cleanuResources for how to implement
+
 }

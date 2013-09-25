@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Robert Crosby. All rights reserved.
 //
 
-#include "Object3d.h"
 #include "FelixEngine.h"
+#include "Object3d.h"
 
 using namespace std;
 
@@ -68,7 +68,6 @@ void Object3d::removeChild(Entity *child) {
 
 void Object3d::draw() const {
   if (isVisible()) {
-    //_display->setDrawType(getDrawType());
     _shader->use();
     _shader->setUniforms(&_uniforms);
     _shader->setUniforms(_transform.getUniforms());

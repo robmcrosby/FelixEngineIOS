@@ -7,6 +7,7 @@
 //
 
 #include "OpenGLFrameBuff.h"
+#include "Drawable.h"
 
 using namespace std;
 

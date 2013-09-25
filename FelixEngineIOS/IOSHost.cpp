@@ -64,6 +64,7 @@ IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(siz
   _viewFbo = _finalFbo;
   
   createAppEntity();
+  _display->updateResources();
   notify(EVENT_LOAD);
 }
 
@@ -83,10 +84,12 @@ void IOSHost::lowMemory() {
 }
 
 void IOSHost::resize(int sizeX, int sizeY, float scale) {
-   _size.x = sizeX;
-   _size.y = sizeY;
-   _scale = scale;
-   notify(EVENT_RESIZE);
+  _size.x = sizeX;
+  _size.y = sizeY;
+  _scale = scale;
+
+  _display->updateFrameBuffs();
+  notify(EVENT_RESIZE);
 }
 
 void IOSHost::update(float td) {
@@ -198,6 +201,6 @@ Resource* IOSHost::getResource(const XMLTag &tag) {
  * Clean up the unused Resources in HostDisplay and HostAudio.
  */
 void IOSHost::cleanUpResources() {
-  _display->cleanUpResources();
-  _audio->cleanUpResources();
+  //_display->cleanUpResources();
+  //_audio->cleanUpResources();
 }

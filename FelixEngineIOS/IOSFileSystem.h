@@ -11,7 +11,7 @@
 
 #include "FelixEngine.h"
 
-class IOSFileSystem: public Entity, public HostFileSystem {
+class IOSFileSystem: public HostFileSystem {
 public:
    IOSFileSystem(Host *host);
    virtual ~IOSFileSystem() {}
