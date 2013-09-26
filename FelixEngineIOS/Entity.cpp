@@ -15,13 +15,13 @@ map<string, Entity*> Entity::EntityMap;
 EntityId* EntityId::IDs;
 
 
-Entity::Entity(XMLTag *tag): _tag(tag), _parrent(0) {
+Entity::Entity(XMLTag *tag): _tag(tag), _parrent(0), _loaded(0) {
    applyTag();
 }
 
 Entity::~Entity() {
-   clearListeners();
-   clearChildren();
+  clearParrent();
+  clearChildren();
 }
 
 void Entity::applyTag() {
@@ -54,25 +54,51 @@ void Entity::applyTag() {
 void Entity::createChildren(XMLTag *tag) {
    for (XMLTag::iterator itr = tag->begin(); itr != tag->end(); ++itr) {
       Entity *child = EntityId::CreateEntity(*itr);
-      if (child) {
+      if (child)
          addChild(child);
-         if (!child->getSubject())
-            addListener(child);
-      }
    }
 }
 
-void Entity::addChild(Entity *child) {
-  if (child->_parrent)
-    child->_parrent->removeChild(child);
-  child->_parrent = this;
-  _children.insert(child);
+void Entity::setParrent(Entity *parrent) {
+  if (_parrent != parrent) {
+    clearParrent();
+
+    _parrent = parrent;
+    if (_parrent) {
+      _parrent->_children.insert(this);
+    }
+  }
 }
 
-void Entity::removeChild(Entity *child) {
-  if (child->_parrent == this)
-    child->_parrent = NULL;
-   _children.erase(child);
+void Entity::clearParrent() {
+  if (_parrent)
+    _parrent->_children.erase(this);
+  _parrent = NULL;
+}
+
+void Entity::update(float td) {
+  // update the children
+  set<Entity*>::iterator itr;
+  for (itr = _children.begin(); itr != _children.end(); ++itr)
+    (*itr)->update(td);
+}
+
+void Entity::load() {
+  _loaded = true;
+
+  // load the children
+  set<Entity*>::iterator itr;
+  for (itr = _children.begin(); itr != _children.end(); ++itr)
+    (*itr)->load();
+}
+
+void Entity::unload() {
+  _loaded = false;
+
+  // unload the children
+  set<Entity*>::iterator itr;
+  for (itr = _children.begin(); itr != _children.end(); ++itr)
+    (*itr)->unload();
 }
 
 View* Entity::getView() {
@@ -86,6 +112,7 @@ View* Entity::getParrentView() {
 const View* Entity::getParrentView() const {
   return _parrent ? _parrent->getView() : NULL;
 }
+
 
 Entity* Entity::GetEntity(const string &name) {
    map<string, Entity*>::iterator itr;

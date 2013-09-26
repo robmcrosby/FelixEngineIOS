@@ -132,10 +132,12 @@ protected:
  */
 class Resources: Entity {
 public:
-   Resources(XMLTag *tag);
-   virtual ~Resources();
-   
-   virtual void notify(const Event &event);
+  Resources(XMLTag *tag);
+  virtual ~Resources();
+
+  virtual void load();
+  virtual void unload();
+   //virtual void notify(const Event &event);
    
 private:
    inline void loadResources();

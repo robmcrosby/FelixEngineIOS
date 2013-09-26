@@ -35,15 +35,17 @@ public:
   inline DRAW_TYPE getDrawType() const;
   inline const std::string& getPassName() const;
   inline int getLayer() const;
+  inline View* getCurView();
   
-  inline void setVisiblity(bool vis);
-  inline void setDrawType(DRAW_TYPE type);
-  inline void setPassName(const std::string &pass);
-  inline void setLayer(int layer);
-  
+  void setVisiblity(bool vis);
+  void setDrawType(DRAW_TYPE type);
+  void setPassName(const std::string &pass);
+  void setLayer(int layer);
+
+  virtual void load();
+  virtual void unload();
+
   virtual void draw() const;
-  
-  virtual void notify(const Event &event);
   
   inline bool operator<(const Drawable &rhs) const;
   
@@ -59,6 +61,7 @@ private:
   std::string _passName;
   int         _layer;
   int         _drawId;
+  View        *_curView;
 };
 
 
@@ -98,35 +101,10 @@ int Drawable::getLayer() const {
 }
 
 /**
- * Sets the visibilty.
- * @param vis A boolean value, true for visible and false for not visible.
+ * Gets the current view.
  */
-void Drawable::setVisiblity(bool vis) {
-  _visible = vis;
-}
-
-/**
- * Sets how this is drawn.
- * @param type Either a blend or depth DRAW_TYPE.
- */
-void Drawable::setDrawType(DRAW_TYPE type) {
-  _drawType = type;
-}
-
-/**
- * Sets the pass that this is associated with.
- * @param pass A string value for the associated pass.
- */
-void Drawable::setPassName(const std::string &pass) {
-  _passName = pass;
-}
-
-/**
- * Sets the layer value.
- * @param layer An int value for the numbered layer.
- */
-void Drawable::setLayer(int layer) {
-  _layer = layer;
+View* Drawable::getCurView() {
+  return _curView;
 }
 
 

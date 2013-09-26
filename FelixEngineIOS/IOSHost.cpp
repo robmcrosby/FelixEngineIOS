@@ -65,7 +65,8 @@ IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(siz
   
   createAppEntity();
   _display->updateResources();
-  notify(EVENT_LOAD);
+
+  load();
 }
 
 /**
@@ -79,8 +80,7 @@ IOSHost::~IOSHost() {
 
 
 void IOSHost::lowMemory() {
-   cout << "LOW MEMORY WARNING" << endl;
-   notify(EVENT_MEM_WARNING);
+  cout << "LOW MEMORY WARNING" << endl;
 }
 
 void IOSHost::resize(int sizeX, int sizeY, float scale) {
@@ -88,30 +88,29 @@ void IOSHost::resize(int sizeX, int sizeY, float scale) {
   _size.y = sizeY;
   _scale = scale;
 
+  // TODO: change to resize when display is a view.
   _display->updateFrameBuffs();
-  notify(EVENT_RESIZE);
 }
 
 void IOSHost::update(float td) {
-   notify(Event(EVENT_UPDATE, &td));
+  Entity::update(td);
 }
 
 void IOSHost::render() {
   _finalFbo->updateFinal();
-  notify(EVENT_RENDER);
   draw();
 }
 
 void IOSHost::touchDown(const Moves &moves) {
-   notify(Event(EVENT_TOUCH_DOWN, &moves));
+   //notify(Event(EVENT_TOUCH_DOWN, &moves));
 }
 
 void IOSHost::touchUp(const Moves &moves) {
-   notify(Event(EVENT_TOUCH_UP, &moves));
+   //notify(Event(EVENT_TOUCH_UP, &moves));
 }
 
 void IOSHost::touchMove(const Moves &moves) {
-   notify(Event(EVENT_TOUCH_MOVE, &moves));
+   //notify(Event(EVENT_TOUCH_MOVE, &moves));
 }
 
 void IOSHost::createAppEntity() {
@@ -128,7 +127,6 @@ void IOSHost::createAppEntity() {
       exit(1);
    }
    addChild(app);
-   addListener(app);
 }
 
 

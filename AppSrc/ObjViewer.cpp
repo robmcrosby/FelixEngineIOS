@@ -24,16 +24,17 @@ ObjViewer::~ObjViewer() {
 }
 
 
+/*
 void ObjViewer::notify(const Event &event) {
-   /*if (event == EVENT_UPDATE) {
+   if (event == EVENT_UPDATE) {
       float td = *(float*)event.data;
       
       if (bunny)
          bunny->getTransform()->rotate(quat(vec3(0, 1, 0), td));
-   }*/
+   }
    
    Entity::notify(event);
-}
+}*/
 
 
 

@@ -27,6 +27,7 @@ Camera::~Camera() {
    
 }
 
+/*
 void Camera::notify(const Event &event) {
    if (event == EVENT_RESIZE)
       updateProjMtx();
@@ -42,7 +43,7 @@ void Camera::notify(const Event &event) {
    }
    
    Entity::notify(event);
-}
+}*/
 
 void Camera::updateProjMtx() {
    vec2 screen = _abs ? vec2(1.0f) : vec2(_host->getScreenSize());

@@ -56,6 +56,7 @@ void Object3d::applyTag() {
   }
 }
 
+/*
 void Object3d::addChild(Entity *child) {
    Entity::addChild(child);
    child->setTransformParrent(&_transform);
@@ -64,7 +65,7 @@ void Object3d::addChild(Entity *child) {
 void Object3d::removeChild(Entity *child) {
    Entity::removeChild(child);
    child->setTransformParrent(NULL);
-}
+}*/
 
 void Object3d::draw() const {
   if (isVisible()) {

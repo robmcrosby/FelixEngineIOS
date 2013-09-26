@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "IOSHost.h"
 
 @implementation ViewController
 
@@ -51,7 +52,7 @@
       height_ = [UIScreen mainScreen].bounds.size.width;
    }
    scale_ = [UIScreen mainScreen].scale;
-   
+
    host_ = IOSHost::CreateIOSHost(deviceType, width_, height_, scale_);
 }
 

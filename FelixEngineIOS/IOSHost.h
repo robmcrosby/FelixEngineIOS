@@ -19,14 +19,14 @@ public:
   IOSHost(DEV_TYPE dev, ivec2 size, float scale);
   virtual ~IOSHost();
    
-  void lowMemory();
-  void resize(int sizeX, int sizeY, float scale);
-  void update(float td);
-  void render();
+  virtual void lowMemory();
+  virtual void resize(int sizeX, int sizeY, float scale);
+  virtual void update(float td);
+  virtual void render();
 
-  void touchDown(const Moves &moves);
-  void touchUp(const Moves &moves);
-  void touchMove(const Moves &moves);
+  virtual void touchDown(const Moves &moves);
+  virtual void touchUp(const Moves &moves);
+  virtual void touchMove(const Moves &moves);
   
   virtual DEV_TYPE getDeviceType() const;
   virtual ivec2 getScreenSize() const;

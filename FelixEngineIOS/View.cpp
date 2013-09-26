@@ -53,7 +53,7 @@ View::~View() {
 
 /**
  *
- */
+ *//*
 void View::notify(const Event &event) {
   if (event == EVENT_RENDER) {
     View *view = getParrentView();
@@ -65,7 +65,7 @@ void View::notify(const Event &event) {
   }
   else
     Drawable::notify(event);
-}
+}*/
 
 /**
  * Adds a Drawable to a pass.
@@ -73,6 +73,12 @@ void View::notify(const Event &event) {
  */
 void View::addDrawable(const Drawable *drawable) {
   getPassDraws(drawable->getPassName())->insert(drawable);
+  setChanged();
+}
+
+void View::removeDrawable(const Drawable *drawable) {
+  getPassDraws(drawable->getPassName())->erase(drawable);
+  setChanged();
 }
 
 /**

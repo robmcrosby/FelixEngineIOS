@@ -20,7 +20,7 @@ class View;
 /**
  * Defines the type of event
  */
-enum EVENT_TYPE {
+/*enum EVENT_TYPE {
    EVENT_MEM_WARNING,
    EVENT_RESIZE,
    EVENT_UPDATE,
@@ -31,19 +31,19 @@ enum EVENT_TYPE {
    EVENT_LOAD,
    EVENT_UNLOAD,
    EVENT_OTHER,
-};
+};*/
 
 
 /**
  * Base struct for all events used by Entities
  */
-struct Event {
+/*struct Event {
    Event(EVENT_TYPE e = EVENT_OTHER, const void *d = NULL): type(e), data(d) {}
    bool operator==(const Event &e) const {return e.type == type;}
    
    EVENT_TYPE type;
    const void *data;
-};
+};*/
 
 
 /**
@@ -59,7 +59,7 @@ typedef std::vector<Move> Moves;
 
 /**
  * Listener class
- */
+ *//*
 class EventHandler {
 public:
    EventHandler(): _subject(0) {}
@@ -68,7 +68,7 @@ public:
          _subject->removeListener(this);
    }
    
-   virtual void notify(const Event &event) {notifyListeners(event);}
+   //virtual void notify(const Event &event) {notifyListeners(event);}
    
    inline EventHandler* getSubject() {return _subject;}
    inline const EventHandler* getSubject() const {return _subject;}
@@ -100,20 +100,25 @@ public:
 private:
    std::set<EventHandler*> _listeners;
    EventHandler *_subject;
-};
+};*/
 
 /**
  * Base class for all Felix Entities
  */
-class Entity: public EventHandler {
+class Entity {
 public:
   Entity(XMLTag *tag = NULL);
   virtual ~Entity();
   
   virtual void createChildren(XMLTag *tag);
-  virtual void addChild(Entity *child);
-  virtual void removeChild(Entity *child);
+
+  virtual void setParrent(Entity *parrent);
+  virtual void clearParrent();
   virtual View* getView();
+
+  virtual void update(float td);
+  virtual void load();
+  virtual void unload();
   
   inline void clearChildren() {
     std::set<Entity*>::iterator itr;
@@ -125,6 +130,8 @@ public:
   inline Transform* getTransform() {return &_transform;}
   inline const Transform* getTransform() const {return &_transform;}
   inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
+  inline bool isLoaded() const {return _loaded;}
+  inline void addChild(Entity *child) {child->setParrent(this);}
   
   static Entity* GetEntity(const std::string &name);
   
@@ -135,6 +142,7 @@ protected:
   std::string _name;
   Transform _transform;
   XMLTag *_tag;
+  bool _loaded;
   
 private:
   inline void applyTag();

@@ -59,12 +59,14 @@ public:
   View(XMLTag *tag = NULL);
   virtual ~View();
   
-  virtual void notify(const Event &event);
+  //virtual void notify(const Event &event);
   virtual View* getView();
   virtual HostDisplay* getDisplay();
   virtual void draw() const;
   
   void addDrawable(const Drawable *drawable);
+  void updateDrawable(const Drawable *drawable, const std::string &prevPass);
+  void removeDrawable(const Drawable *drawable);
   const FrameBuff* getFBO() const;
   
   inline void drawPass(const std::string &passName) const;
@@ -72,6 +74,7 @@ public:
   inline void addPassUniform(const std::string &key, const Uniform &uniform, const std::string &pass);
   inline void removePassUniform(const std::string &key, const std::string &pass);
   inline void clearPassUniforms(const std::string &pass);
+  inline void setChanged();
   
 protected:
   FrameBuff *_viewFbo;
@@ -91,6 +94,7 @@ private:
   inline const Uniforms* getPassUniforms(const std::string &pass) const;
   
   Passes _passes;
+  bool _changed;
   
   DECLARE_ENTITY_ID(View)
 };
@@ -141,6 +145,19 @@ void View::removePassUniform(const std::string &key, const std::string &pass) {
  */
 void View::clearPassUniforms(const std::string &pass) {
   getPassUniforms(pass)->clear();
+}
+
+/**
+ * Updates the changed variable
+ */
+void View::setChanged() {
+  if (!_changed) {
+    _changed = true;
+
+    View *curView = getCurView();
+    if (curView)
+      curView->setChanged();
+  }
 }
 
 

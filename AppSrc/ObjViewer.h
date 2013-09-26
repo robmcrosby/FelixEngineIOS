@@ -17,7 +17,7 @@ public:
    ObjViewer(XMLTag *tag);
    virtual ~ObjViewer();
    
-   virtual void notify(const Event &event);
+   //virtual void notify(const Event &event);
    
 private:
    //Entity *bunny;
