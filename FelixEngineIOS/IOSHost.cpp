@@ -50,15 +50,16 @@ IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale)
  */
 IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _touchDeligate(0) {
   Instance = this;
-  
-  // create the host components
+
+  // The Host Display is also the Root View and the Touch Deligate.
   OpenGLDisplay *display = new OpenGLDisplay(size, scale);
+  display->addChild(this);
+  setTouchDeligate(display);
+
+  // create the host components
   _display = display;
   _audio   = new OpenALAudio(this);
   _fileSys = new IOSFileSystem(this);
-
-  // Host Display is also the root View
-  display->addChild(this);
   
   createAppEntity();
   _display->updateResources();
