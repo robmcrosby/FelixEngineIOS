@@ -31,6 +31,8 @@ struct HostDisplay {
   virtual ivec2 getScreenSize() const = 0;
   virtual float getScreenScale() const = 0;
 
+  virtual void render() = 0;
+
   virtual Resource* getResource(const XMLTag &tag) = 0;
   virtual void updateResources() = 0;
   virtual const Shader* getShader(const std::string &name) = 0;
@@ -76,7 +78,6 @@ struct Host: UIElement {
 
   virtual void lowMemory() = 0;
   virtual void update(float td) = 0;
-  virtual void render() = 0;
   
   virtual DEV_TYPE getDeviceType() const = 0;
   virtual HostDisplay *getDisplay() const = 0;

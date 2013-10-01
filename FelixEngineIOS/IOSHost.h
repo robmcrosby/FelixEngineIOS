@@ -10,18 +10,15 @@
 #define __FelixEngineIOS__IOSHost__
 
 #include "FelixEngine.h"
-#include "View.h"
+#include "Entity.h"
 
-class OpenGLFrameBuff;
-
-class IOSHost: public View, public Host {
+class IOSHost: public Entity, public Host {
 public:
   IOSHost(DEV_TYPE dev, ivec2 size, float scale);
   virtual ~IOSHost();
    
   virtual void lowMemory();
   virtual void update(float td);
-  virtual void render();
 
   virtual bool touchesBegin(const Touches &touches);
   virtual bool touchesEnd(const Touches &touches);
@@ -40,8 +37,7 @@ public:
    
 private:
   inline void createAppEntity();
-  
-  OpenGLFrameBuff *_finalFbo;
+
   DEV_TYPE _device; /**< device type of the host. */
   
   HostDisplay *_display; /**< HostDisplay pointer */

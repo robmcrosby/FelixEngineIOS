@@ -28,8 +28,8 @@ _screenSize(size), _screenScale(scale), _curDrawType(DRAW_DEPTH) {
   glEnable(GL_DEPTH_TEST);
 
   // get the final buff
-  _finalBuff = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
-  _finalBuff->retain();
+  _finalFbo = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
+  _finalFbo->retain();
 }
 
 OpenGLDisplay::~OpenGLDisplay() {
@@ -60,6 +60,11 @@ ivec2 OpenGLDisplay::getScreenSize()  const {
  */
 float OpenGLDisplay::getScreenScale() const {
   return _screenScale;
+}
+
+void OpenGLDisplay::render() {
+  _finalFbo->updateFinal();
+  draw();
 }
 
 /**

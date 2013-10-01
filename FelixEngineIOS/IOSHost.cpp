@@ -8,7 +8,6 @@
 
 #include "IOSHost.h"
 #include "OpenGLDisplay.h"
-#include "OpenGLFrameBuff.h"
 #include "OpenALAudio.h"
 #include "IOSFileSystem.h"
 
@@ -43,8 +42,6 @@ IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale)
 }
 
 
-
-
 /**
  * The IOSHost Constructor.
  * @param dev enum for the device.
@@ -55,13 +52,13 @@ IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _touchDel
   Instance = this;
   
   // create the host components
-  _display = new OpenGLDisplay(size, scale);
+  OpenGLDisplay *display = new OpenGLDisplay(size, scale);
+  _display = display;
   _audio   = new OpenALAudio(this);
   _fileSys = new IOSFileSystem(this);
-  
-  // get the final FBO
-  _finalFbo = OpenGLFrameBuff::GetFrameBuff(FINAL_FBO);
-  _viewFbo = _finalFbo;
+
+  // Host Display is also the root View
+  display->addChild(this);
   
   createAppEntity();
   _display->updateResources();
@@ -85,11 +82,6 @@ void IOSHost::lowMemory() {
 
 void IOSHost::update(float td) {
   Entity::update(td);
-}
-
-void IOSHost::render() {
-  _finalFbo->updateFinal();
-  draw();
 }
 
 bool IOSHost::touchesBegin(const Touches &touches) {

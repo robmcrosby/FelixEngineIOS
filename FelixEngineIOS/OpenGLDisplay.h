@@ -11,10 +11,11 @@
 
 #include <map>
 #include "FelixEngine.h"
+#include "View.h"
 
 class OpenGLFrameBuff;
 
-class OpenGLDisplay: public HostDisplay {
+class OpenGLDisplay: public View, public HostDisplay {
 public:
   OpenGLDisplay(ivec2 size, float scale);
   virtual ~OpenGLDisplay();
@@ -22,6 +23,8 @@ public:
   virtual void resize(int sizeX, int sizeY, float scale);
   virtual ivec2 getScreenSize() const;
   virtual float getScreenScale() const;
+
+  virtual void render();
    
   virtual Resource* getResource(const XMLTag &tag);
   virtual void updateResources();
@@ -37,7 +40,7 @@ private:
   float _screenScale; /**< screen scale */
 
   DRAW_TYPE _curDrawType;
-  OpenGLFrameBuff *_finalBuff;
+  OpenGLFrameBuff *_finalFbo;
 };
 
 

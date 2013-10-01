@@ -93,7 +93,7 @@
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect {
-   host_->render();
+   host_->getDisplay()->render();
 }
 
 - (void) touchesBegan:(NSSet *)touchPts withEvent:(UIEvent *)event
