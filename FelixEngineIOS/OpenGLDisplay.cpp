@@ -17,9 +17,8 @@
 
 using namespace std;
 
-OpenGLDisplay::OpenGLDisplay(Host *host):
-_host(host), _curDrawType(DRAW_DEPTH) {
-  //host->addListener(this);
+OpenGLDisplay::OpenGLDisplay(ivec2 size, float scale):
+_screenSize(size), _screenScale(scale), _curDrawType(DRAW_DEPTH) {
 
   // set inital OpenGL settings
   glEnable(GL_CULL_FACE);
@@ -37,6 +36,30 @@ OpenGLDisplay::~OpenGLDisplay() {
   OpenGLShader::ClearShaders();
   OpenGLTexture::ClearTextures();
   OpenGLMesh::ClearMeshes();
+}
+
+void OpenGLDisplay::resize(int sizeX, int sizeY, float scale) {
+  _screenSize.x = sizeX;
+  _screenSize.y = sizeY;
+  _screenScale = scale;
+
+  OpenGLFrameBuff::UpdateFrameBuffs();
+}
+
+/**
+ * Gets the current screen size of the Host.
+ * @return ivec2
+ */
+ivec2 OpenGLDisplay::getScreenSize()  const {
+  return _screenSize;
+}
+
+/**
+ * Gets the scale of the screen. (2.0f for Retina and 1.0f for Non-Retina Displays)
+ * @return float scale.
+ */
+float OpenGLDisplay::getScreenScale() const {
+  return _screenScale;
 }
 
 /**

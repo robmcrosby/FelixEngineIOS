@@ -16,8 +16,12 @@ class OpenGLFrameBuff;
 
 class OpenGLDisplay: public HostDisplay {
 public:
-  OpenGLDisplay(Host *host);
+  OpenGLDisplay(ivec2 size, float scale);
   virtual ~OpenGLDisplay();
+
+  virtual void resize(int sizeX, int sizeY, float scale);
+  virtual ivec2 getScreenSize() const;
+  virtual float getScreenScale() const;
    
   virtual Resource* getResource(const XMLTag &tag);
   virtual void updateResources();
@@ -29,7 +33,9 @@ public:
   virtual void setResourceData(const ResourceData *data);
    
 private:
-  Host *_host;
+  ivec2 _screenSize; /**< screen size */
+  float _screenScale; /**< screen scale */
+
   DRAW_TYPE _curDrawType;
   OpenGLFrameBuff *_finalBuff;
 };

@@ -51,11 +51,11 @@ IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale)
  * @param size ivec2 of the screen size.
  * @param scale float for the screen scale.
  */
-IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(size), _scale(scale), _touchDeligate(0) {
+IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _touchDeligate(0) {
   Instance = this;
   
   // create the host components
-  _display = new OpenGLDisplay(this);
+  _display = new OpenGLDisplay(size, scale);
   _audio   = new OpenALAudio(this);
   _fileSys = new IOSFileSystem(this);
   
@@ -81,15 +81,6 @@ IOSHost::~IOSHost() {
 
 void IOSHost::lowMemory() {
   cout << "LOW MEMORY WARNING" << endl;
-}
-
-void IOSHost::resize(int sizeX, int sizeY, float scale) {
-  _size.x = sizeX;
-  _size.y = sizeY;
-  _scale = scale;
-
-  // TODO: change to resize when display is a view.
-  _display->updateFrameBuffs();
 }
 
 void IOSHost::update(float td) {
@@ -147,23 +138,6 @@ void IOSHost::createAppEntity() {
  */
 DEV_TYPE IOSHost::getDeviceType()  const {
   return _device;
-}
-
-
-/**
- * Gets the current screen size of the Host.
- * @return ivec2
- */
-ivec2 IOSHost::getScreenSize()  const {
-  return _size;
-}
-
-/**
- * Gets the scale of the screen. (2.0f for Retina and 1.0f for Non-Retina Displays)
- * @return float scale.
- */
-float IOSHost::getScreenScale() const {
-  return _scale;
 }
 
 /**

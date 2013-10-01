@@ -82,8 +82,8 @@
       width_ = [UIScreen mainScreen].bounds.size.height;
       height_ = [UIScreen mainScreen].bounds.size.width;
    }
-   
-   host_->resize(width_, height_, scale_);
+
+  host_->getDisplay()->resize(width_, height_, scale_);
 }
 
 #pragma mark - GLKView and GLKViewController delegate methods

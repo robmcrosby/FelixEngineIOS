@@ -55,7 +55,7 @@ private:
 /**
  * View Class
  */
-class View: public Drawable, public UIElement {
+class View: public Drawable, public TouchDeligate {
 public:
   View(XMLTag *tag = NULL);
   virtual ~View();
@@ -75,7 +75,6 @@ public:
   virtual bool touchesBegin(const Touches &touches);
   virtual bool touchesEnd(const Touches &touches);
   virtual bool touchesMove(const Touches &touches);
-  virtual void setTouchDeligate(TouchDeligate *deligate);
   
   inline void drawPass(const std::string &passName) const;
   

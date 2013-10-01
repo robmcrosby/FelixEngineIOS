@@ -56,7 +56,8 @@ void OpenGLFrameBuff::ClearFrameBuffs() {
 
 void OpenGLFrameBuff::UpdateFrameBuffs() {
   map<string, OpenGLFrameBuff*>::iterator itr;
-  ivec2 screen = Host::GetHost()->getScreenSize() * Host::GetHost()->getScreenScale();
+  HostDisplay *display = Host::GetHost()->getDisplay();
+  ivec2 screen = display->getScreenSize() * display->getScreenScale();
   
   for (itr = FrameBuffs.begin(); itr != FrameBuffs.end(); ++itr)
     itr->second->updateSize(screen);
@@ -158,7 +159,7 @@ void OpenGLFrameBuff::updateFinal() {
 }
 
 void OpenGLFrameBuff::loadFinal() {
-  _screen = Host::GetHost()->getScreenSize() * Host::GetHost()->getScreenScale();
+  _screen = 1;
   _size = 1;
   _flags = FBO_FINAL;
   _loaded = true;
@@ -166,7 +167,7 @@ void OpenGLFrameBuff::loadFinal() {
 }
 
 void OpenGLFrameBuff::loadData(const FrameBuffData &data) {
-  _screen = Host::GetHost()->getScreenSize() * Host::GetHost()->getScreenScale();
+  _screen = _display->getScreenSize() * _display->getScreenScale();
   _size = data.size;
   _flags = data.flags;
   _filters = data.filters;
@@ -195,7 +196,7 @@ void OpenGLFrameBuff::updateSize(const ivec2 &screen) {
 
 ivec2 OpenGLFrameBuff::getSize() const {
   if (_flags & FBO_FINAL)
-    return Host::GetHost()->getScreenSize();
+    return _display->getScreenSize();
   return buffSize();
 }
 

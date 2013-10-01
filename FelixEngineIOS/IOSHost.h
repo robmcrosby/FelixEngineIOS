@@ -20,7 +20,6 @@ public:
   virtual ~IOSHost();
    
   virtual void lowMemory();
-  virtual void resize(int sizeX, int sizeY, float scale);
   virtual void update(float td);
   virtual void render();
 
@@ -30,8 +29,6 @@ public:
   virtual void setTouchDeligate(TouchDeligate *deligate);
 
   virtual DEV_TYPE getDeviceType() const;
-  virtual ivec2 getScreenSize() const;
-  virtual float getScreenScale() const;
   virtual HostDisplay *getDisplay() const;
   virtual HostAudio *getAudio() const;
   virtual HostFileSystem *getFileSystem() const;
@@ -46,8 +43,6 @@ private:
   
   OpenGLFrameBuff *_finalFbo;
   DEV_TYPE _device; /**< device type of the host. */
-  ivec2 _size; /**< screen size */
-  float _scale; /**< screen scale */
   
   HostDisplay *_display; /**< HostDisplay pointer */
   HostAudio *_audio; /**< HostAudio pointer */

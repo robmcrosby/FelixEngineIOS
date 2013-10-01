@@ -132,13 +132,6 @@ bool View::touchesMove(const Touches &touches) {
 /**
  *
  */
-void View::setTouchDeligate(TouchDeligate *deligate) {
-
-}
-
-/**
- *
- */
 View* View::getView() {
   return this;
 }
