@@ -9,6 +9,7 @@
 #ifndef __FelixEngineIOS__FelixEngine__
 #define __FelixEngineIOS__FelixEngine__
 
+#include "UIElement.h"
 #include "Resources.h"
 
 /**
@@ -66,17 +67,13 @@ struct HostFileSystem {
 /**
  * Base class that represents the host system.
  */
-struct Host {
+struct Host: UIElement {
   virtual ~Host() {}
 
   virtual void lowMemory() = 0;
   virtual void resize(int sizeX, int sizeY, float scale) = 0;
   virtual void update(float td) = 0;
   virtual void render() = 0;
-
-  virtual void touchDown(const Moves &moves) = 0;
-  virtual void touchUp(const Moves &moves) = 0;
-  virtual void touchMove(const Moves &moves) = 0;
   
   virtual DEV_TYPE getDeviceType() const = 0;
   virtual ivec2 getScreenSize() const = 0;

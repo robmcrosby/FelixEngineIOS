@@ -47,17 +47,6 @@ class View;
 
 
 /**
- * Holds move information for touches and mouse
- */
-struct Move {
-   Move(float cx, float cy, float px, float py): cur(cx, cy), pre(px, py) {}
-   vec2 cur;
-   vec2 pre;
-};
-typedef std::vector<Move> Moves;
-
-
-/**
  * Listener class
  *//*
 class EventHandler {

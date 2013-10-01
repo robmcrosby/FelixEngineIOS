@@ -10,6 +10,7 @@
 #define __FelixEngineIOS__View__
 
 #include "Drawable.h"
+#include "UIElement.h"
 
 class HostDisplay;
 
@@ -54,12 +55,11 @@ private:
 /**
  * View Class
  */
-class View: public Drawable {
+class View: public Drawable, public UIElement {
 public:
   View(XMLTag *tag = NULL);
   virtual ~View();
-  
-  //virtual void notify(const Event &event);
+
   virtual View* getView();
   virtual HostDisplay* getDisplay();
   virtual void draw() const;
@@ -67,7 +67,15 @@ public:
   void addDrawable(const Drawable *drawable);
   void updateDrawable(const Drawable *drawable, const std::string &prevPass);
   void removeDrawable(const Drawable *drawable);
-  const FrameBuff* getFBO() const;
+
+  void addUIElement(UIElement *element);
+  void updateUIElement(UIElement *element);
+  void removeUIElement(UIElement *element);
+
+  virtual bool touchesBegin(const Touches &touches);
+  virtual bool touchesEnd(const Touches &touches);
+  virtual bool touchesMove(const Touches &touches);
+  virtual void setTouchDeligate(TouchDeligate *deligate);
   
   inline void drawPass(const std::string &passName) const;
   

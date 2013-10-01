@@ -46,6 +46,7 @@
 
 /* Begin PBXFileReference section */
 		370159EA177DEA0700665C58 /* Transform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Transform.h; sourceTree = "<group>"; };
+		3713E7A417FA62710000B7D0 /* UIElement.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIElement.h; sourceTree = "<group>"; };
 		372620C61780C19D00DC6AAD /* Pipeline.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pipeline.cpp; sourceTree = "<group>"; };
 		372620C71780C19D00DC6AAD /* Pipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pipeline.h; sourceTree = "<group>"; };
 		37326A891783E53C00DF31F1 /* OpenGLFrameBuff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLFrameBuff.cpp; sourceTree = "<group>"; };
@@ -223,6 +224,7 @@
 			children = (
 				3741F344176E8AB200DFEDAD /* FelixEngine.h */,
 				37376B131777A029008CFD8A /* ShaderVaribles.h */,
+				3713E7A417FA62710000B7D0 /* UIElement.h */,
 				37376B121777978B008CFD8A /* FelixHost */,
 				3792DF691773DA7100E1A410 /* EngineEntities */,
 				3741F349176FAD7700DFEDAD /* Utils */,

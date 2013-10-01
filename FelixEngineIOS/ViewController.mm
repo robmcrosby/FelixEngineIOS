@@ -96,43 +96,43 @@
    host_->render();
 }
 
-- (void) touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void) touchesBegan:(NSSet *)touchPts withEvent:(UIEvent *)event
 {
-   Moves moves;
+   Touches touches;
    
-   for (UITouch *uiTouch in touches) {
+   for (UITouch *uiTouch in touchPts) {
       CGPoint cur = [uiTouch locationInView:self.view];
       CGPoint pre = [uiTouch previousLocationInView:self.view];
-      moves.push_back(Move(cur.x, cur.y, pre.x, pre.y));
+      touches.push_back(Touch(cur.x, cur.y, pre.x, pre.y));
    }
    
-   host_->touchDown(moves);
+   host_->touchesBegin(touches);
 }
 
-- (void) touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+- (void) touchesEnded:(NSSet *)touchPts withEvent:(UIEvent *)event
 {
-   Moves moves;
+   Touches touches;
    
-   for (UITouch *uiTouch in touches) {
+   for (UITouch *uiTouch in touchPts) {
       CGPoint cur = [uiTouch locationInView:self.view];
       CGPoint pre = [uiTouch previousLocationInView:self.view];
-      moves.push_back(Move(cur.x, cur.y, pre.x, pre.y));
+      touches.push_back(Touch(cur.x, cur.y, pre.x, pre.y));
    }
    
-   host_->touchUp(moves);
+   host_->touchesEnd(touches);
 }
 
-- (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
+- (void) touchesMoved:(NSSet *)touchPts withEvent:(UIEvent *)event
 {
-   Moves moves;
+   Touches touches;
    
-   for (UITouch *uiTouch in touches) {
+   for (UITouch *uiTouch in touchPts) {
       CGPoint cur = [uiTouch locationInView:self.view];
       CGPoint pre = [uiTouch previousLocationInView:self.view];
-      moves.push_back(Move(cur.x, cur.y, pre.x, pre.y));
+      touches.push_back(Touch(cur.x, cur.y, pre.x, pre.y));
    }
    
-   host_->touchMove(moves);
+   host_->touchesMove(touches);
 }
 
 @end

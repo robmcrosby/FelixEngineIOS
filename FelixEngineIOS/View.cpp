@@ -76,6 +76,9 @@ void View::addDrawable(const Drawable *drawable) {
   setChanged();
 }
 
+/**
+ *
+ */
 void View::removeDrawable(const Drawable *drawable) {
   getPassDraws(drawable->getPassName())->erase(drawable);
   setChanged();
@@ -84,13 +87,53 @@ void View::removeDrawable(const Drawable *drawable) {
 /**
  *
  */
-const FrameBuff* View::getFBO() const {
-  if (_viewFbo)
-    return _viewFbo;
-  else {
-    const View *view = getParrentView();
-    return view ? view->getFBO() : NULL;
-  }
+void View::addUIElement(UIElement *element) {
+
+}
+
+/**
+ *
+ */
+void View::updateUIElement(UIElement *element) {
+
+}
+
+/**
+ *
+ */
+void View::removeUIElement(UIElement *element) {
+
+}
+
+/**
+ *
+ */
+bool View::touchesBegin(const Touches &touches) {
+  cout << "Touches Begin" << endl;
+  return true;
+}
+
+/**
+ *
+ */
+bool View::touchesEnd(const Touches &touches) {
+  cout << "Touches End" << endl;
+  return true;
+}
+
+/**
+ *
+ */
+bool View::touchesMove(const Touches &touches) {
+  cout << "Touches Move" << endl;
+  return true;
+}
+
+/**
+ *
+ */
+void View::setTouchDeligate(TouchDeligate *deligate) {
+
 }
 
 /**
@@ -100,6 +143,9 @@ View* View::getView() {
   return this;
 }
 
+/**
+ *
+ */
 HostDisplay* View::getDisplay() {
   Host *host = Host::GetHost();
   return host ? host->getDisplay() : NULL;

@@ -51,7 +51,7 @@ IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale)
  * @param size ivec2 of the screen size.
  * @param scale float for the screen scale.
  */
-IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(size), _scale(scale) {
+IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _size(size), _scale(scale), _touchDeligate(0) {
   Instance = this;
   
   // create the host components
@@ -101,16 +101,26 @@ void IOSHost::render() {
   draw();
 }
 
-void IOSHost::touchDown(const Moves &moves) {
-   //notify(Event(EVENT_TOUCH_DOWN, &moves));
+bool IOSHost::touchesBegin(const Touches &touches) {
+  if (_touchDeligate)
+    return _touchDeligate->touchesBegin(touches);
+  return false;
 }
 
-void IOSHost::touchUp(const Moves &moves) {
-   //notify(Event(EVENT_TOUCH_UP, &moves));
+bool IOSHost::touchesEnd(const Touches &touches) {
+  if (_touchDeligate)
+    return _touchDeligate->touchesEnd(touches);
+  return false;
 }
 
-void IOSHost::touchMove(const Moves &moves) {
-   //notify(Event(EVENT_TOUCH_MOVE, &moves));
+bool IOSHost::touchesMove(const Touches &touches) {
+  if (_touchDeligate)
+    return _touchDeligate->touchesMove(touches);
+  return false;
+}
+
+void IOSHost::setTouchDeligate(TouchDeligate *deligate) {
+  _touchDeligate = deligate;
 }
 
 void IOSHost::createAppEntity() {
