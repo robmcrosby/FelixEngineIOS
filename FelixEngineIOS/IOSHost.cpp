@@ -48,13 +48,12 @@ IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale)
  * @param size ivec2 of the screen size.
  * @param scale float for the screen scale.
  */
-IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev), _touchDeligate(0) {
+IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev) {
   Instance = this;
 
   // The Host Display is also the Root View and the Touch Deligate.
   OpenGLDisplay *display = new OpenGLDisplay(size, scale);
   display->addChild(this);
-  setTouchDeligate(display);
 
   // create the host components
   _display = display;
@@ -86,25 +85,15 @@ void IOSHost::update(float td) {
 }
 
 bool IOSHost::touchesBegin(const Touches &touches) {
-  if (_touchDeligate)
-    return _touchDeligate->touchesBegin(touches);
-  return false;
+  return _display->touchesBegin(touches);
 }
 
 bool IOSHost::touchesEnd(const Touches &touches) {
-  if (_touchDeligate)
-    return _touchDeligate->touchesEnd(touches);
-  return false;
+  return _display->touchesEnd(touches);
 }
 
 bool IOSHost::touchesMove(const Touches &touches) {
-  if (_touchDeligate)
-    return _touchDeligate->touchesMove(touches);
-  return false;
-}
-
-void IOSHost::setTouchDeligate(TouchDeligate *deligate) {
-  _touchDeligate = deligate;
+  return _display->touchesMove(touches);
 }
 
 void IOSHost::createAppEntity() {

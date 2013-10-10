@@ -18,9 +18,6 @@ public:
    Object3d(XMLTag *tag);
    virtual ~Object3d();
    
-   //virtual void addChild(Entity *child);
-   //virtual void removeChild(Entity *child) ;
-   
    virtual void draw() const;
    
 protected:

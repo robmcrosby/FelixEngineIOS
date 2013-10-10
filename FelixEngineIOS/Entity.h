@@ -9,6 +9,8 @@
 #ifndef FelixEngineIOS_Entity_h
 #define FelixEngineIOS_Entity_h
 
+#define ATT_NAME "name"
+
 #include <iostream>
 #include <set>
 #include <vector>
@@ -121,6 +123,7 @@ public:
   inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
   inline bool isLoaded() const {return _loaded;}
   inline void addChild(Entity *child) {child->setParrent(this);}
+  inline void setName(const std::string &name);
   
   static Entity* GetEntity(const std::string &name);
   
@@ -141,6 +144,20 @@ private:
   
   static std::map<std::string, Entity*> EntityMap;
 };
+
+
+void Entity::setName(const std::string &name) {
+  if (name == "") {
+    EntityMap.erase(_name);
+    _tag->removeAttribute(ATT_NAME);
+  }
+  else if (_name != name) {
+    EntityMap.erase(_name);
+    EntityMap[_name] = this;
+    _tag->setAttribute(ATT_NAME, _name);
+  }
+  _name = name;
+}
 
 
 /**

@@ -24,6 +24,7 @@ public:
   static void ClearFrameBuffs();
   static void UpdateFrameBuffs();
   static void SetData(const ResourceData *data);
+  static void ClearCurrentFBO(Color color = Color());
   
   virtual void load();
   virtual void unload();
@@ -57,7 +58,8 @@ private:
   
   OpenGLTexture *_colorTex;
   OpenGLTexture *_depthTex;
-  
+
+  static const FrameBuff *CurrentFBO;
   static std::map<std::string, OpenGLFrameBuff*> FrameBuffs;
 };
 

@@ -322,12 +322,14 @@ public:
    
    /**
     * Gets the first occurence of a Subtag with the given Element name.
+    * If not available, creates a new sub tag with the given Element name.
     * @param e string for the element name to search for.
-    * @return pointer to the found XMLTag or NULL if not found.
+    * @return pointer to the found XMLTag.
     */
    inline XMLTag* getSubTag(const std::string &e) {
-      iterator itr = findSubTag(e);
-      return itr != end() ? *itr : NULL;
+     if (!hasSubTag(e))
+       addSubTag(new XMLTag(e));
+     return *findSubTag(e);
    }
    
    /**

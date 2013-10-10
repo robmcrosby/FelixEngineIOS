@@ -20,11 +20,16 @@ public:
   OpenGLDisplay(ivec2 size, float scale);
   virtual ~OpenGLDisplay();
 
+  virtual bool touchesBegin(const Touches &touches);
+  virtual bool touchesEnd(const Touches &touches);
+  virtual bool touchesMove(const Touches &touches);
+
   virtual void resize(int sizeX, int sizeY, float scale);
   virtual ivec2 getScreenSize() const;
   virtual float getScreenScale() const;
 
   virtual void render();
+  virtual void clearContext(const Color &color) const;
    
   virtual Resource* getResource(const XMLTag &tag);
   virtual void updateResources();

@@ -23,7 +23,6 @@ public:
   virtual bool touchesBegin(const Touches &touches);
   virtual bool touchesEnd(const Touches &touches);
   virtual bool touchesMove(const Touches &touches);
-  virtual void setTouchDeligate(TouchDeligate *deligate);
 
   virtual DEV_TYPE getDeviceType() const;
   virtual HostDisplay *getDisplay() const;
@@ -43,8 +42,6 @@ private:
   HostDisplay *_display; /**< HostDisplay pointer */
   HostAudio *_audio; /**< HostAudio pointer */
   HostFileSystem *_fileSys; /**< HostFileSystem pointer */
-
-  TouchDeligate *_touchDeligate;
   
   static IOSHost *Instance; /**< IOSHost singleton instance */
 };

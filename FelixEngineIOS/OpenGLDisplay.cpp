@@ -38,6 +38,18 @@ OpenGLDisplay::~OpenGLDisplay() {
   OpenGLMesh::ClearMeshes();
 }
 
+bool OpenGLDisplay::touchesBegin(const Touches &touches) {
+  return View::touchesBegin(touches);
+}
+
+bool OpenGLDisplay::touchesEnd(const Touches &touches) {
+  return View::touchesEnd(touches);
+}
+
+bool OpenGLDisplay::touchesMove(const Touches &touches) {
+  return View::touchesMove(touches);
+}
+
 void OpenGLDisplay::resize(int sizeX, int sizeY, float scale) {
   _screenSize.x = sizeX;
   _screenSize.y = sizeY;
@@ -65,6 +77,10 @@ float OpenGLDisplay::getScreenScale() const {
 void OpenGLDisplay::render() {
   _finalFbo->updateFinal();
   draw();
+}
+
+void OpenGLDisplay::clearContext(const Color &color) const {
+  OpenGLFrameBuff::ClearCurrentFBO(color);
 }
 
 /**

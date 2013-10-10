@@ -16,7 +16,7 @@ EntityId* EntityId::IDs;
 
 
 Entity::Entity(XMLTag *tag): _tag(tag), _parrent(0), _loaded(0) {
-   applyTag();
+  applyTag();
 }
 
 Entity::~Entity() {
@@ -25,38 +25,25 @@ Entity::~Entity() {
 }
 
 void Entity::applyTag() {
-   if (_tag) {
-      // set the transform
-      if (_tag->hasSubTag(TRANSFORM_TAG))
-         _transform.applyTag(*_tag->getSubTag(TRANSFORM_TAG));
-      else
-         _transform.applyTag(*_tag);
-      
-      // set the name and update the entity map
-      if (_tag->hasAttribute("name")) {
-         string name = _tag->getAttribute("name");
-         
-         // reset or add entity to entity map
-         if (_name != "" && _name != name)
-            EntityMap.erase(_name);
-         _name = name;
-         if (_name != "")
-            EntityMap[_name] = this;
-      }
-      else {
-         if (_name != "")
-            EntityMap.erase(_name);
-         _name = "";
-      }
-   }
+  if (_tag) {
+    // set the transform
+    if (_tag->hasSubTag(TRANSFORM_TAG))
+      _transform.applyTag(*_tag->getSubTag(TRANSFORM_TAG));
+    else
+      _transform.applyTag(*_tag);
+
+    // set the name and update the entity map
+    if (_tag->hasAttribute(ATT_NAME))
+      setName(_tag->getAttribute(ATT_NAME));
+  }
 }
 
 void Entity::createChildren(XMLTag *tag) {
-   for (XMLTag::iterator itr = tag->begin(); itr != tag->end(); ++itr) {
-      Entity *child = EntityId::CreateEntity(*itr);
-      if (child)
-         addChild(child);
-   }
+  for (XMLTag::iterator itr = tag->begin(); itr != tag->end(); ++itr) {
+    Entity *child = EntityId::CreateEntity(*itr);
+    if (child)
+      addChild(child);
+  }
 }
 
 void Entity::setParrent(Entity *parrent) {
@@ -115,29 +102,29 @@ const View* Entity::getParrentView() const {
 
 
 Entity* Entity::GetEntity(const string &name) {
-   map<string, Entity*>::iterator itr;
-   itr = EntityMap.find(name);
-   if (itr != EntityMap.end())
-      return itr->second;
-   
-   cerr << "could not find entity with name: " << name << endl;
-   return NULL;
+  map<string, Entity*>::iterator itr;
+  itr = EntityMap.find(name);
+  if (itr != EntityMap.end())
+    return itr->second;
+
+  cerr << "could not find entity with name: " << name << endl;
+  return NULL;
 }
 
 Entity* EntityId::CreateEntity(XMLTag *tag) {
-   EntityId *curId = IDs;
-   
-   while (curId) {
-      if (curId->_idStr == tag->getElement())
-         return curId->create(tag);
-      curId = curId->_next;
-   }
-   
-   cerr << "could not find entity type: " << tag->getElement() << endl;
-   return NULL;
+  EntityId *curId = IDs;
+
+  while (curId) {
+    if (curId->_idStr == tag->getElement())
+      return curId->create(tag);
+    curId = curId->_next;
+  }
+
+  cerr << "could not find entity type: " << tag->getElement() << endl;
+  return NULL;
 }
 
 EntityId::EntityId(const string &idStr): _idStr(idStr) {
-   _next = IDs;
-   IDs = this;
+  _next = IDs;
+  IDs = this;
 }

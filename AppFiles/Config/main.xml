@@ -8,8 +8,8 @@
   </Resources>
   <View name="MainView" pass="main">
     <Pipeline name="MainPipeline">
-      <clear>0, 0, 0, 1</clear>
-      <pass>MainView</pass>
+      <ClearContext>0, 0, 0, 1</ClearContext>
+      <DrawPass>MainView</DrawPass>
     </Pipeline>
     <Object3d name="plane" pass="main">
       <Transform>

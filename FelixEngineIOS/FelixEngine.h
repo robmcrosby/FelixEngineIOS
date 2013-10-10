@@ -9,7 +9,7 @@
 #ifndef __FelixEngineIOS__FelixEngine__
 #define __FelixEngineIOS__FelixEngine__
 
-#include "UIElement.h"
+#include "UIObject.h"
 #include "Resources.h"
 
 /**
@@ -24,7 +24,7 @@ enum DEV_TYPE {
 /**
  * Interface for the Host display context
  */
-struct HostDisplay {
+struct HostDisplay: public TouchDeligate {
   virtual ~HostDisplay() {}
 
   virtual void resize(int sizeX, int sizeY, float scale) = 0;
@@ -32,6 +32,7 @@ struct HostDisplay {
   virtual float getScreenScale() const = 0;
 
   virtual void render() = 0;
+  virtual void clearContext(const Color &color) const = 0;
 
   virtual Resource* getResource(const XMLTag &tag) = 0;
   virtual void updateResources() = 0;
@@ -73,7 +74,7 @@ struct HostFileSystem {
 /**
  * Base class that represents the host system.
  */
-struct Host: UIElement {
+struct Host: public TouchDeligate {
   virtual ~Host() {}
 
   virtual void lowMemory() = 0;

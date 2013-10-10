@@ -38,7 +38,7 @@ ViewEnviroment::~ViewEnviroment() {
 /**
  *
  */
-View::View(XMLTag *tag): Drawable(tag), _viewFbo(0) {
+View::View(XMLTag *tag): UIObject(tag), _viewFbo(0) {
   if (_tag)
     createChildren(_tag);
   clearPasses();
@@ -50,22 +50,6 @@ View::View(XMLTag *tag): Drawable(tag), _viewFbo(0) {
 View::~View() {
   
 }
-
-/**
- *
- *//*
-void View::notify(const Event &event) {
-  if (event == EVENT_RENDER) {
-    View *view = getParrentView();
-    if (view)
-      view->addDrawable(this);
-    
-    emptyPasses();
-    notifyListeners(event);
-  }
-  else
-    Drawable::notify(event);
-}*/
 
 /**
  * Adds a Drawable to a pass.
@@ -84,50 +68,7 @@ void View::removeDrawable(const Drawable *drawable) {
   setChanged();
 }
 
-/**
- *
- */
-void View::addUIElement(UIElement *element) {
 
-}
-
-/**
- *
- */
-void View::updateUIElement(UIElement *element) {
-
-}
-
-/**
- *
- */
-void View::removeUIElement(UIElement *element) {
-
-}
-
-/**
- *
- */
-bool View::touchesBegin(const Touches &touches) {
-  cout << "Touches Begin" << endl;
-  return true;
-}
-
-/**
- *
- */
-bool View::touchesEnd(const Touches &touches) {
-  cout << "Touches End" << endl;
-  return true;
-}
-
-/**
- *
- */
-bool View::touchesMove(const Touches &touches) {
-  cout << "Touches Move" << endl;
-  return true;
-}
 
 /**
  *
@@ -139,7 +80,7 @@ View* View::getView() {
 /**
  *
  */
-HostDisplay* View::getDisplay() {
+HostDisplay* View::getDisplay() const {
   Host *host = Host::GetHost();
   return host ? host->getDisplay() : NULL;
 }

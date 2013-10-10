@@ -11,6 +11,7 @@
 
 using namespace std;
 
+const FrameBuff* OpenGLFrameBuff::CurrentFBO = NULL;
 map<string, OpenGLFrameBuff*> OpenGLFrameBuff::FrameBuffs;
 
 
@@ -67,6 +68,11 @@ void OpenGLFrameBuff::SetData(const ResourceData *data) {
   const FrameBuffData *fData = dynamic_cast<const FrameBuffData*>(data);
   if (fData)
     GetFrameBuff(fData->targetName)->setToData(*fData);
+}
+
+void OpenGLFrameBuff::ClearCurrentFBO(Color color) {
+  if (CurrentFBO != NULL)
+    CurrentFBO->clear(color);
 }
 
 void OpenGLFrameBuff::load() {
@@ -152,10 +158,16 @@ void OpenGLFrameBuff::setDrawType(DRAW_TYPE type) const {
 }
 
 void OpenGLFrameBuff::updateFinal() {
+  // Get the fbo id, for some reason this is not zero in IOS.
   GLint tmp;
   glGetIntegerv(GL_FRAMEBUFFER_BINDING, &tmp);
   _fboId = tmp;
+
+  // Clear to black.
   clear();
+
+  // Set the CurrentFBO
+  CurrentFBO = this;
 }
 
 void OpenGLFrameBuff::loadFinal() {

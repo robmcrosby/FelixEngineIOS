@@ -9,138 +9,179 @@
 #include "Pipeline.h"
 #include "FelixEngine.h"
 #include "Resources.h"
+#include "View.h"
 
 using namespace std;
+
+
+// ######################################################################
+//                            PipeLine
+// ######################################################################
+
 DEFINE_ENTITY_ID(Pipeline)
 
-
-Pipeline::Pipeline(): _display(0) {
-   _pipeline.push_back(new ClearContext());
-   //_pipeline.push_back(new DrawPass(MAIN_PASS));
-   //_pipeline.push_back(new DrawPass(SCREEN_PASS));
+Pipeline::Pipeline() {
+  addPipeItem(new DrawPass(MAIN_PASS));
+  addPipeItem(new DrawPass(SCREEN_PASS));
 }
 
-Pipeline::Pipeline(XMLTag *tag): Entity(tag), _display(0) {
-   applyTag();
+Pipeline::Pipeline(XMLTag *tag) {
+  applyTag(*tag);
+  if (tag->hasAttribute(ATT_NAME))
+    setName(tag->getAttribute(ATT_NAME));
 }
 
 Pipeline::~Pipeline() {
-   list<PipeItem*>::iterator itr;
-   for (itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
-      delete *itr;
+  clearPipeLine();
 }
 
-void Pipeline::load(HostDisplay *display) {
-   list<PipeItem*>::iterator itr;
-   
-   _display = display;
-   //_display->addListener(this);
-   for (itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
-      (*itr)->load(_display);
+void Pipeline::run(const View &view) const {
+  list<PipeItem*>::const_iterator itr;
+  for (itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
+    (*itr)->run(view);
 }
 
-void Pipeline::unload() {
-   for (list<PipeItem*>::iterator itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
-      (*itr)->unload();
-   //_display->removeListener(this);
-   _display = NULL;
+void Pipeline::addPipeItem(PipeItem *item) {
+  if (item)
+    _pipeline.push_back(item);
 }
 
-void Pipeline::exec() {
-   list<PipeItem*>::iterator itr;
-   for (itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
-      (*itr)->exec();
+void Pipeline::clearPipeLine() {
+  list<PipeItem*>::iterator itr;
+  for (itr = _pipeline.begin(); itr != _pipeline.end(); ++itr)
+    delete *itr;
+  _pipeline.clear();
 }
 
-void Pipeline::applyTag() {
-   if (_tag) {
-      XMLTag::iterator itr;
-      for (itr = _tag->begin(); itr != _tag->end(); ++itr) {
-         XMLTag &subTag = **itr;
-         
-         if (subTag == "clear")
-            _pipeline.push_back(new ClearContext(vec4::ParseFloat(subTag.getContents())));
-         else if (subTag == "pass")
-            _pipeline.push_back(new DrawPass(subTag.getContents()));
-         else if (subTag == "frame")
-            _pipeline.push_back(new UseFBO(subTag.getContents()));
-         else if (subTag == "full")
-            _pipeline.push_back(new DrawFull(subTag));
-      }
-   }
+
+void Pipeline::applyTag(const XMLTag &tag) {
+  XMLTag::const_iterator itr;
+  for (itr = tag.begin(); itr != tag.end(); ++itr) {
+    if (**itr == CLEAR_CONTEXT_TAG)
+      addPipeItem(new ClearContext(**itr));
+    else if (**itr == DRAW_PASS_TAG)
+      addPipeItem(new DrawPass(**itr));
+    else if (**itr == USE_FBO_TAG)
+      addPipeItem(new UseFBO(**itr));
+    else if (**itr == DRAW_IMAGE_TAG)
+      addPipeItem(new DrawImage(**itr));
+  }
 }
 
 
 
+// ######################################################################
+//                         ClearContext
+// ######################################################################
 
-void Pipeline::ClearContext::exec() {
-   //if (_display)
-   //   _display->clearContext(clearColor);
+ClearContext::ClearContext(const XMLTag &tag): PipeItem(CLEAR_CONTEXT_TAG) {
+  setClearColor(tag.getContents());
 }
 
-void Pipeline::DrawPass::exec() {
-   //if (_display)
-   //   _display->drawPass(pass);
+ClearContext::ClearContext(const Color &color): PipeItem(CLEAR_CONTEXT_TAG) {
+  setClearColor(color);
 }
 
-void Pipeline::UseFBO::load(HostDisplay *display) {
-   PipeItem::load(display);
-   fbo = _display->getFrameBuff(fboName);
+void ClearContext::run(const View &view) const {
+  view.getDisplay()->clearContext(clearColor);
 }
 
-void Pipeline::UseFBO::unload() {
-   PipeItem::unload();
-   fbo = NULL;
+void ClearContext::setClearColor(const Color &color) {
+  clearColor = color;
+  itemTag.setContents(vec4::ToString(clearColor));
 }
 
-void Pipeline::UseFBO::exec() {
-   if (fbo)
-      fbo->use();
+void ClearContext::setClearColor(const string &colorStr) {
+  setClearColor(vec4::ParseFloat(colorStr));
 }
 
-Pipeline::DrawFull::DrawFull(const XMLTag &tag): shader(0), tag(tag) {
-   
+
+// ######################################################################
+//                            DrawPass
+// ######################################################################
+
+DrawPass::DrawPass(const XMLTag &tag): PipeItem(DRAW_PASS_TAG) {
+  setPass(tag.getContents());
 }
 
-void Pipeline::DrawFull::load(HostDisplay *display) {
-   XMLTag::iterator itr;
-   
-   PipeItem::load(display);
-
-   for (itr = tag.begin(); itr != tag.end(); ++itr) {
-      const XMLTag &subTag = **itr;
-      
-      if (subTag == "Texture" && subTag.hasAttribute("name"))
-         texList.push_back(_display->getTexture(subTag.getAttribute("name")));
-      // add uniform tags
-   }
-   
-   plane = _display->getMesh("plane");
-   shader = _display->getShader(tag.getAttribute("shader"));
+DrawPass::DrawPass(const std::string &pass): PipeItem(DRAW_PASS_TAG) {
+  setPass(pass);
 }
 
-void Pipeline::DrawFull::unload() {
-   PipeItem::unload();
+void DrawPass::run(const View &view) const {
+  view.drawPass(itemTag.getContents());
 }
 
-void Pipeline::DrawFull::exec() {
-   list<const Texture*>::iterator tex;
-   int i = 0;
-   
-   // set the display to blend
-   //_display->setDrawType(DRAW_BLEND);
-   
-   // set the shader
-   shader->use();
-   shader->setUniforms(&uniforms);
-   
-   // set the plane
-   plane->use();
-   
-   // set the textures to the plane
-   for (tex = texList.begin(); tex != texList.end(); ++tex)
-      (*tex)->use(i++);
-   
-   // draw the plane
-   plane->draw();
+void DrawPass::setPass(const std::string &pass) {
+  itemTag.setContents(pass);
 }
+
+
+// ######################################################################
+//                               UseFBO
+// ######################################################################
+
+UseFBO::UseFBO(const XMLTag &tag): PipeItem(USE_FBO_TAG) {
+  setFBO(tag.getContents());
+}
+
+UseFBO::UseFBO(const std::string &fbo): PipeItem(USE_FBO_TAG) {
+  setFBO(fbo);
+}
+
+void UseFBO::run(const View &view) const {
+  view.getDisplay()->getFrameBuff(itemTag.getContents())->use();
+}
+
+void UseFBO::setFBO(const std::string &fbo) {
+  itemTag.setContents(fbo);
+}
+
+
+// ######################################################################
+//                            DrawImage
+// ######################################################################
+
+DrawImage::DrawImage(const XMLTag &tag): PipeItem(DRAW_IMAGE_TAG) {
+  const XMLTag *subTag;
+
+  // Get the shader name
+  if ((subTag = tag.getSubTag(SHADER_TAG)))
+    setShader(subTag->getContents());
+  else
+    setShader(DEF_PIPELINE_SHADER);
+
+  // Get the textures
+  if ((subTag = tag.getSubTag(TEXTURES_TAG))) {
+    XMLTag::const_iterator itr;
+    for (itr = subTag->begin(); itr != subTag->end(); ++itr)
+      addTexture((*itr)->getContents());
+  }
+  else if ((subTag = tag.getSubTag(TEXTURE_TAG)))
+    addTexture(subTag->getContents());
+}
+
+DrawImage::DrawImage(const string &texture, const string &shader): PipeItem(DRAW_IMAGE_TAG) {
+  setShader(shader);
+  addTexture(texture);
+}
+
+// TODO: when view has const getMesh and getShader methods.
+void DrawImage::run(const View &view) const {
+
+}
+
+void DrawImage::setShader(const std::string &shader) {
+  itemTag.getSubTag(SHADER_TAG)->setContents(shader);
+}
+
+void DrawImage::addTexture(const std::string &texture) {
+  XMLTag *textures = itemTag.getSubTag(TEXTURES_TAG);
+  textures->addSubTag(new XMLTag(TEXTURE_TAG, texture));
+}
+
+void DrawImage::clearTextures() {
+  itemTag.getSubTag(TEXTURES_TAG)->clearSubTags();
+}
+
+

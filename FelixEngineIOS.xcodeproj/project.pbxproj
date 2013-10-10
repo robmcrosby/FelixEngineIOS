@@ -42,6 +42,7 @@
 		379DF9D317DC2B67004CE079 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 379DF9D117DC2B67004CE079 /* View.cpp */; };
 		37A9D4C817780FD100CA9802 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A9D4C617780FD100CA9802 /* Camera.cpp */; };
 		37A9D4CB17780FE500CA9802 /* Object3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A9D4C917780FE400CA9802 /* Object3d.cpp */; };
+		37E697301801103C00EBB06F /* UIObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37E6972E1801103C00EBB06F /* UIObject.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -113,6 +114,8 @@
 		37A9D4C717780FD100CA9802 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		37A9D4C917780FE400CA9802 /* Object3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object3d.cpp; sourceTree = "<group>"; };
 		37A9D4CA17780FE500CA9802 /* Object3d.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Object3d.h; sourceTree = "<group>"; };
+		37E6972E1801103C00EBB06F /* UIObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UIObject.cpp; sourceTree = "<group>"; };
+		37E6972F1801103C00EBB06F /* UIObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -318,6 +321,8 @@
 				37376B0A17779677008CFD8A /* Entity.cpp */,
 				376CEE7317E2B30100FF62BF /* Drawable.h */,
 				376CEE7217E2B30100FF62BF /* Drawable.cpp */,
+				37E6972F1801103C00EBB06F /* UIObject.h */,
+				37E6972E1801103C00EBB06F /* UIObject.cpp */,
 				379DF9D217DC2B67004CE079 /* View.h */,
 				379DF9D117DC2B67004CE079 /* View.cpp */,
 				3792DF671773D63900E1A410 /* Resources.h */,
@@ -420,6 +425,7 @@
 				37376B0617767AB6008CFD8A /* ObjLoader.cpp in Sources */,
 				37376B0B17779677008CFD8A /* Entity.cpp in Sources */,
 				37A9D4C817780FD100CA9802 /* Camera.cpp in Sources */,
+				37E697301801103C00EBB06F /* UIObject.cpp in Sources */,
 				37A9D4CB17780FE500CA9802 /* Object3d.cpp in Sources */,
 				37326A8B1783E53C00DF31F1 /* OpenGLFrameBuff.cpp in Sources */,
 				379DF9D317DC2B67004CE079 /* View.cpp in Sources */,

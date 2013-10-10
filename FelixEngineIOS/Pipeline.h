@@ -9,18 +9,84 @@
 #ifndef __FelixEngineIOS__Pipeline__
 #define __FelixEngineIOS__Pipeline__
 
+
 #include "Entity.h"
 #include "Color.h"
 
-class HostDisplay;
-class FrameBuff;
-class Shader;
-class Mesh;
-class Texture;
 
-/**
- * Defines a render pipeline with a list of PipeItems.
- */
+#define CLEAR_CONTEXT_TAG "ClearContext"
+#define DRAW_PASS_TAG     "DrawPass"
+#define USE_FBO_TAG       "UseFBO"
+#define DRAW_IMAGE_TAG    "DrawImage"
+
+#define DEF_PIPELINE "DefaultPipeline"
+#define DEF_PIPELINE_SHADER "PlaneTexture"
+
+
+class PipeItem {
+public:
+  PipeItem(const std::string &type): itemTag(type) {}
+  virtual ~PipeItem() {}
+  virtual void run(const View &view) const = 0;
+
+protected:
+  XMLTag itemTag;
+};
+
+class ClearContext: public PipeItem {
+public:
+  ClearContext(const XMLTag &tag);
+  ClearContext(const Color &color = Color());
+  virtual void run(const View &view) const;
+  void setClearColor(const Color &color);
+  void setClearColor(const std::string &colorStr);
+private:
+  Color clearColor;
+};
+
+struct DrawPass: public PipeItem {
+  DrawPass(const XMLTag &tag);
+  DrawPass(const std::string &pass);
+  virtual void run(const View &view) const;
+  void setPass(const std::string &pass);
+};
+
+struct UseFBO: public PipeItem {
+  UseFBO(const XMLTag &tag);
+  UseFBO(const std::string &fbo);
+  virtual void run(const View &view) const;
+  void setFBO(const std::string &fbo);
+};
+
+struct DrawImage: public PipeItem {
+  DrawImage(const XMLTag &tag);
+  DrawImage(const std::string &texture, const std::string &shader);
+  virtual void run(const View &view) const;
+  void setShader(const std::string &shader);
+  void addTexture(const std::string &texture);
+  void clearTextures();
+};
+
+
+
+class Pipeline: public Entity {
+public:
+  Pipeline();
+  Pipeline(XMLTag *tag);
+  virtual ~Pipeline();
+
+  void run(const View &view) const;
+  void addPipeItem(PipeItem *item);
+  void clearPipeLine();
+
+private:
+  inline void applyTag(const XMLTag &tag);
+
+  std::list<PipeItem*> _pipeline;
+  DECLARE_ENTITY_ID(Pipeline)
+};
+
+/*
 class Pipeline: public Entity {
 public:
    Pipeline();
@@ -30,10 +96,7 @@ public:
    virtual void load(HostDisplay *display);
    virtual void unload();
    virtual void exec();
-   
-   /**
-    Base class for all Pipeline items
-    */
+
    class PipeItem {
    public:
       PipeItem(): _display(0) {}
@@ -46,10 +109,7 @@ public:
    protected:
       HostDisplay *_display;
    };
-   
-   /**
-    Item for clearing a context with a color
-    */
+
    struct ClearContext: public PipeItem {
       ClearContext(const Color &c = Color()): clearColor(c) {}
       virtual void exec();
@@ -57,9 +117,7 @@ public:
       Color clearColor;
    };
    
-   /**
-    Item for drawing a specified pass
-    */
+
    struct DrawPass: public PipeItem {
       DrawPass(const std::string &p): pass(p) {}
       virtual void exec();
@@ -67,9 +125,7 @@ public:
       std::string pass;
    };
    
-   /**
-    Item for setting the frame buffer
-    */
+
    struct UseFBO: public PipeItem {
       UseFBO(const std::string &n): fboName(n), fbo(0) {}
       virtual void load(HostDisplay *display);
@@ -80,9 +136,6 @@ public:
       const FrameBuff *fbo;
    };
    
-   /**
-    Item for drawing images full screen
-    */
    struct DrawFull: public PipeItem {
       DrawFull(const XMLTag &tag);
       virtual void load(HostDisplay *display);
@@ -100,10 +153,9 @@ private:
    inline void applyTag();
    
    std::list<PipeItem*> _pipeline;
-   HostDisplay *_display;
    
    DECLARE_ENTITY_ID(Pipeline)
-};
+};*/
 
 
 #endif /* defined(__FelixEngineIOS__Pipeline__) */

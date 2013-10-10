@@ -14,7 +14,7 @@
 
 /**
  * Holds move information for touches on the screen.
- */
+ *//*
 struct Touch {
   Touch(float curX, float curY, float lastX, float lastY): cur(curX, curY), last(lastX, lastY) {}
 
@@ -35,6 +35,6 @@ struct UIElement: public TouchDeligate {
   virtual ~UIElement() {}
 
   virtual void setTouchDeligate(TouchDeligate *deligate) = 0;
-};
+};*/
 
 #endif
