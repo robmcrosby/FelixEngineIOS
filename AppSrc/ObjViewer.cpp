@@ -12,8 +12,8 @@ using namespace std;
 
 DEFINE_ENTITY_ID(ObjViewer)
 
-ObjViewer::ObjViewer(XMLTag *tag): Entity(tag) {
-   createChildren(_tag);
+ObjViewer::ObjViewer(const XMLTag &tag): Entity(tag) {
+   createChildren(tag);
    
    plane = Entity::GetEntity("plane");
    //bunny = Entity::GetEntity("bunny");

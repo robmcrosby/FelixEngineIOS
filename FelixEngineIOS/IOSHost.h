@@ -12,6 +12,8 @@
 #include "FelixEngine.h"
 #include "Entity.h"
 
+#define IOS_HOST_TAG "IOSHost"
+
 class IOSHost: public Entity, public Host {
 public:
   IOSHost(DEV_TYPE dev, ivec2 size, float scale);

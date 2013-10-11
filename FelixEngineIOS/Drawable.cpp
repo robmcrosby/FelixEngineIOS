@@ -12,7 +12,7 @@
 
 using namespace std;
 
-Drawable::Drawable(XMLTag *tag): Entity(tag),
+Drawable::Drawable(const XMLTag &tag): Entity(tag),
 _passName(MAIN_PASS), _layer(0), _visible(true), _drawType(DRAW_DEPTH), _drawId(getNewId()), _curView(0) {
   
 }
@@ -110,30 +110,15 @@ void Drawable::draw() const {
 /**
  * Gets the pass and layer from the tag.
  */
-void Drawable::applyTag() {
-  if (_tag) {
-    // set pass
-    if (_tag->hasAttribute("pass"))
-      _passName = _tag->getAttribute("pass");
-    
-    // set the layer
-    if (_tag->hasAttribute("layer"))
-      sscanf(_tag->getAttribute("layer").c_str(), " %i", &_layer);
-  }
-}
+void Drawable::applyTag(const XMLTag &tag) {
+  // set pass
+  if (tag.hasAttribute("pass"))
+    _passName = tag.getAttribute("pass");
 
-/**
- * Adds self to the pass.
- *//*
-void Drawable::notify(const Event &event) {
-  if (event == EVENT_RENDER && isVisible()) {
-    View *view = getView();
-    if (view)
-      view->addDrawable(this);
-  }
-  
-  Entity::notify(event);
-}*/
+  // set the layer
+  if (tag.hasAttribute("layer"))
+    sscanf(tag.getAttribute("layer").c_str(), " %i", &_layer);
+}
 
 int Drawable::getNewId() {
   static int Count = 0;

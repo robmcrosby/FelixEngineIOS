@@ -14,8 +14,8 @@ using namespace std;
 DEFINE_ENTITY_ID(Object3d)
 
 
-Object3d::Object3d(XMLTag *tag): Drawable(tag) {
-   applyTag();
+Object3d::Object3d(const XMLTag &tag): Drawable(tag) {
+   applyTag(tag);
    _uniforms.addUniform(VAR_TEX_MTX, VAL_MAT3X3, &_textureMtx);
    cout << "Created Object3d" << endl;
 }
@@ -24,28 +24,28 @@ Object3d::~Object3d() {
    
 }
 
-void Object3d::applyTag() {
+void Object3d::applyTag(const XMLTag &tag) {
   Host *host = Host::GetHost();
   HostDisplay *display = host ? host->getDisplay() : NULL;
   
-  if (_tag && display) {
+  if (display) {
     const XMLTag *subtag;
     
     // add the shader
-    subtag = _tag->getSubTag(SHADER_TAG);
+    subtag = tag.getSubTag(SHADER_TAG);
     _shader = subtag ? display->getShader(subtag->getAttribute("name")) : NULL;
     
     // add the mesh
-    subtag = _tag->getSubTag(MESH_TAG);
+    subtag = tag.getSubTag(MESH_TAG);
     _mesh = subtag ? display->getMesh(subtag->getAttribute("name")) : NULL;
     
     // add a texture
-    subtag = _tag->getSubTag(TEXTURE_TAG);
+    subtag = tag.getSubTag(TEXTURE_TAG);
     if (subtag)
        _textures.push_back(display->getTexture(subtag->getAttribute("name")));
     
     // add textures
-    subtag = _tag->getSubTag(TEXTURES_TAG);
+    subtag = tag.getSubTag(TEXTURES_TAG);
     if (subtag) {
       XMLTag::const_iterator itr;
       for (itr = subtag->begin(); itr != subtag->end(); ++itr) {

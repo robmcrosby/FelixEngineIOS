@@ -15,7 +15,7 @@
 
 class Object3d: public Drawable {
 public:
-   Object3d(XMLTag *tag);
+   Object3d(const XMLTag &tag);
    virtual ~Object3d();
    
    virtual void draw() const;
@@ -29,7 +29,7 @@ protected:
    std::vector<const Texture*> _textures;
    
 private:
-   inline void applyTag();
+   inline void applyTag(const XMLTag &tag);
    
    DECLARE_ENTITY_ID(Object3d)
 };

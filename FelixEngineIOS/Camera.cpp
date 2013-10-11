@@ -8,6 +8,7 @@
 
 #include "Camera.h"
 
+/*
 using namespace std;
 
 DEFINE_ENTITY_ID(Camera)
@@ -27,7 +28,6 @@ Camera::~Camera() {
    
 }
 
-/*
 void Camera::notify(const Event &event) {
    if (event == EVENT_RESIZE)
       updateProjMtx();
@@ -43,10 +43,9 @@ void Camera::notify(const Event &event) {
    }
    
    Entity::notify(event);
-}*/
+}
 
 void Camera::updateProjMtx() {
-  /*
    vec2 screen = _abs ? vec2(1.0f) : vec2(_host->getScreenSize());
    
    if (screen.x < screen.y) {
@@ -56,7 +55,7 @@ void Camera::updateProjMtx() {
    else {
       float h = 4.0f * screen.y / screen.x;
       _projMtx = mat4::Frustum(-_size.x, _size.x, -h/_size.y, h/_size.y, _near, _far);
-   }*/
+   }
 }
 
 void Camera::updateViewMtx() {
@@ -105,4 +104,4 @@ void Camera::applyTag() {
       // get flags
       _abs = _tag->hasAttribute("flags");
    }
-}
+}*/

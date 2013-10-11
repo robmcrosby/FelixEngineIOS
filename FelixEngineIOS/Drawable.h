@@ -28,7 +28,7 @@ class HostDisplay;
  */
 class Drawable: public Entity {
 public:
-  Drawable(XMLTag *tag = NULL);
+  Drawable(const XMLTag &tag);
   virtual ~Drawable();
   
   inline bool isVisible() const;
@@ -53,7 +53,7 @@ protected:
   HostDisplay *_hostDisplay;
   
 private:
-  inline void applyTag();
+  inline void applyTag(const XMLTag &tag);
   inline int  getNewId();
   
   bool        _visible;

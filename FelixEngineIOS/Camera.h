@@ -8,7 +8,7 @@
 
 #ifndef __FelixEngineIOS__Camera__
 #define __FelixEngineIOS__Camera__
-
+/*
 #include "FelixEngine.h"
 #include "Matrix.h"
 
@@ -49,6 +49,6 @@ private:
    inline void applyTag();
    
    DECLARE_ENTITY_ID(Camera)
-};
+};*/
 
 #endif /* defined(__FelixEngineIOS__Camera__) */

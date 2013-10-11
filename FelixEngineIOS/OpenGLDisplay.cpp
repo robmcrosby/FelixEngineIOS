@@ -17,7 +17,7 @@
 
 using namespace std;
 
-OpenGLDisplay::OpenGLDisplay(ivec2 size, float scale):
+OpenGLDisplay::OpenGLDisplay(ivec2 size, float scale): View(XMLTag(GL_DISPLAY_TAG)),
 _screenSize(size), _screenScale(scale), _curDrawType(DRAW_DEPTH) {
 
   // set inital OpenGL settings

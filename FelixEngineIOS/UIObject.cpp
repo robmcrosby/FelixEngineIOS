@@ -15,7 +15,7 @@ DEFINE_ENTITY_ID(UIObject)
 /**
  *
  */
-UIObject::UIObject(XMLTag *tag): Drawable(tag), _uiSubObjects(0), _uiParrent(0), _touchDeligate(0) {
+UIObject::UIObject(const XMLTag &tag): Drawable(tag), _uiSubObjects(0), _uiParrent(0), _touchDeligate(0) {
 
 }
 

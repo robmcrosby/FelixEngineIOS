@@ -38,9 +38,8 @@ ViewEnviroment::~ViewEnviroment() {
 /**
  *
  */
-View::View(XMLTag *tag): UIObject(tag), _viewFbo(0) {
-  if (_tag)
-    createChildren(_tag);
+View::View(const XMLTag &tag): UIObject(tag), _viewFbo(0) {
+  createChildren(_tag);
   clearPasses();
 }
 

@@ -21,10 +21,10 @@ const FrameBuff* FrameBuff::ActiveFBO = NULL;
 DRAW_TYPE FrameBuff::ActiveDrawType = DRAW_DEPTH;
 
 
-Resources::Resources(XMLTag *tag): Entity(tag), _loaded(0) {
+Resources::Resources(const XMLTag &tag): Entity(tag), _loaded(0) {
    Host *host = Host::GetHost();
    
-   for (XMLTag::iterator itr = tag->begin(); itr != tag->end(); ++itr) {
+   for (XMLTag::const_iterator itr = tag.begin(); itr != tag.end(); ++itr) {
       Resource *resource = host->getResource(**itr);
       if (resource) {
          resource->retain();

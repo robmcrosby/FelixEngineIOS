@@ -20,19 +20,29 @@ using namespace std;
 
 DEFINE_ENTITY_ID(Pipeline)
 
-Pipeline::Pipeline() {
+map<string, Pipeline*> Pipeline::PipelineMap;
+
+Pipeline::Pipeline(): Entity(XMLTag(PIPELINE_TAG)) {
   addPipeItem(new DrawPass(MAIN_PASS));
   addPipeItem(new DrawPass(SCREEN_PASS));
+  setName(DEF_PIPELINE);
 }
 
-Pipeline::Pipeline(XMLTag *tag) {
-  applyTag(*tag);
-  if (tag->hasAttribute(ATT_NAME))
-    setName(tag->getAttribute(ATT_NAME));
+Pipeline::Pipeline(const XMLTag &tag): Entity(tag) {
+  applyTag(tag);
 }
 
 Pipeline::~Pipeline() {
   clearPipeLine();
+}
+
+void Pipeline::setName(const std::string &name) {
+  if (name != _name)
+    PipelineMap.erase(_name);
+  if (name != "")
+    PipelineMap[name] = this;
+
+  Entity::setName(name);
 }
 
 void Pipeline::run(const View &view) const {
@@ -53,9 +63,26 @@ void Pipeline::clearPipeLine() {
   _pipeline.clear();
 }
 
+Pipeline* Pipeline::GetPipeline(const string &name) {
+  map<string, Pipeline*>::iterator itr;
+  itr = PipelineMap.find(name);
+  if (itr != PipelineMap.end())
+    return itr->second;
+
+  cerr << "Could not find Pipeline with name: " << name << endl;
+  return NULL;
+}
+
+Pipeline* Pipeline::GetDefaultPipeline() {
+  static Pipeline defaultPipeline;
+  return &defaultPipeline;
+}
+
 
 void Pipeline::applyTag(const XMLTag &tag) {
   XMLTag::const_iterator itr;
+
+  // Create the pipe.
   for (itr = tag.begin(); itr != tag.end(); ++itr) {
     if (**itr == CLEAR_CONTEXT_TAG)
       addPipeItem(new ClearContext(**itr));
@@ -66,6 +93,10 @@ void Pipeline::applyTag(const XMLTag &tag) {
     else if (**itr == DRAW_IMAGE_TAG)
       addPipeItem(new DrawImage(**itr));
   }
+
+  // Set the name if avalible.
+  if (tag.hasAttribute(ATT_NAME))
+    setName(tag.getAttribute(ATT_NAME));
 }
 
 

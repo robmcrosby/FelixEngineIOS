@@ -48,7 +48,7 @@ IOSHost* IOSHost::CreateIOSHost(DEV_TYPE dev, int sizeX, int sizeY, float scale)
  * @param size ivec2 of the screen size.
  * @param scale float for the screen scale.
  */
-IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): _device(dev) {
+IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Entity(XMLTag(IOS_HOST_TAG)),  _device(dev) {
   Instance = this;
 
   // The Host Display is also the Root View and the Touch Deligate.
@@ -103,7 +103,7 @@ void IOSHost::createAppEntity() {
       exit(1);
    }
    
-   Entity *app = EntityId::CreateEntity(tag);
+   Entity *app = EntityId::CreateEntity(*tag);
    if (!app) {
       cerr << "Unable to create main app object" << endl;
       delete tag;

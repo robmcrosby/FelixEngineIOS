@@ -56,7 +56,7 @@ private:
  */
 class View: public UIObject {
 public:
-  View(XMLTag *tag = NULL);
+  View(const XMLTag &tag);
   virtual ~View();
 
   virtual View* getView();

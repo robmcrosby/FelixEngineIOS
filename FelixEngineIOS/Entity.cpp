@@ -15,8 +15,8 @@ map<string, Entity*> Entity::EntityMap;
 EntityId* EntityId::IDs;
 
 
-Entity::Entity(XMLTag *tag): _tag(tag), _parrent(0), _loaded(0) {
-  applyTag();
+Entity::Entity(const XMLTag &tag): _tag(tag), _parrent(0), _loaded(0) {
+  applyTag(tag);
 }
 
 Entity::~Entity() {
@@ -24,23 +24,21 @@ Entity::~Entity() {
   clearChildren();
 }
 
-void Entity::applyTag() {
-  if (_tag) {
-    // set the transform
-    if (_tag->hasSubTag(TRANSFORM_TAG))
-      _transform.applyTag(*_tag->getSubTag(TRANSFORM_TAG));
-    else
-      _transform.applyTag(*_tag);
+void Entity::applyTag(const XMLTag &tag) {
+  // set the transform
+  if (tag.hasSubTag(TRANSFORM_TAG))
+    _transform.applyTag(*tag.getSubTag(TRANSFORM_TAG));
+  else
+    _transform.applyTag(tag);
 
-    // set the name and update the entity map
-    if (_tag->hasAttribute(ATT_NAME))
-      setName(_tag->getAttribute(ATT_NAME));
-  }
+  // set the name and update the entity map
+  if (tag.hasAttribute(ATT_NAME))
+    setName(tag.getAttribute(ATT_NAME));
 }
 
-void Entity::createChildren(XMLTag *tag) {
-  for (XMLTag::iterator itr = tag->begin(); itr != tag->end(); ++itr) {
-    Entity *child = EntityId::CreateEntity(*itr);
+void Entity::createChildren(const XMLTag &tag) {
+  for (XMLTag::const_iterator itr = tag.begin(); itr != tag.end(); ++itr) {
+    Entity *child = EntityId::CreateEntity(**itr);
     if (child)
       addChild(child);
   }
@@ -92,6 +90,19 @@ View* Entity::getView() {
   return getParrentView();
 }
 
+void Entity::setName(const std::string &name) {
+  if (name == "") {
+    EntityMap.erase(_name);
+    _tag.removeAttribute(ATT_NAME);
+  }
+  else if (_name != name) {
+    EntityMap.erase(_name);
+    EntityMap[_name] = this;
+    _tag.setAttribute(ATT_NAME, _name);
+  }
+  _name = name;
+}
+
 View* Entity::getParrentView() {
   return _parrent ? _parrent->getView() : NULL;
 }
@@ -111,16 +122,16 @@ Entity* Entity::GetEntity(const string &name) {
   return NULL;
 }
 
-Entity* EntityId::CreateEntity(XMLTag *tag) {
+Entity* EntityId::CreateEntity(const XMLTag &tag) {
   EntityId *curId = IDs;
 
   while (curId) {
-    if (curId->_idStr == tag->getElement())
+    if (curId->_idStr == tag.getElement())
       return curId->create(tag);
     curId = curId->_next;
   }
 
-  cerr << "could not find entity type: " << tag->getElement() << endl;
+  cerr << "could not find entity type: " << tag.getElement() << endl;
   return NULL;
 }
 

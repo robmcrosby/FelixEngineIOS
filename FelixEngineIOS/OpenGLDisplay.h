@@ -13,6 +13,8 @@
 #include "FelixEngine.h"
 #include "View.h"
 
+#define GL_DISPLAY_TAG "OpenGLDisplay"
+
 class OpenGLFrameBuff;
 
 class OpenGLDisplay: public View, public HostDisplay {

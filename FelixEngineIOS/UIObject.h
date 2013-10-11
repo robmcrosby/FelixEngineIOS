@@ -58,7 +58,7 @@ private:
 
 class UIObject: public Drawable, public TouchDeligate {
 public:
-  UIObject(XMLTag *tag = NULL);
+  UIObject(const XMLTag &tag);
   virtual ~UIObject();
 
   virtual void draw() const;

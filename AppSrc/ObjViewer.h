@@ -14,7 +14,7 @@
 
 class ObjViewer: public Entity {
 public:
-   ObjViewer(XMLTag *tag);
+   ObjViewer(const XMLTag &tag);
    virtual ~ObjViewer();
    
    //virtual void notify(const Event &event);

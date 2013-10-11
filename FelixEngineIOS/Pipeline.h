@@ -13,7 +13,7 @@
 #include "Entity.h"
 #include "Color.h"
 
-
+#define PIPELINE_TAG      "Pipeline"
 #define CLEAR_CONTEXT_TAG "ClearContext"
 #define DRAW_PASS_TAG     "DrawPass"
 #define USE_FBO_TAG       "UseFBO"
@@ -71,91 +71,27 @@ struct DrawImage: public PipeItem {
 
 class Pipeline: public Entity {
 public:
-  Pipeline();
-  Pipeline(XMLTag *tag);
+  Pipeline(const XMLTag &tag);
   virtual ~Pipeline();
+
+  virtual void setName(const std::string &name);
 
   void run(const View &view) const;
   void addPipeItem(PipeItem *item);
   void clearPipeLine();
 
+  static Pipeline* GetPipeline(const std::string &name);
+  static Pipeline* GetDefaultPipeline();
+
 private:
+  Pipeline();
   inline void applyTag(const XMLTag &tag);
 
   std::list<PipeItem*> _pipeline;
+  static std::map<std::string, Pipeline*> PipelineMap;
+
   DECLARE_ENTITY_ID(Pipeline)
 };
-
-/*
-class Pipeline: public Entity {
-public:
-   Pipeline();
-   Pipeline(XMLTag *tag);
-   virtual ~Pipeline();
-   
-   virtual void load(HostDisplay *display);
-   virtual void unload();
-   virtual void exec();
-
-   class PipeItem {
-   public:
-      PipeItem(): _display(0) {}
-      virtual ~PipeItem() {}
-      
-      virtual void load(HostDisplay *display) {_display = display;}
-      virtual void unload() {_display = NULL;}
-      virtual void exec() {}
-      
-   protected:
-      HostDisplay *_display;
-   };
-
-   struct ClearContext: public PipeItem {
-      ClearContext(const Color &c = Color()): clearColor(c) {}
-      virtual void exec();
-      
-      Color clearColor;
-   };
-   
-
-   struct DrawPass: public PipeItem {
-      DrawPass(const std::string &p): pass(p) {}
-      virtual void exec();
-      
-      std::string pass;
-   };
-   
-
-   struct UseFBO: public PipeItem {
-      UseFBO(const std::string &n): fboName(n), fbo(0) {}
-      virtual void load(HostDisplay *display);
-      virtual void unload();
-      virtual void exec();
-      
-      std::string fboName;
-      const FrameBuff *fbo;
-   };
-   
-   struct DrawFull: public PipeItem {
-      DrawFull(const XMLTag &tag);
-      virtual void load(HostDisplay *display);
-      virtual void unload();
-      virtual void exec();
-      
-      const Mesh *plane;
-      const Shader *shader;
-      std::list<const Texture*> texList;
-      Uniforms uniforms;
-      XMLTag tag;
-   };
-   
-private:
-   inline void applyTag();
-   
-   std::list<PipeItem*> _pipeline;
-   
-   DECLARE_ENTITY_ID(Pipeline)
-};*/
 
 
 #endif /* defined(__FelixEngineIOS__Pipeline__) */

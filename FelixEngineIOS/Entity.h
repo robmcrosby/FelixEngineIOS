@@ -98,10 +98,11 @@ private:
  */
 class Entity {
 public:
-  Entity(XMLTag *tag = NULL);
+  Entity(const XMLTag &tag);
   virtual ~Entity();
   
-  virtual void createChildren(XMLTag *tag);
+  virtual void createChildren(const XMLTag &tag);
+  inline void clearChildren();
 
   virtual void setParrent(Entity *parrent);
   virtual void clearParrent();
@@ -111,19 +112,13 @@ public:
   virtual void load();
   virtual void unload();
   
-  inline void clearChildren() {
-    std::set<Entity*>::iterator itr;
-    for (itr = _children.begin(); itr != _children.end(); ++itr)
-      delete *itr;
-  }
-  
-  inline std::string getName() const {return _name;}
-  inline Transform* getTransform() {return &_transform;}
-  inline const Transform* getTransform() const {return &_transform;}
-  inline void setTransformParrent(const Transform *t) {_transform.setParrent(t);}
-  inline bool isLoaded() const {return _loaded;}
-  inline void addChild(Entity *child) {child->setParrent(this);}
-  inline void setName(const std::string &name);
+  inline std::string getName() const;
+  inline Transform* getTransform();
+  inline const Transform* getTransform() const;
+  inline void setTransformParrent(const Transform *t);
+  inline bool isLoaded() const;
+  inline void addChild(Entity *child);
+  virtual void setName(const std::string &name);
   
   static Entity* GetEntity(const std::string &name);
   
@@ -133,12 +128,12 @@ protected:
   
   std::string _name;
   Transform _transform;
-  XMLTag *_tag;
+  XMLTag _tag;
   bool _loaded;
   
 private:
-  inline void applyTag();
-  
+  inline void applyTag(const XMLTag &tag);
+
   std::set<Entity*> _children;
   Entity *_parrent;
   
@@ -146,17 +141,34 @@ private:
 };
 
 
-void Entity::setName(const std::string &name) {
-  if (name == "") {
-    EntityMap.erase(_name);
-    _tag->removeAttribute(ATT_NAME);
-  }
-  else if (_name != name) {
-    EntityMap.erase(_name);
-    EntityMap[_name] = this;
-    _tag->setAttribute(ATT_NAME, _name);
-  }
-  _name = name;
+std::string Entity::getName() const {
+  return _name;
+}
+
+Transform* Entity::getTransform() {
+  return &_transform;
+}
+
+const Transform* Entity::getTransform() const {
+  return &_transform;
+}
+
+void Entity::setTransformParrent(const Transform *t) {
+  _transform.setParrent(t);
+}
+
+bool Entity::isLoaded() const {
+  return _loaded;
+}
+
+void Entity::addChild(Entity *child) {
+  child->setParrent(this);
+}
+
+void Entity::clearChildren() {
+  std::set<Entity*>::iterator itr;
+  for (itr = _children.begin(); itr != _children.end(); ++itr)
+    delete *itr;
 }
 
 
@@ -165,12 +177,12 @@ void Entity::setName(const std::string &name) {
  */
 class EntityId {
 public:
-  static Entity* CreateEntity(XMLTag *tag);
+  static Entity* CreateEntity(const XMLTag &tag);
   
 protected:
   EntityId(const std::string &idStr);
   virtual ~EntityId() {}
-  virtual Entity* create(XMLTag *tag) = 0;
+  virtual Entity* create(const XMLTag &tag) = 0;
   
   std::string _idStr;
   EntityId *_next;
@@ -188,7 +200,7 @@ class T##Id: public EntityId {\
 public:\
 T##Id(): EntityId(#T) {}\
 virtual ~T##Id() {}\
-virtual Entity *create(XMLTag *tag);\
+virtual Entity *create(const XMLTag &tag);\
 };\
 static T##Id ID;
 
@@ -199,7 +211,7 @@ static T##Id ID;
  */
 #define DEFINE_ENTITY_ID(T) \
 T::T##Id T::ID;\
-Entity *T::T##Id::create(XMLTag *tag) {\
+Entity *T::T##Id::create(const XMLTag &tag) {\
 return new T(tag);\
 }
 
