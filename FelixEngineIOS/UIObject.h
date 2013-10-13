@@ -61,7 +61,10 @@ public:
   UIObject(const XMLTag &tag);
   virtual ~UIObject();
 
-  virtual void draw() const;
+  virtual void setParrent(Entity *parrent);
+
+  virtual void load();
+  virtual void unload();
 
   void addUIObject(UIObject *obj);
   void updateUIObject(UIObject *obj);
@@ -74,7 +77,10 @@ public:
   virtual void setTouchDeligate(TouchDeligate *deligate);
 
 protected:
-  vec2 _uiLocation; /**< Top left location of the object's rectangle */
+  inline void applyTag(const XMLTag &tag);
+  virtual void updateUI();
+
+  vec2 _uiOffset; /**< Center offset. */
   vec2 _uiSize; /**< Size of the object's rectangle */
 
   std::set<UIObject*> *_uiSubObjects;

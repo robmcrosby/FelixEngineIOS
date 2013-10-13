@@ -10,8 +10,16 @@
 #define __FelixEngineIOS__View__
 
 #include "UIObject.h"
+#include "Matrix.h"
+
+#define ATT_PIPELINE "pipeline"
+#define ATT_FBO "fbo"
+
+#define VIEW_NEAR -100
+#define VIEW_FAR  100
 
 class HostDisplay;
+class Pipeline;
 
 /**
  * Comparator for Drawables
@@ -62,24 +70,33 @@ public:
   virtual View* getView();
   virtual HostDisplay* getDisplay() const;
   virtual void draw() const;
+
+  virtual void load();
+
+  void setPipeline(Pipeline *pipeline);
+  void setPipeline(const std::string &name);
   
   void addDrawable(const Drawable *drawable);
   void updateDrawable(const Drawable *drawable, const std::string &prevPass);
   void removeDrawable(const Drawable *drawable);
   
   inline void drawPass(const std::string &passName) const;
-  
+
   inline void addPassUniform(const std::string &key, const Uniform &uniform, const std::string &pass);
   inline void removePassUniform(const std::string &key, const std::string &pass);
   inline void clearPassUniforms(const std::string &pass);
   inline void setChanged();
   
 protected:
-  FrameBuff *_viewFbo;
-  mat4 _projMtx;
-  mat4 _viewMtx;
+  virtual void updateUI();
+
+  std::string _viewFboName;
+  const FrameBuff *_viewFbo;
+  mat4 _mainProjMtx;
+  mat4 _viewProjMtx;
   
 private:
+  inline void applyTag(const XMLTag &tag);
   inline void emptyPasses();
   inline void clearPasses();
   
@@ -93,6 +110,7 @@ private:
   
   Passes _passes;
   bool _changed;
+  const Pipeline *_activePipeline;
   
   DECLARE_ENTITY_ID(View)
 };
@@ -156,6 +174,15 @@ void View::setChanged() {
     if (curView)
       curView->setChanged();
   }
+}
+
+/**
+ *
+ */
+const Pass* View::getPass(const std::string &pass) const {
+  if (_passes.find(pass) == _passes.end())
+    return NULL;
+  return &_passes.at(pass);
 }
 
 

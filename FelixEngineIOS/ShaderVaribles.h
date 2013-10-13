@@ -12,6 +12,10 @@
 #include <string>
 #include <map>
 
+#include "Vector.h"
+#include "Matrix.h"
+#include "Quaternion.h"
+
 #define VAR_PROJ_MTX "ProjMtx"
 #define VAR_VIEW_MTX "ViewMtx"
 #define VAR_LOCAL_MTX "LocalMtx"

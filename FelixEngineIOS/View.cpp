@@ -8,7 +8,7 @@
 
 #include "View.h"
 #include "FelixEngine.h"
-
+#include "Pipeline.h"
 
 using namespace std;
 
@@ -38,8 +38,10 @@ ViewEnviroment::~ViewEnviroment() {
 /**
  *
  */
-View::View(const XMLTag &tag): UIObject(tag), _viewFbo(0) {
-  createChildren(_tag);
+View::View(const XMLTag &tag): UIObject(tag),
+_viewFboName(FINAL_FBO), _viewFbo(0), _activePipeline(Pipeline::GetDefaultPipeline()) {
+  createChildren(tag);
+  applyTag(tag);
   clearPasses();
 }
 
@@ -67,8 +69,6 @@ void View::removeDrawable(const Drawable *drawable) {
   setChanged();
 }
 
-
-
 /**
  *
  */
@@ -92,7 +92,54 @@ void View::draw() const {
   ViewEnviroment parrentEnv;
   
   // run the view's pipeline.
-  drawPass(MAIN_PASS);
+  if (_activePipeline)
+    _activePipeline->run(*this);
+}
+
+/**
+ *
+ */
+void View::load() {
+  // Get the view's FBO
+  _viewFbo = Host::GetHost()->getDisplay()->getFrameBuff(_viewFboName);
+
+  UIObject::load();
+}
+
+/**
+ *
+ */
+void View::setPipeline(Pipeline *pipeline) {
+  _activePipeline = pipeline;
+}
+
+/**
+ *
+ */
+void View::setPipeline(const string &name) {
+  _activePipeline = Pipeline::GetPipeline(name);
+}
+
+/**
+ *
+ */
+void View::updateUI() {
+  if (_viewFbo) {
+    _uiSize = _viewFbo->getSize();
+
+    // update the view projection matrix
+    _viewProjMtx = mat4::Ortho(-_uiSize.x/2.0f, _uiSize.x/2.0f, -_uiSize.y/2.0f, _uiSize.y/2.0f, VIEW_NEAR, VIEW_FAR);
+  }
+}
+
+/**
+ *
+ */
+void View::applyTag(const XMLTag &tag) {
+  if (tag.hasAttribute(ATT_PIPELINE))
+    setPipeline(tag.getAttribute(ATT_PIPELINE));
+  if (tag.hasAttribute(ATT_FBO))
+    _viewFboName = tag.getAttribute(ATT_FBO);
 }
 
 /**
@@ -109,8 +156,8 @@ void View::emptyPasses() {
 void View::clearPasses() {
   _passes.clear();
   
-  addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_projMtx), MAIN_PASS);
-  addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_viewMtx), MAIN_PASS);
+  addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_mainProjMtx), MAIN_PASS);
+  addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_viewProjMtx), VIEW_PASS);
 }
 
 /**
@@ -134,15 +181,6 @@ Draws* View::getPassDraws(const std::string &pass) {
  */
 Uniforms* View::getPassUniforms(const std::string &pass) {
   return &getPass(pass)->uniforms;
-}
-
-/**
- *
- */
-const Pass* View::getPass(const std::string &pass) const {
-  if (_passes.find(pass) == _passes.end())
-    return NULL;
-  return &_passes.at(pass);
 }
 
 /**

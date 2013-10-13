@@ -11,10 +11,11 @@
 
 #include "Entity.h"
 #include "Resources.h"
+#include "Transform.h"
 
 #define APP_CONFIG "Config/main.xml" /**< Main configuration file for the engine to load. */
 #define MAIN_PASS "main" /**< Default general pass name. */
-#define SCREEN_PASS "screen" /**< Default pass name for drawing 2d elements. (hud, text, etc...) */
+#define VIEW_PASS "view" /**< Default pass name for drawing 2d elements. (hud, text, etc...) */
 #define FINAL_FBO "final" /**< Name for the final system Frame Buffer. */
 
 #define DEF_NEAR -10 /**< Default near value. */
@@ -50,7 +51,15 @@ public:
   inline bool operator<(const Drawable &rhs) const;
   
 protected:
-  HostDisplay *_hostDisplay;
+  HostDisplay  *_hostDisplay;
+  const Shader *_shader;
+  const Mesh   *_mesh;
+  std::vector<const Texture*> _textures;
+  
+  mat4 _viewMtx;
+  mat3 _textureMtx;
+  Transform _transform;
+  Uniforms _uniforms;
   
 private:
   inline void applyTag(const XMLTag &tag);
@@ -73,7 +82,7 @@ private:
  * @return true if visible or false if not.
  */
 bool Drawable::isVisible() const {
-  return _visible;
+  return _visible && _shader && _mesh;
 }
 
 /**

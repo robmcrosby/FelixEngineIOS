@@ -25,13 +25,7 @@ Entity::~Entity() {
 }
 
 void Entity::applyTag(const XMLTag &tag) {
-  // set the transform
-  if (tag.hasSubTag(TRANSFORM_TAG))
-    _transform.applyTag(*tag.getSubTag(TRANSFORM_TAG));
-  else
-    _transform.applyTag(tag);
-
-  // set the name and update the entity map
+  // set the name
   if (tag.hasAttribute(ATT_NAME))
     setName(tag.getAttribute(ATT_NAME));
 }
@@ -49,9 +43,8 @@ void Entity::setParrent(Entity *parrent) {
     clearParrent();
 
     _parrent = parrent;
-    if (_parrent) {
+    if (_parrent)
       _parrent->_children.insert(this);
-    }
   }
 }
 
@@ -97,7 +90,7 @@ void Entity::setName(const std::string &name) {
   }
   else if (_name != name) {
     EntityMap.erase(_name);
-    EntityMap[_name] = this;
+    EntityMap[name] = this;
     _tag.setAttribute(ATT_NAME, _name);
   }
   _name = name;

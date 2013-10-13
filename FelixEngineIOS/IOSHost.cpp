@@ -62,8 +62,7 @@ IOSHost::IOSHost(DEV_TYPE dev, ivec2 size, float scale): Entity(XMLTag(IOS_HOST_
   
   createAppEntity();
   _display->updateResources();
-
-  load();
+  _display->resize(size.x, size.y, scale);
 }
 
 /**

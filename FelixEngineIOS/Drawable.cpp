@@ -12,9 +12,12 @@
 
 using namespace std;
 
-Drawable::Drawable(const XMLTag &tag): Entity(tag),
-_passName(MAIN_PASS), _layer(0), _visible(true), _drawType(DRAW_DEPTH), _drawId(getNewId()), _curView(0) {
-  
+Drawable::Drawable(const XMLTag &tag): Entity(tag), _passName(MAIN_PASS),
+_layer(0), _visible(true), _drawType(DRAW_DEPTH), _drawId(getNewId()),
+_curView(0), _shader(0), _mesh(0), _hostDisplay(Host::GetHost()->getDisplay()) {
+  _uniforms.addUniform(VAR_VIEW_MTX, VAL_MAT4X4, &_viewMtx);
+  _uniforms.addUniform(VAR_TEX_MTX, VAL_MAT3X3, &_textureMtx);
+  applyTag(tag);
 }
 
 Drawable::~Drawable() {
@@ -104,13 +107,28 @@ void Drawable::unload() {
  * Draws this to the screen if it is visible.
  */
 void Drawable::draw() const {
-  
+  if (isVisible()) {
+    // Setup the shader.
+    _shader->use();
+    _shader->setUniforms(&_uniforms);
+    _shader->setUniforms(_transform.getUniforms());
+
+    // Setup the textures.
+    for (int i = 0; i < _textures.size(); ++i)
+    _textures.at(i)->use(i);
+
+    // Setup and draw the mesh.
+    _mesh->use();
+    _mesh->draw();
+  }
 }
 
 /**
  * Gets the pass and layer from the tag.
  */
 void Drawable::applyTag(const XMLTag &tag) {
+  const XMLTag *subtag;
+
   // set pass
   if (tag.hasAttribute("pass"))
     _passName = tag.getAttribute("pass");
@@ -118,6 +136,31 @@ void Drawable::applyTag(const XMLTag &tag) {
   // set the layer
   if (tag.hasAttribute("layer"))
     sscanf(tag.getAttribute("layer").c_str(), " %i", &_layer);
+
+  // add the shader
+  subtag = tag.getSubTag(SHADER_TAG);
+  if (subtag && subtag->hasAttribute(ATT_NAME))
+    _shader = _hostDisplay->getShader(subtag->getAttribute(ATT_NAME));
+
+  // add the mesh
+  subtag = tag.getSubTag(MESH_TAG);
+  if (subtag && subtag->hasAttribute(ATT_NAME))
+    _mesh = _hostDisplay->getMesh(subtag->getAttribute(ATT_NAME));
+
+  // add a texture
+  subtag = tag.getSubTag(TEXTURE_TAG);
+  if (subtag && subtag->hasAttribute(ATT_NAME))
+    _textures.push_back(_hostDisplay->getTexture(subtag->getAttribute(ATT_NAME)));
+
+  // add textures
+  subtag = tag.getSubTag(TEXTURES_TAG);
+  if (subtag) {
+    XMLTag::const_iterator itr;
+    for (itr = subtag->begin(); itr != subtag->end(); ++itr) {
+      if (**itr == TEXTURE_TAG && (*itr)->hasAttribute(ATT_NAME))
+        _textures.push_back(_hostDisplay->getTexture((*itr)->getAttribute(ATT_NAME)));
+    }
+  }
 }
 
 int Drawable::getNewId() {

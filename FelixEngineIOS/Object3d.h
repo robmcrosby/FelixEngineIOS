@@ -11,27 +11,16 @@
 
 #include "FelixEngine.h"
 #include "Drawable.h"
+#include "Transform.h"
 
 
 class Object3d: public Drawable {
 public:
-   Object3d(const XMLTag &tag);
-   virtual ~Object3d();
-   
-   virtual void draw() const;
-   
-protected:
-   mat3 _textureMtx;
-   Uniforms _uniforms;
-   
-   const Shader *_shader;
-   const Mesh *_mesh;
-   std::vector<const Texture*> _textures;
-   
+  Object3d(const XMLTag &tag);
+  virtual ~Object3d();
+
 private:
-   inline void applyTag(const XMLTag &tag);
-   
-   DECLARE_ENTITY_ID(Object3d)
+  DECLARE_ENTITY_ID(Object3d)
 };
 
 #endif /* defined(__FelixEngineIOS__Object3d__) */

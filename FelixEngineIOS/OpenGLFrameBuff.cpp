@@ -208,7 +208,7 @@ void OpenGLFrameBuff::updateSize(const ivec2 &screen) {
 
 ivec2 OpenGLFrameBuff::getSize() const {
   if (_flags & FBO_FINAL)
-    return _display->getScreenSize();
+    return Host::GetHost()->getDisplay()->getScreenSize();
   return buffSize();
 }
 

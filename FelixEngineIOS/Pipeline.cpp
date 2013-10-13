@@ -24,7 +24,7 @@ map<string, Pipeline*> Pipeline::PipelineMap;
 
 Pipeline::Pipeline(): Entity(XMLTag(PIPELINE_TAG)) {
   addPipeItem(new DrawPass(MAIN_PASS));
-  addPipeItem(new DrawPass(SCREEN_PASS));
+  addPipeItem(new DrawPass(VIEW_PASS));
   setName(DEF_PIPELINE);
 }
 
@@ -37,8 +37,8 @@ Pipeline::~Pipeline() {
 }
 
 void Pipeline::setName(const std::string &name) {
-  if (name != _name)
-    PipelineMap.erase(_name);
+  if (name != getName())
+    PipelineMap.erase(getName());
   if (name != "")
     PipelineMap[name] = this;
 

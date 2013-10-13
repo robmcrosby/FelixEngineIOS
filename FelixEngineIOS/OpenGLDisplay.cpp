@@ -56,6 +56,7 @@ void OpenGLDisplay::resize(int sizeX, int sizeY, float scale) {
   _screenScale = scale;
 
   OpenGLFrameBuff::UpdateFrameBuffs();
+  load();
 }
 
 /**

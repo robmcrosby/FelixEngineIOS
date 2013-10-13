@@ -3,22 +3,27 @@
   <Resources>
     <Shader name="texture" vert="texture.vert" frag="texture.frag"/>
     <Shader name="fill" vert="fill.vert" frag="texture.frag"/>
+    <Texture name="grid" src="grid.png" filters="mip"/>
     <Texture name="green" src="green.png" filters="mip"/>
     <Texture name="red" src="red.png" filters="mip"/>
+    <Texture name="blue" src="blue.png" filters="mip"/>
+    <Texture name="yellow" src="yellow.png" filters="mip"/>
+    <Texture name="orange" src="orange.png" filters="mip"/>
   </Resources>
-  <View name="MainView" pass="main">
-    <Pipeline name="MainPipeline">
-      <ClearContext>0, 0, 0, 1</ClearContext>
-      <DrawPass>MainView</DrawPass>
+  <View name="MainView" pass="main" pipeline="CustomPipe">
+    <Pipeline name="CustomPipe">
+      <ClearContext>0.4, 0.4, 0.4, 1</ClearContext>
+      <DrawPass>main</DrawPass>
+      <DrawPass>view</DrawPass>
     </Pipeline>
-    <Object3d name="plane" pass="main">
-      <Transform>
-        <pos>0, 0, 0</pos>
-        <scale>0.5, 0.5, 1</scale>
-      </Transform>
+    <UIObject name="uiA" pass="view">
+      <size>100,100</size>
+      <offset>-50,0</offset>
+      <orgin>Top,Left</orgin>
+      <align>Top,Left</align>
       <Shader name="texture"/>
       <Mesh name="plane"/>
-      <Texture name="green"/>
-    </Object3d>
+      <Texture name="grid"/>
+    </UIObject>
   </View>
 </ObjViewer>

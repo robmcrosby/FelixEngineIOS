@@ -15,7 +15,6 @@
 #include <set>
 #include <vector>
 #include "XMLTag.h"
-#include "Transform.h"
 
 class View;
 
@@ -113,11 +112,9 @@ public:
   virtual void unload();
   
   inline std::string getName() const;
-  inline Transform* getTransform();
-  inline const Transform* getTransform() const;
-  inline void setTransformParrent(const Transform *t);
   inline bool isLoaded() const;
   inline void addChild(Entity *child);
+  inline Entity* getParrent();
   virtual void setName(const std::string &name);
   
   static Entity* GetEntity(const std::string &name);
@@ -125,15 +122,14 @@ public:
 protected:
   View* getParrentView();
   const View* getParrentView() const;
-  
-  std::string _name;
-  Transform _transform;
+
   XMLTag _tag;
   bool _loaded;
   
 private:
   inline void applyTag(const XMLTag &tag);
 
+  std::string _name;
   std::set<Entity*> _children;
   Entity *_parrent;
   
@@ -143,18 +139,6 @@ private:
 
 std::string Entity::getName() const {
   return _name;
-}
-
-Transform* Entity::getTransform() {
-  return &_transform;
-}
-
-const Transform* Entity::getTransform() const {
-  return &_transform;
-}
-
-void Entity::setTransformParrent(const Transform *t) {
-  _transform.setParrent(t);
 }
 
 bool Entity::isLoaded() const {
@@ -169,6 +153,10 @@ void Entity::clearChildren() {
   std::set<Entity*>::iterator itr;
   for (itr = _children.begin(); itr != _children.end(); ++itr)
     delete *itr;
+}
+
+Entity *Entity::getParrent() {
+  return _parrent;
 }
 
 
