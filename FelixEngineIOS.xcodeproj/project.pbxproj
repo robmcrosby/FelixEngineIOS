@@ -40,6 +40,7 @@
 		3792DF6F1774EEF300E1A410 /* Shaders in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF6C1774EEF300E1A410 /* Shaders */; };
 		3792DF711774F25700E1A410 /* Textures in Resources */ = {isa = PBXBuildFile; fileRef = 3792DF701774F25700E1A410 /* Textures */; };
 		379DF9D317DC2B67004CE079 /* View.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 379DF9D117DC2B67004CE079 /* View.cpp */; };
+		37A0A6BA180F8A24001E7D2C /* ColorBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A0A6B8180F8A24001E7D2C /* ColorBlock.cpp */; };
 		37A9D4C817780FD100CA9802 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A9D4C617780FD100CA9802 /* Camera.cpp */; };
 		37A9D4CB17780FE500CA9802 /* Object3d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37A9D4C917780FE400CA9802 /* Object3d.cpp */; };
 		37E697301801103C00EBB06F /* UIObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 37E6972E1801103C00EBB06F /* UIObject.cpp */; };
@@ -110,6 +111,8 @@
 		3792DF701774F25700E1A410 /* Textures */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Textures; path = AppFiles/Textures; sourceTree = SOURCE_ROOT; };
 		379DF9D117DC2B67004CE079 /* View.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = View.cpp; sourceTree = "<group>"; };
 		379DF9D217DC2B67004CE079 /* View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = View.h; sourceTree = "<group>"; };
+		37A0A6B8180F8A24001E7D2C /* ColorBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ColorBlock.cpp; path = AppSrc/ColorBlock.cpp; sourceTree = SOURCE_ROOT; };
+		37A0A6B9180F8A24001E7D2C /* ColorBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorBlock.h; path = AppSrc/ColorBlock.h; sourceTree = SOURCE_ROOT; };
 		37A9D4C617780FD100CA9802 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
 		37A9D4C717780FD100CA9802 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		37A9D4C917780FE400CA9802 /* Object3d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Object3d.cpp; sourceTree = "<group>"; };
@@ -295,6 +298,8 @@
 			children = (
 				3741F3811770EE7F00DFEDAD /* ObjViewer.h */,
 				3741F3801770EE7F00DFEDAD /* ObjViewer.cpp */,
+				37A0A6B9180F8A24001E7D2C /* ColorBlock.h */,
+				37A0A6B8180F8A24001E7D2C /* ColorBlock.cpp */,
 			);
 			name = AppSrc;
 			sourceTree = "<group>";
@@ -410,6 +415,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				372620C81780C31C00DC6AAD /* Pipeline.cpp in Sources */,
+				37A0A6BA180F8A24001E7D2C /* ColorBlock.cpp in Sources */,
 				3741F321176E7FF000DFEDAD /* main.m in Sources */,
 				3741F325176E7FF000DFEDAD /* AppDelegate.mm in Sources */,
 				3741F332176E7FF000DFEDAD /* ViewController.mm in Sources */,

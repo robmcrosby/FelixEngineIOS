@@ -11,12 +11,11 @@
 
 using namespace std;
 
-DEFINE_ENTITY_ID(UIObject)
-
 /**
  *
  */
-UIObject::UIObject(const XMLTag &tag): Drawable(tag), _uiSubObjects(0), _uiParrent(0), _touchDeligate(0), _uiSize(1) {
+UIObject::UIObject(const XMLTag &tag): Drawable(tag),
+_uiSubObjects(0), _uiParrent(0), _touchDeligate(0), _uiSize(1), _uiAlign(0), _uiRelationX(None), _uiRelationY(None) {
   applyTag(tag);
 }
 
@@ -33,14 +32,13 @@ UIObject::~UIObject() {
 void UIObject::setParrent(Entity *parrent) {
   if (parrent != getParrent()) {
     // remove from the old parrent.
-    UIObject *uiParrent = dynamic_cast<UIObject*>(getParrent());
-    if (uiParrent)
-      uiParrent->removeUIObject(this);
+    if (_uiParrent)
+      _uiParrent->removeUIObject(this);
 
     // add to the new parrent.
-    uiParrent = dynamic_cast<UIObject*>(parrent);
-    if (uiParrent)
-      uiParrent->addUIObject(this);
+    _uiParrent = dynamic_cast<UIObject*>(parrent);
+    if (_uiParrent)
+      _uiParrent->addUIObject(this);
   }
 
   Drawable::setParrent(parrent);
@@ -132,19 +130,48 @@ void UIObject::setTouchDeligate(TouchDeligate *deligate) {
 void UIObject::applyTag(const XMLTag &tag) {
   const XMLTag *subtag;
 
+  // Set the size.
   subtag = tag.getSubTag("size");
-  if (subtag)
+  if (subtag) {
     _uiSize = vec2::ParseFloat(subtag->getContents());
 
+    if (subtag->hasAttribute("relationX"))
+      _uiRelationX = getRelation(subtag->getAttribute("relationX"));
+    if (subtag->hasAttribute("relationY"))
+      _uiRelationY = getRelation(subtag->getAttribute("relationY"));
+  }
+
+  // Set the offset.
   subtag = tag.getSubTag("offset");
   if (subtag)
     _uiOffset = vec2::ParseFloat(subtag->getContents());
+
+  // Set the alignment.
+  subtag = tag.getSubTag("align");
+  if (subtag) {
+    _uiAlign = 0;
+    _uiAlign |= subtag->getContents().find("Top") != string::npos ? Top : 0;
+    _uiAlign |= subtag->getContents().find("Right") != string::npos ? Right : 0;
+    _uiAlign |= subtag->getContents().find("Bottom") != string::npos ? Bottom : 0;
+    _uiAlign |= subtag->getContents().find("Left") != string::npos ? Left : 0;
+  }
 }
 
 /**
- *
+ * Gets the relation from a string.
+ */
+Relation UIObject::getRelation(const std::string &str) {
+  Relation relation = None;
+  if (str.find("offset") != string::npos)
+    relation = Offset;
+  else if (str.find("ratio") != string::npos)
+    relation = Ratio;
+  return relation;
+}
+
+/**
+ * 
  */
 void UIObject::updateUI() {
-  _transform.setScale(vec3(_uiSize, 1));
-  _transform.setPos(vec3(_uiOffset, 0));
+
 }

@@ -10,20 +10,34 @@
     <Texture name="yellow" src="yellow.png" filters="mip"/>
     <Texture name="orange" src="orange.png" filters="mip"/>
   </Resources>
-  <View name="MainView" pass="main" pipeline="CustomPipe">
+  <View name="MainView" pass="mainPass" pipeline="CustomPipe">
     <Pipeline name="CustomPipe">
       <ClearContext>0.4, 0.4, 0.4, 1</ClearContext>
-      <DrawPass>main</DrawPass>
-      <DrawPass>view</DrawPass>
+      <DrawPass>mainPass</DrawPass>
+      <DrawPass>uiPass</DrawPass>
     </Pipeline>
-    <UIObject name="uiA" pass="view">
-      <size>100,100</size>
-      <offset>-50,0</offset>
-      <orgin>Top,Left</orgin>
-      <align>Top,Left</align>
+    <ColorBlock name="uiA" pass="uiPass">
+      <size relationX="offset" relationY="offset">20,20</size>
+      <offset>0,0</offset>
       <Shader name="texture"/>
       <Mesh name="plane"/>
-      <Texture name="grid"/>
-    </UIObject>
+      <Texture name="green"/>
+      <ColorBlock name="uiB" pass="uiPass">
+        <size relationY="offset">100,10</size>
+        <offset>-10,0</offset>
+        <align>Right</align>
+        <Shader name="texture"/>
+        <Mesh name="plane"/>
+        <Texture name="blue"/>
+      </ColorBlock>
+      <ColorBlock name="uiC" pass="uiPass">
+        <size relationX="ratio" relationY="offset">0.3,10</size>
+        <offset>10,0</offset>
+        <align>Left</align>
+        <Shader name="texture"/>
+        <Mesh name="plane"/>
+        <Texture name="orange"/>
+      </ColorBlock>
+    </ColorBlock>
   </View>
 </ObjViewer>

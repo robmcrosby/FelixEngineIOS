@@ -93,7 +93,9 @@ protected:
   std::string _viewFboName;
   const FrameBuff *_viewFbo;
   mat4 _mainProjMtx;
-  mat4 _viewProjMtx;
+  mat4 _mainViewMtx;
+  mat4 _uiProjMtx;
+  mat4 _uiViewMtx;
   
 private:
   inline void applyTag(const XMLTag &tag);

@@ -24,7 +24,7 @@ map<string, Pipeline*> Pipeline::PipelineMap;
 
 Pipeline::Pipeline(): Entity(XMLTag(PIPELINE_TAG)) {
   addPipeItem(new DrawPass(MAIN_PASS));
-  addPipeItem(new DrawPass(VIEW_PASS));
+  addPipeItem(new DrawPass(UI_PASS));
   setName(DEF_PIPELINE);
 }
 

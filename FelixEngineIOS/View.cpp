@@ -128,7 +128,7 @@ void View::updateUI() {
     _uiSize = _viewFbo->getSize();
 
     // update the view projection matrix
-    _viewProjMtx = mat4::Ortho(-_uiSize.x/2.0f, _uiSize.x/2.0f, -_uiSize.y/2.0f, _uiSize.y/2.0f, VIEW_NEAR, VIEW_FAR);
+    _uiProjMtx = mat4::Ortho(-_uiSize.x/2.0f, _uiSize.x/2.0f, -_uiSize.y/2.0f, _uiSize.y/2.0f, VIEW_NEAR, VIEW_FAR);
   }
 }
 
@@ -157,7 +157,9 @@ void View::clearPasses() {
   _passes.clear();
   
   addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_mainProjMtx), MAIN_PASS);
-  addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_viewProjMtx), VIEW_PASS);
+  addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_mainViewMtx), MAIN_PASS);
+  addPassUniform(VAR_PROJ_MTX, Uniform(VAL_MAT4X4, &_uiProjMtx), UI_PASS);
+  addPassUniform(VAR_VIEW_MTX, Uniform(VAL_MAT4X4, &_uiViewMtx), UI_PASS);
 }
 
 /**

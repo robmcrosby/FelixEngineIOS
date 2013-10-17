@@ -14,8 +14,8 @@
 #include "Transform.h"
 
 #define APP_CONFIG "Config/main.xml" /**< Main configuration file for the engine to load. */
-#define MAIN_PASS "main" /**< Default general pass name. */
-#define VIEW_PASS "view" /**< Default pass name for drawing 2d elements. (hud, text, etc...) */
+#define MAIN_PASS "mainPass" /**< Default general pass name. */
+#define UI_PASS "uiPass" /**< Default pass name for drawing 2d elements. (hud, text, etc...) */
 #define FINAL_FBO "final" /**< Name for the final system Frame Buffer. */
 
 #define DEF_NEAR -10 /**< Default near value. */
@@ -52,11 +52,7 @@ public:
   
 protected:
   HostDisplay  *_hostDisplay;
-  const Shader *_shader;
-  const Mesh   *_mesh;
-  std::vector<const Texture*> _textures;
-  
-  mat4 _viewMtx;
+
   mat3 _textureMtx;
   Transform _transform;
   Uniforms _uniforms;
@@ -64,6 +60,7 @@ protected:
 private:
   inline void applyTag(const XMLTag &tag);
   inline int  getNewId();
+  inline int  getLayer();
   
   bool        _visible;
   DRAW_TYPE   _drawType;
@@ -82,7 +79,7 @@ private:
  * @return true if visible or false if not.
  */
 bool Drawable::isVisible() const {
-  return _visible && _shader && _mesh;
+  return _visible;
 }
 
 /**
@@ -123,8 +120,8 @@ View* Drawable::getCurView() {
  */
 bool Drawable::operator<(const Drawable &rhs) const {
   if (_layer != rhs._layer)
-    return (_layer < rhs._layer);
-  return (_drawId < rhs._drawId);
+    return (rhs._layer < _layer);
+  return (rhs._drawId < _drawId);
 }
 
 #endif /* defined(__FelixEngineIOS__Drawable__) */
